@@ -1,0 +1,36 @@
+{
+    "name": "nimut/testing-framework",
+    "description": "TYPO3 testing framework that provides base classes and configuration for PHPUnit tests",
+    "keywords": [
+        "TYPO3 CMS",
+        "PHPUnit",
+        "testing"
+    ],
+    "homepage": "https://github.com/Nimut/TYPO3-testing-framework",
+    "license": [
+        "GPL-2.0+"
+    ],
+    "authors": [
+        {
+            "name": "Nicole Cordes",
+            "email": "typo3@cordes.co",
+            "role": "Developer"
+        },
+        {
+            "name": "Helmut Hummel",
+            "email": "info@helhum.io",
+            "role": "Developer",
+            "homepage": "http://helhum.io"
+        }
+    ],
+    "require": {
+        "typo3/cms-core": "^7.6 || ^8.0 <8.7",
+        "phpunit/phpunit": "^4.8 || ^5.6",
+        "mikey179/vfsStream": "^1.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Nimut\\TestingFramework\\": "src/TestingFramework/"
+        }
+    }
+}
