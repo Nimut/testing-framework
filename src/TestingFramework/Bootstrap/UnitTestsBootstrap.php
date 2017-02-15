@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Package\UnitTestPackageManager;
  *
  * Example: call whole unit test suite
  * - cd /var/www/t3master/foo  # Document root of TYPO3 CMS sources (location of index.php)
- * - vendor/bin/phpunit -c vendor/nimut/testing-framework/src/TestingFramework/Resources/Configuration/UnitTests.xml \
+ * - vendor/bin/phpunit -c vendor/nimut/testing-framework/res/Configuration/UnitTests.xml \
  *     typo3conf/ext/example_extension/Tests/Unit
  */
 class UnitTestsBootstrap
