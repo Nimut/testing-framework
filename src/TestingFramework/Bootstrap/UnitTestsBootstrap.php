@@ -184,10 +184,15 @@ class UnitTestsBootstrap
         $classLoader = require $classLoaderFilepath;
 
         $bootstrap = Bootstrap::getInstance();
-        if (is_callable([$bootstrap, 'setRequestType'])) {
-            $bootstrap->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_CLI);
+        $reflection = new \ReflectionMethod($bootstrap, 'initializeClassLoader');
+        if (empty($reflection->getNumberOfParameters())) {
+            $bootstrap->baseSetup()->initializeClassLoader();
+        } else {
+            if (is_callable([$bootstrap, 'setRequestType'])) {
+                $bootstrap->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_CLI);
+            }
+            $bootstrap->initializeClassLoader($classLoader)->baseSetup();
         }
-        $bootstrap->initializeClassLoader($classLoader)->baseSetup();
 
         return $this;
     }
@@ -215,11 +220,18 @@ class UnitTestsBootstrap
      */
     protected function finishCoreBootstrap()
     {
-        Bootstrap::getInstance()
-            ->disableCoreCache()
-            ->initializeCachingFramework()
-            ->initializePackageManagement(UnitTestPackageManager::class)
-            ->ensureClassLoadingInformationExists();
+        $bootstrap = Bootstrap::getInstance();
+        if (is_callable([$bootstrap, 'disableCoreCache'])) {
+            $bootstrap->disableCoreCache()
+                ->initializeCachingFramework()
+                ->initializePackageManagement(UnitTestPackageManager::class)
+                ->ensureClassLoadingInformationExists();
+        } else {
+            $bootstrap->disableCoreAndClassesCache()
+                ->initializeCachingFramework()
+                ->initializeClassLoaderCaches()
+                ->initializePackageManagement(UnitTestPackageManager::class);
+        }
 
         return $this;
     }

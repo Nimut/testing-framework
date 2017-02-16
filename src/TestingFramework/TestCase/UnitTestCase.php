@@ -73,7 +73,7 @@ abstract class UnitTestCase extends BaseTestCase
         unset($reflection);
 
         // Delete registered test files and directories
-        foreach ($this->testFilesToDelete as $absoluteFileName) {
+        foreach ((array)$this->testFilesToDelete as $absoluteFileName) {
             $absoluteFileName = GeneralUtility::fixWindowsFilePath(PathUtility::getCanonicalPath($absoluteFileName));
             if (!GeneralUtility::validPathStr($absoluteFileName)) {
                 throw new \RuntimeException('tearDown() cleanup: Filename contains illegal characters', 1410633087);
