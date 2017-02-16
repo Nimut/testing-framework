@@ -42,11 +42,28 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "TYPO3\\CMS\\Core\\Tests\\": "typo3/sysext/core/Tests/",
-            "TYPO3\\CMS\\Fluid\\Tests\\": "typo3/sysext/fluid/Tests/",
+            "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/",
+            "TYPO3\\CMS\\Fluid\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/fluid/Tests/",
             "TYPO3\\Components\\TestingFramework\\Core\\": "src/TestingFramework/Compatibility/Components/",
             "TYPO3\\Components\\TestingFramework\\Core\\Unit\\": "src/TestingFramework/Compatibility/Components/",
             "TYPO3\\Components\\TestingFramework\\Fluid\\Unit\\": "src/TestingFramework/Compatibility/Components/"
         }
-    }
+    },
+    "config": {
+        "preferred-install": {
+            "typo3/cms": "source"
+        },
+        "vendor-dir": ".Build/vendor",
+        "bin-dir": ".Build/bin"
+    },
+    "extra": {
+        "typo3/cms": {
+            "cms-package-dir": "{$vendor-dir}/typo3/cms",
+            "web-dir": ".Build/Web"
+        }
+    },
+    "include-path": [
+        ".Build/vendor/pear/http_request2/",
+        ".Build/vendor/pear/net_url2/"
+    ]
 }
