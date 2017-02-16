@@ -1,0 +1,15 @@
+<phpunit
+	backupGlobals="true"
+	backupStaticAttributes="false"
+	bootstrap="../../src/TestingFramework/Bootstrap/FunctionalTestsBootstrap.php"
+	colors="true"
+	convertErrorsToExceptions="true"
+	convertWarningsToExceptions="true"
+	forceCoversAnnotation="false"
+	processIsolation="true"
+	stopOnError="false"
+	stopOnFailure="false"
+	stopOnIncomplete="false"
+	stopOnSkipped="false"
+	verbose="false"
+/>
