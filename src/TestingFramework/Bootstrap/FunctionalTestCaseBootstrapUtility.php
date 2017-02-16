@@ -59,6 +59,7 @@ class FunctionalTestCaseBootstrapUtility
         'lang',
         'extbase',
         'install',
+        'cms',
     ];
 
     /**
@@ -425,11 +426,13 @@ class FunctionalTestCaseBootstrapUtility
 
         // Register default list of extensions and set active
         foreach ($this->defaultActivatedCoreExtensions as $extensionName) {
-            $packageStates['packages'][$extensionName] = [
-                'state' => 'active',
-                'packagePath' => 'typo3/sysext/' . $extensionName . '/',
-                'classesPath' => 'Classes/',
-            ];
+            if (is_dir($this->instancePath . '/typo3/sysext/' . $extensionName)) {
+                $packageStates['packages'][$extensionName] = [
+                    'state' => 'active',
+                    'packagePath' => 'typo3/sysext/' . $extensionName . '/',
+                    'classesPath' => 'Classes/',
+                ];
+            }
         }
 
         // Register additional core extensions and set active
@@ -491,15 +494,28 @@ class FunctionalTestCaseBootstrapUtility
         define('TYPO3_MODE', 'BE');
         define('TYPO3_cliMode', true);
 
-        $classLoader = require rtrim(realpath($this->instancePath . '/typo3/'), '\\/') . '/../vendor/autoload.php';
-        \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
-            ->initializeClassLoader($classLoader)
-            ->baseSetup('')
-            ->loadConfigurationAndInitialize(true)
-            ->loadTypo3LoadedExtAndExtLocalconf(true)
-            ->setFinalCachingFrameworkCacheConfiguration()
-            ->defineLoggingAndExceptionConstants()
-            ->unsetReservedGlobalVariables();
+        $autoloadFilepath = rtrim(realpath($this->instancePath . '/typo3/'), '\\/') . '/../vendor/autoload.php';
+        if (file_exists($autoloadFilepath)) {
+            $classLoader = require $autoloadFilepath;
+            Bootstrap::getInstance()
+                ->initializeClassLoader($classLoader)
+                ->baseSetup('')
+                ->loadConfigurationAndInitialize(true)
+                ->loadTypo3LoadedExtAndExtLocalconf(true)
+                ->setFinalCachingFrameworkCacheConfiguration()
+                ->defineLoggingAndExceptionConstants()
+                ->unsetReservedGlobalVariables();
+        } else {
+            require_once $this->instancePath . '/typo3/sysext/core/Classes/Core/CliBootstrap.php';
+            \TYPO3\CMS\Core\Core\CliBootstrap::checkEnvironmentOrDie();
+
+            require_once $this->instancePath . '/typo3/sysext/core/Classes/Core/Bootstrap.php';
+            Bootstrap::getInstance()
+                ->baseSetup('')
+                ->loadConfigurationAndInitialize(true)
+                ->loadTypo3LoadedExtAndExtLocalconf(true)
+                ->applyAdditionalConfigurationSettings();
+        }
     }
 
     /**
