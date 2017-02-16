@@ -62,7 +62,7 @@ abstract class UnitTestCase extends BaseTestCase
             $declaringClass = $property->getDeclaringClass()->getName();
             if (
                 !$property->isStatic()
-                && $declaringClass !== UnitTestCase::class
+                && $declaringClass !== self::class
                 && $declaringClass !== BaseTestCase::class
                 && strpos($property->getDeclaringClass()->getName(), 'PHPUnit_') !== 0
             ) {
