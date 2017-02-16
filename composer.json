@@ -38,6 +38,7 @@
         "psr-4": {
             "TYPO3\\CMS\\Core\\Tests\\": "typo3/sysext/core/Tests/",
             "TYPO3\\CMS\\Fluid\\Tests\\": "typo3/sysext/fluid/Tests/",
+            "TYPO3\\Components\\TestingFramework\\Core\\Unit\\": "src/TestingFramework/Compatibility/Components/",
             "TYPO3\\Components\\TestingFramework\\Fluid\\Unit\\": "src/TestingFramework/Compatibility/Components/"
         }
     }
