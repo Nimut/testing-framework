@@ -23,6 +23,12 @@
             "homepage": "http://helhum.io"
         }
     ],
+    "repositories": [
+        {
+            "type": "path",
+            "url": "compat/Packages/class-alias"
+        }
+    ],
     "require": {
         "typo3/cms-core": "^6.2 || ^7.6 || ^8.0 <8.7",
         "typo3/cms-extbase": "^6.2 || ^7.6 || ^8.0 <8.7",
@@ -31,22 +37,20 @@
         "mikey179/vfsStream": "^1.6"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.0"
+        "friendsofphp/php-cs-fixer": "^2.0",
+        "nimut/testing-framework-class-alias": "@dev"
     },
     "autoload": {
         "psr-4": {
             "Nimut\\TestingFramework\\": "src/TestingFramework/",
-            "TYPO3\\CMS\\Core\\Tests\\": "src/TestingFramework/Compatibility/",
-            "TYPO3\\CMS\\Fluid\\Tests\\": "src/TestingFramework/Compatibility/"
+            "TYPO3\\CMS\\Core\\Tests\\": "compat/",
+            "TYPO3\\CMS\\Fluid\\Tests\\": "compat/"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/",
-            "TYPO3\\CMS\\Fluid\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/fluid/Tests/",
-            "TYPO3\\Components\\TestingFramework\\Core\\": "src/TestingFramework/Compatibility/Components/",
-            "TYPO3\\Components\\TestingFramework\\Core\\Unit\\": "src/TestingFramework/Compatibility/Components/",
-            "TYPO3\\Components\\TestingFramework\\Fluid\\Unit\\": "src/TestingFramework/Compatibility/Components/"
+            "TYPO3\\CMS\\Fluid\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/fluid/Tests/"
         }
     },
     "config": {

@@ -27,13 +27,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 abstract class UnitTestCase extends BaseTestCase
 {
     /**
-     * @todo make LoadedExtensionsArray serializable instead
-     *
-     * @var array
-     */
-    protected $backupGlobalsBlacklist = ['TYPO3_LOADED_EXT'];
-
-    /**
      * Absolute path to files that should be removed after a test.
      * Handled in tearDown. Tests can register here to get any files
      * within typo3temp/ or typo3conf/ext cleaned up again.

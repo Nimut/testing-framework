@@ -1,0 +1,31 @@
+{
+    "name": "nimut/testing-framework-class-alias",
+    "description": "Private package that provides class aliases for running TYPO3 CMS PHPUnit tests",
+    "homepage": "https://github.com/Nimut/TYPO3-testing-framework",
+    "license": [
+        "GPL-2.0+"
+    ],
+    "authors": [
+        {
+            "name": "Nicole Cordes",
+            "email": "typo3@cordes.co",
+            "role": "Developer"
+        },
+        {
+            "name": "Helmut Hummel",
+            "email": "info@helhum.io",
+            "role": "Developer",
+            "homepage": "http://helhum.io"
+        }
+    ],
+    "require": {
+        "typo3/class-alias-loader": "^1.0"
+    },
+    "extra": {
+        "typo3/class-alias-loader": {
+            "class-alias-maps": [
+                "ClassAliasMap.php"
+            ]
+        }
+    }
+}
