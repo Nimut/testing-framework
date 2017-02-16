@@ -61,5 +61,9 @@
             "cms-package-dir": "{$vendor-dir}/typo3/cms",
             "web-dir": ".Build/Web"
         }
-    }
+    },
+	"include-path": [
+		".Build/vendor/pear/http_request2/",
+		".Build/vendor/pear/net_url2/"
+	]
 }
