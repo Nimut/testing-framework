@@ -36,8 +36,8 @@
     "autoload": {
         "psr-4": {
             "Nimut\\TestingFramework\\": "src/TestingFramework/",
-            "TYPO3\\CMS\\Core\\Tests\\": "src/TestingFramework/Compatibility/",
-            "TYPO3\\CMS\\Fluid\\Tests\\": "src/TestingFramework/Compatibility/"
+            "TYPO3\\CMS\\Core\\Tests\\": "compat/",
+            "TYPO3\\CMS\\Fluid\\Tests\\": "compat/"
         }
     },
     "autoload-dev": {
