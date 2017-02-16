@@ -19,6 +19,7 @@ use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Install\Service\SqlExpectedSchemaService;
@@ -68,9 +69,12 @@ class FunctionalTestCaseBootstrapUtility
     protected $defaultFoldersToCreate = [
         '',
         '/fileadmin',
-        '/typo3temp',
         '/typo3conf',
         '/typo3conf/ext',
+        '/typo3temp',
+        '/typo3temp/var',
+        '/typo3temp/var/tests',
+        '/typo3temp/var/transient',
         '/uploads',
     ];
 
@@ -95,7 +99,7 @@ class FunctionalTestCaseBootstrapUtility
      */
     public static function getInstancePath($testCaseClassName)
     {
-        return ORIGINAL_ROOT . 'typo3temp/functional-' . static::getInstanceIdentifier($testCaseClassName);
+        return ORIGINAL_ROOT . 'typo3temp/var/tests/functional-' . static::getInstanceIdentifier($testCaseClassName);
     }
 
     /**
@@ -310,6 +314,146 @@ class FunctionalTestCaseBootstrapUtility
      */
     protected function setUpLocalConfiguration(array $configurationToMerge)
     {
+        $isDoctrineAvailable = class_exists('Doctrine\\DBAL\\DriverManager');
+        if ($isDoctrineAvailable) {
+            $originalConfigurationArray = $this->getDoctrineDatabaseSettings();
+        } else {
+            $originalConfigurationArray = $this->getDatabaseConnectionSettings();
+        }
+        if (empty($originalConfigurationArray)) {
+            if (file_exists(ORIGINAL_ROOT . 'typo3conf/LocalConfiguration.php')) {
+                // See if a LocalConfiguration file exists in "parent" instance to get db credentials from
+                $originalConfigurationArray = require ORIGINAL_ROOT . 'typo3conf/LocalConfiguration.php';
+            } else {
+                throw new Exception(
+                    'Database credentials for functional tests are neither set through environment'
+                    . ' variables, and can not be found in an existing LocalConfiguration file',
+                    1397406356
+                );
+            }
+        }
+
+        // Base of final LocalConfiguration is core factory configuration
+        $finalConfigurationArray = require ORIGINAL_ROOT . 'typo3/sysext/core/Configuration/FactoryConfiguration.php';
+
+        $configurationToMerge = array_replace_recursive(
+            [
+                'SYS' => [
+                    'caching' => [
+                        'cacheConfigurations' => [
+                            'extbase_object' => [
+                                'backend' => NullBackend::class,
+                            ],
+                        ],
+                    ],
+                    'displayErrors' => '1',
+                    'debugExceptionHandler' => '',
+                    'isInitialDatabaseImportDone' => true,
+                    'isInitialInstallationInProgress' => false,
+                    'setDBinit' => 'SET SESSION sql_mode = \'STRICT_ALL_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_VALUE_ON_ZERO,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,ONLY_FULL_GROUP_BY\';',
+                    'trustedHostsPattern' => '.*',
+                ],
+            ],
+            $configurationToMerge
+        );
+        $this->mergeRecursiveWithOverrule($finalConfigurationArray, $configurationToMerge);
+        $finalConfigurationArray['DB'] = $originalConfigurationArray['DB'];
+
+        // Calculate and set new database name
+        if ($isDoctrineAvailable) {
+            $originalDatabaseName = &$finalConfigurationArray['DB']['Connections']['Default']['dbname'];
+        } else {
+            $originalDatabaseName = &$finalConfigurationArray['DB']['database'];
+        }
+
+        $this->originalDatabaseName = $originalDatabaseName;
+        $this->databaseName = $this->originalDatabaseName . '_ft' . $this->identifier;
+        // Maximum database name length for mysql is 64 characters
+        if (strlen($this->databaseName) > 64) {
+            $maximumOriginalDatabaseName = 64 - strlen('_ft' . $this->identifier);
+            throw new Exception(
+                'The name of the database that is used for the functional test (' . $this->databaseName . ')' .
+                ' exceeds the maximum length of 64 character allowed by MySQL. You have to shorten your' .
+                ' original database name to ' . $maximumOriginalDatabaseName . ' characters',
+                1377600104
+            );
+        }
+        $originalDatabaseName = $this->databaseName;
+
+        $result = $this->writeFile(
+            $this->instancePath . '/typo3conf/LocalConfiguration.php',
+            '<?php' . chr(10) .
+            'return ' .
+            $this->arrayExport(
+                $finalConfigurationArray
+            ) .
+            ';' . chr(10) .
+            '?>'
+        );
+        if (!$result) {
+            throw new Exception('Can not write local configuration', 1376657277);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    protected function getDoctrineDatabaseSettings()
+    {
+        $originalConfigurationArray = [];
+
+        $databaseName = trim(getenv('typo3DatabaseName'));
+        $databaseHost = trim(getenv('typo3DatabaseHost'));
+        $databaseUsername = trim(getenv('typo3DatabaseUsername'));
+        $databasePassword = getenv('typo3DatabasePassword');
+        $databasePasswordTrimmed = trim($databasePassword);
+        $databasePort = trim(getenv('typo3DatabasePort'));
+        $databaseSocket = trim(getenv('typo3DatabaseSocket'));
+        $databaseDriver = trim(getenv('typo3DatabaseDriver'));
+        if ($databaseName || $databaseHost || $databaseUsername || $databasePassword || $databasePort || $databaseSocket) {
+            // Try to get database credentials from environment variables first
+            $originalConfigurationArray = [
+                'DB' => [
+                    'Connections' => [
+                        'Default' => [
+                            'driver' => 'mysqli',
+                        ],
+                    ],
+                ],
+            ];
+            if ($databaseName) {
+                $originalConfigurationArray['DB']['Connections']['Default']['dbname'] = $databaseName;
+            }
+            if ($databaseHost) {
+                $originalConfigurationArray['DB']['Connections']['Default']['host'] = $databaseHost;
+            }
+            if ($databaseUsername) {
+                $originalConfigurationArray['DB']['Connections']['Default']['user'] = $databaseUsername;
+            }
+            if ($databasePassword !== false) {
+                $originalConfigurationArray['DB']['Connections']['Default']['password'] = $databasePasswordTrimmed;
+            }
+            if ($databasePort) {
+                $originalConfigurationArray['DB']['Connections']['Default']['port'] = $databasePort;
+            }
+            if ($databaseSocket) {
+                $originalConfigurationArray['DB']['Connections']['Default']['unix_socket'] = $databaseSocket;
+            }
+            if ($databaseDriver) {
+                $originalConfigurationArray['DB']['Connections']['Default']['driver'] = $databaseDriver;
+            }
+        }
+
+        return $originalConfigurationArray;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getDatabaseConnectionSettings()
+    {
+        $originalConfigurationArray = [];
+
         $databaseName = trim(getenv('typo3DatabaseName'));
         $databaseHost = trim(getenv('typo3DatabaseHost'));
         $databaseUsername = trim(getenv('typo3DatabaseUsername'));
@@ -339,72 +483,9 @@ class FunctionalTestCaseBootstrapUtility
             if ($databaseSocket) {
                 $originalConfigurationArray['DB']['socket'] = $databaseSocket;
             }
-        } elseif (file_exists(ORIGINAL_ROOT . 'typo3conf/LocalConfiguration.php')) {
-            // See if a LocalConfiguration file exists in "parent" instance to get db credentials from
-            $originalConfigurationArray = require ORIGINAL_ROOT . 'typo3conf/LocalConfiguration.php';
-        } else {
-            throw new Exception(
-                'Database credentials for functional tests are neither set through environment'
-                . ' variables, and can not be found in an existing LocalConfiguration file',
-                1397406356
-            );
         }
 
-        // Base of final LocalConfiguration is core factory configuration
-        $finalConfigurationArray = require ORIGINAL_ROOT . 'typo3/sysext/core/Configuration/FactoryConfiguration.php';
-
-        $configurationToMerge = array_replace_recursive(
-            [
-                'SYS' => [
-                    'caching' => [
-                        'cacheConfigurations' => [
-                            'extbase_object' => [
-                                'backend' => NullBackend::class,
-                            ],
-                        ],
-                    ],
-                    'displayErrors' => '1',
-                    'debugExceptionHandler' => '',
-                    'isInitialDatabaseImportDone' => true,
-                    'isInitialInstallationInProgress' => false,
-                    'setDBinit' => 'SET SESSION sql_mode = \'STRICT_ALL_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_VALUE_ON_ZERO,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,ONLY_FULL_GROUP_BY\';',
-                    'trustedHostsPattern' => '.*',
-                ],
-            ],
-            $configurationToMerge
-        );
-        $this->mergeRecursiveWithOverrule($finalConfigurationArray, $configurationToMerge);
-        $finalConfigurationArray['DB'] = $originalConfigurationArray['DB'];
-        // Calculate and set new database name
-        $this->originalDatabaseName = $originalConfigurationArray['DB']['database'];
-        $this->databaseName = $this->originalDatabaseName . '_ft' . $this->identifier;
-
-        // Maximum database name length for mysql is 64 characters
-        if (strlen($this->databaseName) > 64) {
-            $maximumOriginalDatabaseName = 64 - strlen('_ft' . $this->identifier);
-            throw new Exception(
-                'The name of the database that is used for the functional test (' . $this->databaseName . ')' .
-                ' exceeds the maximum length of 64 character allowed by MySQL. You have to shorten your' .
-                ' original database name to ' . $maximumOriginalDatabaseName . ' characters',
-                1377600104
-            );
-        }
-
-        $finalConfigurationArray['DB']['database'] = $this->databaseName;
-
-        $result = $this->writeFile(
-            $this->instancePath . '/typo3conf/LocalConfiguration.php',
-            '<?php' . chr(10) .
-            'return ' .
-            $this->arrayExport(
-                $finalConfigurationArray
-            ) .
-            ';' . chr(10) .
-            '?>'
-        );
-        if (!$result) {
-            throw new Exception('Can not write local configuration', 1376657277);
-        }
+        return $originalConfigurationArray;
     }
 
     /**
@@ -421,7 +502,7 @@ class FunctionalTestCaseBootstrapUtility
     {
         $packageStates = [
             'packages' => [],
-            'version' => 4,
+            'version' => $this->getPackageStatesVersion(),
         ];
 
         // Register default list of extensions and set active
@@ -482,6 +563,30 @@ class FunctionalTestCaseBootstrapUtility
     }
 
     /**
+     * Parse PackageManager class for correct version number
+     *
+     * @return int
+     */
+    protected function getPackageStatesVersion()
+    {
+        $reflection = new \ReflectionClass(PackageManager::class);
+        $packageManagerClassFile = $reflection->getFileName();
+
+        if ($packageManagerClassFile === false) {
+            return 4;
+        }
+
+        $fileContent = file_get_contents($packageManagerClassFile);
+        $matches = [];
+        preg_match('/\$this->packageStatesConfiguration\[\'version\'\] = (\d+);/', $fileContent, $matches);
+        if (empty($matches[1])) {
+            return 4;
+        }
+
+        return (int)$matches[1];
+    }
+
+    /**
      * Bootstrap basic TYPO3
      *
      * @return void
@@ -494,27 +599,35 @@ class FunctionalTestCaseBootstrapUtility
         define('TYPO3_MODE', 'BE');
         define('TYPO3_cliMode', true);
 
+        putenv('TYPO3_CONTEXT=Testing');
+
+        $classLoader = null;
         $autoloadFilepath = rtrim(realpath($this->instancePath . '/typo3/'), '\\/') . '/../vendor/autoload.php';
         if (file_exists($autoloadFilepath)) {
             $classLoader = require $autoloadFilepath;
-            Bootstrap::getInstance()
-                ->initializeClassLoader($classLoader)
-                ->baseSetup('')
-                ->loadConfigurationAndInitialize(true)
-                ->loadTypo3LoadedExtAndExtLocalconf(true)
-                ->setFinalCachingFrameworkCacheConfiguration()
-                ->defineLoggingAndExceptionConstants()
-                ->unsetReservedGlobalVariables();
         } else {
             require_once $this->instancePath . '/typo3/sysext/core/Classes/Core/CliBootstrap.php';
             \TYPO3\CMS\Core\Core\CliBootstrap::checkEnvironmentOrDie();
+        }
 
-            require_once $this->instancePath . '/typo3/sysext/core/Classes/Core/Bootstrap.php';
-            Bootstrap::getInstance()
-                ->baseSetup('')
-                ->loadConfigurationAndInitialize(true)
-                ->loadTypo3LoadedExtAndExtLocalconf(true)
-                ->applyAdditionalConfigurationSettings();
+        $bootstrap = Bootstrap::getInstance();
+        $reflection = new \ReflectionMethod($bootstrap, 'initializeClassLoader');
+        if (empty($reflection->getNumberOfParameters())) {
+            $bootstrap->baseSetup()->initializeClassLoader();
+        } else {
+            if (is_callable([$bootstrap, 'setRequestType'])) {
+                $bootstrap->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_CLI);
+            }
+            $bootstrap->initializeClassLoader($classLoader)->baseSetup();
+        }
+        $bootstrap->loadConfigurationAndInitialize(true)
+            ->loadTypo3LoadedExtAndExtLocalconf(true);
+        if (is_callable([$bootstrap, 'setFinalCachingFrameworkCacheConfiguration'])) {
+            $bootstrap->setFinalCachingFrameworkCacheConfiguration()
+                ->defineLoggingAndExceptionConstants()
+                ->unsetReservedGlobalVariables();
+        } else {
+            $bootstrap->applyAdditionalConfigurationSettings();
         }
     }
 
@@ -527,32 +640,57 @@ class FunctionalTestCaseBootstrapUtility
     protected function setUpTestDatabase()
     {
         Bootstrap::getInstance()->initializeTypo3DbGlobal();
-        /** @var DatabaseConnection $database */
-        $database = $GLOBALS['TYPO3_DB'];
-        if (!$database->sql_pconnect()) {
-            throw new Exception(
-                'TYPO3 Fatal Error: The current username, password or host was not accepted when the'
-                . ' connection to the database was attempted to be established!',
-                1377620117
-            );
-        }
 
-        // Drop database in case a previous test had a fatal and did not clean up properly
-        $database->admin_query('DROP DATABASE IF EXISTS `' . $this->databaseName . '`');
-        $createDatabaseResult = $database->admin_query('CREATE DATABASE `' . $this->databaseName . '`');
-        if (!$createDatabaseResult) {
-            $user = $GLOBALS['TYPO3_CONF_VARS']['DB']['username'];
-            $host = $GLOBALS['TYPO3_CONF_VARS']['DB']['host'];
-            throw new Exception(
-                'Unable to create database with name ' . $this->databaseName . '. This is probably a permission problem.'
-                . ' For this instance this could be fixed executing'
-                . ' "GRANT ALL ON `' . $this->originalDatabaseName . '_ft%`.* TO `' . $user . '`@`' . $host . '`;"',
-                1376579070
-            );
+        if (class_exists('Doctrine\\DBAL\\DriverManager')) {
+            $connectionParameters = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default'];
+            unset($connectionParameters['dbname']);
+            $schemaManager = \Doctrine\DBAL\DriverManager::getConnection($connectionParameters)->getSchemaManager();
+
+            if (in_array($this->databaseName, $schemaManager->listDatabases(), true)) {
+                $schemaManager->dropDatabase($this->databaseName);
+            }
+
+            try {
+                $schemaManager->createDatabase($this->databaseName);
+            } catch (\Doctrine\DBAL\DBALException $e) {
+                $user = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['user'];
+                $host = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['host'];
+                throw new Exception(
+                    'Unable to create database with name ' . $this->databaseName . '. This is probably a permission problem.'
+                    . ' For this instance this could be fixed executing:'
+                    . ' GRANT ALL ON `' . $this->originalDatabaseName . '_%`.* TO `' . $user . '`@`' . $host . '`;'
+                    . ' Original message thrown by database layer: ' . $e->getMessage(),
+                    1376579070
+                );
+            }
+        } else {
+            /** @var DatabaseConnection $database */
+            $database = $GLOBALS['TYPO3_DB'];
+            if (!$database->sql_pconnect()) {
+                throw new Exception(
+                    'TYPO3 Fatal Error: The current username, password or host was not accepted when the'
+                    . ' connection to the database was attempted to be established!',
+                    1377620117
+                );
+            }
+
+            // Drop database in case a previous test had a fatal and did not clean up properly
+            $database->admin_query('DROP DATABASE IF EXISTS `' . $this->databaseName . '`');
+            $createDatabaseResult = $database->admin_query('CREATE DATABASE `' . $this->databaseName . '`');
+            if (!$createDatabaseResult) {
+                $user = $GLOBALS['TYPO3_CONF_VARS']['DB']['username'];
+                $host = $GLOBALS['TYPO3_CONF_VARS']['DB']['host'];
+                throw new Exception(
+                    'Unable to create database with name ' . $this->databaseName . '. This is probably a permission problem.'
+                    . ' For this instance this could be fixed executing'
+                    . ' "GRANT ALL ON `' . $this->originalDatabaseName . '_ft%`.* TO `' . $user . '`@`' . $host . '`;"',
+                    1376579070
+                );
+            }
+            $database->setDatabaseName($this->databaseName);
+            // On windows, this still works, but throws a warning, which we need to discard.
+            @$database->sql_select_db();
         }
-        $database->setDatabaseName($this->databaseName);
-        // On windows, this still works, but throws a warning, which we need to discard.
-        @$database->sql_select_db();
     }
 
     /**
@@ -565,20 +703,30 @@ class FunctionalTestCaseBootstrapUtility
     protected function initializeTestDatabase()
     {
         Bootstrap::getInstance()->initializeTypo3DbGlobal();
-        /** @var DatabaseConnection $database */
-        $database = $GLOBALS['TYPO3_DB'];
-        if (!$database->sql_pconnect()) {
-            throw new Exception(
-                'TYPO3 Fatal Error: The current username, password or host was not accepted when the'
-                . ' connection to the database was attempted to be established!',
-                1377620117
-            );
-        }
-        $this->databaseName = $GLOBALS['TYPO3_CONF_VARS']['DB']['database'];
-        $database->setDatabaseName($this->databaseName);
-        $database->sql_select_db();
-        foreach ($database->admin_get_tables() as $table) {
-            $database->admin_query('TRUNCATE ' . $table['Name'] . ';');
+
+        if (class_exists('TYPO3\\CMS\\Core\\Database\\ConnectionPool')) {
+            $connection = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)
+                ->getConnectionByName(\TYPO3\CMS\Core\Database\ConnectionPool::DEFAULT_CONNECTION_NAME);
+            $schemaManager = $connection->getSchemaManager();
+            foreach ($schemaManager->listTables() as $table) {
+                $connection->truncate($table->getName());
+            }
+        } else {
+            /** @var DatabaseConnection $database */
+            $database = $GLOBALS['TYPO3_DB'];
+            if (!$database->sql_pconnect()) {
+                throw new Exception(
+                    'TYPO3 Fatal Error: The current username, password or host was not accepted when the'
+                    . ' connection to the database was attempted to be established!',
+                    1377620117
+                );
+            }
+            $this->databaseName = $GLOBALS['TYPO3_CONF_VARS']['DB']['database'];
+            $database->setDatabaseName($this->databaseName);
+            $database->sql_select_db();
+            foreach ($database->admin_get_tables() as $table) {
+                $database->admin_query('TRUNCATE ' . $table['Name'] . ';');
+            }
         }
     }
 

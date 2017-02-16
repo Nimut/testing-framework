@@ -31,7 +31,8 @@ class FunctionalTestsBootstrap
         $this->enableDisplayErrors()
             ->loadClassFiles()
             ->defineOriginalRootPath()
-            ->createNecessaryDirectoriesInDocumentRoot();
+            ->createNecessaryDirectoriesInDocumentRoot()
+            ->addCompatibilityPrerequests();
     }
 
     /**
@@ -98,6 +99,31 @@ class FunctionalTestsBootstrap
         $this->createDirectory(ORIGINAL_ROOT . 'typo3temp');
         $this->createDirectory(ORIGINAL_ROOT . 'typo3temp/var/tests');
         $this->createDirectory(ORIGINAL_ROOT . 'typo3temp/var/transient');
+
+        return $this;
+    }
+
+    protected function addCompatibilityPrerequests()
+    {
+        if (class_exists('TYPO3\\CMS\\Core\\Tests\\Testbase')) {
+            // A null, a tabulator, a linefeed, a carriage return, a substitution, a CR-LF combination
+            defined('NUL') ?: define('NUL', chr(0));
+            defined('TAB') ?: define('TAB', chr(9));
+            defined('LF') ?: define('LF', chr(10));
+            defined('CR') ?: define('CR', chr(13));
+            defined('SUB') ?: define('SUB', chr(26));
+            defined('CRLF') ?: define('CRLF', CR . LF);
+
+            if (!defined('TYPO3_OS')) {
+                // Operating system identifier
+                // Either "WIN" or empty string
+                $typoOs = '';
+                if (!stristr(PHP_OS, 'darwin') && !stristr(PHP_OS, 'cygwin') && stristr(PHP_OS, 'win')) {
+                    $typoOs = 'WIN';
+                }
+                define('TYPO3_OS', $typoOs);
+            }
+        }
 
         return $this;
     }
