@@ -1,0 +1,81 @@
+language: php
+
+matrix:
+  fast_finish: true
+  include:
+    - php: 7.1
+      env: TYPO3="dev-master as 8.6.0"
+    - php: 7.1
+      env: TYPO3=~8.6.0
+    - php: 7.1
+      env: TYPO3=~8.5.0
+    - php: 7.1
+      env: TYPO3=~8.4.0
+    - php: 7.1
+      env: TYPO3=~8.3.0
+    - php: 7.1
+      env: TYPO3=~8.2.0
+    - php: 7.1
+      env: TYPO3=~8.1.0
+    - php: 7.1
+      env: TYPO3=~8.0.0
+    - php: 7.0
+      env: TYPO3=^7.6
+    - php: 7.0
+      env: TYPO3="dev-master as 8.6.0"
+    - php: 7.0
+      env: TYPO3=~8.6.0
+    - php: 7.0
+      env: TYPO3=~8.5.0
+    - php: 7.0
+      env: TYPO3=~8.4.0
+    - php: 7.0
+      env: TYPO3=~8.3.0
+    - php: 7.0
+      env: TYPO3=~8.2.0
+    - php: 7.0
+      env: TYPO3=~8.1.0
+    - php: 7.0
+      env: TYPO3=~8.0.0
+    - php: 7.0
+      env: TYPO3=^7.6
+    - php: 5.6
+      env: TYPO3=^7.6
+    - php: 5.6
+      env: TYPO3=^6.2
+    - php: 5.5
+      env: TYPO3=^7.6
+    - php: 5.5
+      env: TYPO3=^6.2
+  allow_failures:
+    - env: TYPO3="dev-master as 8.6.0"
+
+addons:
+  apt:
+    packages:
+      - parallel
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+sudo: false
+
+before_install:
+  - if php -i | grep -q xdebug; then phpenv config-rm xdebug.ini; fi
+
+before_script:
+  - if [ "$TYPO3" == "^6.2" ]; then composer require typo3/cms-composer-installers="1.2.8 as 1.1.4" --no-update; fi
+  - composer require typo3/cms="$TYPO3"
+  - git checkout composer.json
+  - mkdir -p .Build/vendor/nimut/
+  - if [ ! -L .Build/vendor/nimut/testing-framework ]; then ln -snvf ../../../. .Build/vendor/nimut/testing-framework; fi
+  - export TYPO3_PATH_WEB=$PWD/.Build/Web
+
+script:
+  - >
+    echo;
+    echo "Running php lint";
+    echo;
+    echo;
+    find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;;
