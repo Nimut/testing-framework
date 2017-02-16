@@ -25,13 +25,16 @@
     ],
     "require": {
         "typo3/cms-core": "^6.2 || ^7.6 || ^8.0 <8.7",
+        "typo3/cms-extbase": "^6.2 || ^7.6 || ^8.0 <8.7",
+        "typo3/cms-fluid": "^6.2 || ^7.6 || ^8.0 <8.7",
         "phpunit/phpunit": "^4.8 || ^5.6",
         "mikey179/vfsStream": "^1.6"
     },
     "autoload": {
         "psr-4": {
             "Nimut\\TestingFramework\\": "src/TestingFramework/",
-            "TYPO3\\CMS\\Core\\Tests\\": "src/TestingFramework/Compatibility/"
+            "TYPO3\\CMS\\Core\\Tests\\": "src/TestingFramework/Compatibility/",
+            "TYPO3\\CMS\\Fluid\\Tests\\": "src/TestingFramework/Compatibility/"
         }
     },
     "autoload-dev": {
