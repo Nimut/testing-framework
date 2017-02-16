@@ -214,14 +214,13 @@ class FileStreamWrapper
     {
         if ($this->dirHandle === null) {
             return false;
-        } else {
-            self::restore();
-            closedir($this->dirHandle);
-            self::register();
-            $this->dirHandle = null;
-
-            return true;
         }
+        self::restore();
+        closedir($this->dirHandle);
+        self::register();
+        $this->dirHandle = null;
+
+        return true;
     }
 
     /**
@@ -342,9 +341,8 @@ class FileStreamWrapper
     {
         if ($this->fileHandle !== null && $castAs & STREAM_CAST_AS_STREAM) {
             return $this->fileHandle;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
