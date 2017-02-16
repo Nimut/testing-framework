@@ -15,6 +15,6 @@ namespace TYPO3\CMS\Core\Tests;
 /**
  * @deprecated will be removed once TYPO3 9 LTS is released
  */
-class Exception extends \TYPO3\Components\TestingFramework\Core\Exception
+class Exception extends \Nimut\TestingFramework\Exception\Exception
 {
 }
