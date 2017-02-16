@@ -33,5 +33,12 @@
             "Nimut\\TestingFramework\\": "src/TestingFramework/",
             "TYPO3\\CMS\\Core\\Tests\\": "src/TestingFramework/Compatibility/"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "TYPO3\\CMS\\Core\\Tests\\": "typo3/sysext/core/Tests/",
+            "TYPO3\\CMS\\Fluid\\Tests\\": "typo3/sysext/fluid/Tests/",
+            "TYPO3\\Components\\TestingFramework\\Fluid\\Unit\\": "src/TestingFramework/Compatibility/Components/"
+        }
     }
 }
