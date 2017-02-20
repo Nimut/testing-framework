@@ -1,3 +1,10 @@
+2017-02-20         [RELEASE] Release of nimut/testing-framework 0.2.0 (Nicole Cordes)
+2017-02-16 31a0b37 [FEATURE] Add missing compatibility classes for TYPO3 CMS 8.6 (Nicole Cordes)
+2017-02-16 22fd37a [FEATURE] Add support for TYPO3 CMS 6.2 (Nicole Cordes)
+2017-02-16 e0d1cbc [FEATURE] Add functional test framework classes (Nicole Cordes)
+2017-02-16 0c2b887 [FEATURE] Add basic functional testing classes (Nicole Cordes)
+2017-02-16 59b00d2 [TASK] Ignore composer.lock file (Nicole Cordes)
+
 2017-02-16         [RELEASE] Release of nimut/testing-framework 0.1.1 (Nicole Cordes)
 2017-02-16 c6e0292 [BUGFIX] Use correct Exception class in compat/Exception.php (Nicole Cordes)
 
