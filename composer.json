@@ -27,6 +27,10 @@
         {
             "type": "path",
             "url": "compat/Packages/class-alias"
+        },
+        {
+            "type": "path",
+            "url": "tests/Packages/testbase"
         }
     ],
     "require": {
@@ -39,7 +43,8 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.0",
-        "nimut/testing-framework-class-alias": "@dev"
+        "nimut/testing-framework-class-alias": "@dev",
+        "nimut/testing-framework-testbase": "@dev"
     },
     "autoload": {
         "psr-4": {
@@ -49,16 +54,7 @@
             "TYPO3\\CMS\\Fluid\\Tests\\": "compat/"
         }
     },
-    "autoload-dev": {
-        "psr-4": {
-            "TYPO3\\CMS\\Core\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/",
-            "TYPO3\\CMS\\Fluid\\Tests\\": ".Build/vendor/typo3/cms/typo3/sysext/fluid/Tests/"
-        }
-    },
     "config": {
-        "preferred-install": {
-            "typo3/cms": "source"
-        },
         "vendor-dir": ".Build/vendor",
         "bin-dir": ".Build/bin"
     },

@@ -76,7 +76,7 @@ script:
     echo "Running unit tests";
     echo;
     echo;
-    .Build/bin/phpunit -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml .Build/Web/typo3/sysext/core/Tests/Unit/
+    .Build/bin/phpunit -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml .Build/Web/typo3conf/ext/testbase/Tests/Unit/;
 
   - >
     echo;
