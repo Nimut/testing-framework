@@ -24,6 +24,7 @@
     },
     "autoload": {
         "psr-4": {
+            "Nimut\\Testbase\\": "Classes/",
             "Nimut\\Testbase\\Tests\\": "Tests/"
         }
     },
