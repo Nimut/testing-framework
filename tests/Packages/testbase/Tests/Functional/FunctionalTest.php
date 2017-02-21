@@ -25,4 +25,16 @@ class FunctionalTest extends FunctionalTestCase
 
         $this->assertTrue($backendUser->isAdmin());
     }
+
+    /**
+     * @test
+     */
+    public function loadPagesDatabaseFixtures()
+    {
+        $this->importDataSet('ntf://Database/pages.xml');
+        $this->importDataSet('ntf://Database/pages_language_overlay.xml');
+
+        $this->assertSame(7, $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'pages'));
+        $this->assertSame(2, $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'pages_language_overlay'));
+    }
 }
