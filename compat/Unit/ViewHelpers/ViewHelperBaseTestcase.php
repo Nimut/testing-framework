@@ -15,6 +15,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
 /**
  * @deprecated will be removed once TYPO3 9 LTS is released
  */
-class ViewHelperBaseTestCase extends \Nimut\TestingFramework\TestCase\ViewHelperBaseTestcase
+class ViewHelperBaseTestcase extends \Nimut\TestingFramework\TestCase\ViewHelperBaseTestcase
 {
 }

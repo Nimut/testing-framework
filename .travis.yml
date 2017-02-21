@@ -17,8 +17,12 @@ matrix:
       env: TYPO3=~8.2.0 PHPUNIT=5.7.5
     - php: 7.1
       env: TYPO3=~8.1.0 PHPUNIT=5.7.5
-    - php: 7.0
+    - php: 7.1
+      env: TYPO3=~8.0.0 PHPUNIT=^4.8
+    - php: 7.1
       env: TYPO3=^7.6 PHPUNIT=^4.8
+    - php: 7.1
+      env: TYPO3="7.x-dev as 7.6.0" PHPUNIT=^4.8
     - php: 7.0
       env: TYPO3="dev-master as 8.6.0" PHPUNIT=5.7.5
     - php: 7.0
@@ -41,6 +45,8 @@ matrix:
       env: TYPO3=^7.6 PHPUNIT=^4.8
     - php: 5.6
       env: TYPO3=^6.2 PHPUNIT=^4.8
+    - php: 5.6
+      env: TYPO3="6.2.x-dev as 6.2.0" PHPUNIT=^4.8
     - php: 5.5
       env: TYPO3=^7.6 PHPUNIT=^4.8
     - php: 5.5
@@ -76,7 +82,18 @@ script:
     echo "Running unit tests";
     echo;
     echo;
-    .Build/bin/phpunit -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml .Build/Web/typo3/sysext/core/Tests/Unit/
+    .Build/bin/phpunit -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml .Build/Web/typo3conf/ext/testbase/Tests/Unit/;
+
+  - >
+    echo;
+    echo "Running functional tests";
+    echo;
+    echo;
+    export typo3DatabaseName="typo3";
+    export typo3DatabaseHost="localhost";
+    export typo3DatabaseUsername="root";
+    export typo3DatabasePassword="";
+    find '.Build/Web/typo3conf/ext/testbase/Tests/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; .Build/bin/phpunit -c .Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml {}';
 
   - >
     echo;
