@@ -83,7 +83,7 @@ abstract class ViewHelperBaseTestcase extends UnitTestCase
     protected function setUp()
     {
         $this->viewHelperVariableContainer = $this->prophesize(ViewHelperVariableContainer::class);
-        $this->uriBuilder = $this->createMock(UriBuilder::class);
+        $this->uriBuilder = $this->getMock(UriBuilder::class);
         $this->uriBuilder->expects($this->any())->method('reset')->will($this->returnValue($this->uriBuilder));
         $this->uriBuilder->expects($this->any())->method('setArguments')->will($this->returnValue($this->uriBuilder));
         $this->uriBuilder->expects($this->any())->method('setSection')->will($this->returnValue($this->uriBuilder));
@@ -98,13 +98,13 @@ abstract class ViewHelperBaseTestcase extends UnitTestCase
         $this->uriBuilder->expects($this->any())->method('setUseCacheHash')->will($this->returnValue($this->uriBuilder));
         $this->uriBuilder->expects($this->any())->method('setAddQueryStringMethod')->will($this->returnValue($this->uriBuilder));
         $this->request = $this->prophesize(Request::class);
-        $this->controllerContext = $this->createMock(ControllerContext::class);
+        $this->controllerContext = $this->getMock(ControllerContext::class);
         $this->controllerContext->expects($this->any())->method('getUriBuilder')->will($this->returnValue($this->uriBuilder));
         $this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request->reveal()));
         $this->arguments = [];
 
         if (class_exists(\TYPO3\CMS\Fluid\Core\Variables\CmsVariableProvider::class)) {
-            $this->templateVariableContainer = $this->createMock(\TYPO3\CMS\Fluid\Core\Variables\CmsVariableProvider::class);
+            $this->templateVariableContainer = $this->getMock(\TYPO3\CMS\Fluid\Core\Variables\CmsVariableProvider::class);
         } else {
             $this->templateVariableContainer = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer::class);
             $this->tagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class);
