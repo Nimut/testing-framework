@@ -14,6 +14,7 @@ namespace Nimut\TestingFramework\TestCase;
  * LICENSE file that was distributed with this source code.
  */
 
+use Nimut\TestingFramework\Rendering\RenderingContextFixture;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Extbase\Error\Result;
@@ -109,9 +110,13 @@ abstract class ViewHelperBaseTestcase extends UnitTestCase
             $this->tagBuilder = $this->getMock(\TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder::class);
         }
 
-        $this->renderingContext = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContextFixture::class, ['getControllerContext']);
+        $this->renderingContext = $this->getAccessibleMock(RenderingContextFixture::class, ['getControllerContext']);
         $this->renderingContext->expects($this->any())->method('getControllerContext')->willReturn($this->controllerContext);
-        $this->renderingContext->setVariableProvider($this->templateVariableContainer);
+        if (is_callable([$this->renderingContext, 'setVariableProvider'])) {
+            $this->renderingContext->setVariableProvider($this->templateVariableContainer);
+        } else {
+            $this->renderingContext->injectTemplateVariableContainer($this->templateVariableContainer);
+        }
         $this->renderingContext->_set('viewHelperVariableContainer', $this->viewHelperVariableContainer->reveal());
         $this->renderingContext->setControllerContext($this->controllerContext);
         $this->mvcPropertyMapperConfigurationService = $this->getAccessibleMock(MvcPropertyMappingConfigurationService::class, ['dummy']);
