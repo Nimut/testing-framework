@@ -17,7 +17,9 @@ matrix:
       env: TYPO3=~8.2.0 PHPUNIT=5.7.5
     - php: 7.1
       env: TYPO3=~8.1.0 PHPUNIT=5.7.5
-    - php: 7.0
+    - php: 7.1
+      env: TYPO3=~8.0.0 PHPUNIT=^4.8
+    - php: 7.1
       env: TYPO3=^7.6 PHPUNIT=^4.8
     - php: 7.0
       env: TYPO3="dev-master as 8.6.0" PHPUNIT=5.7.5
