@@ -15,6 +15,7 @@ namespace Nimut\TestingFramework\Bootstrap;
  */
 
 use Nimut\TestingFramework\Exception\Exception;
+use Nimut\TestingFramework\File\NtfStreamWrapper;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Core\Bootstrap;
@@ -140,6 +141,7 @@ class FunctionalTestCaseBootstrapUtility
             Bootstrap::getInstance()->loadExtensionTables(true);
             $this->createDatabaseStructure();
         }
+        $this->registerNtfStreamWrapper();
 
         return $this->instancePath;
     }
@@ -767,6 +769,16 @@ class FunctionalTestCaseBootstrapUtility
                 $database->admin_query($insertQuery);
             }
         }
+    }
+
+    /**
+     * Registers the NtfStreamWrapper for ntf:// protocol
+     *
+     * @return void
+     */
+    protected function registerNtfStreamWrapper()
+    {
+        NtfStreamWrapper::register();
     }
 
     /**
