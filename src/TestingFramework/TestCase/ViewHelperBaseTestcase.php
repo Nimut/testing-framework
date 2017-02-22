@@ -14,15 +14,18 @@ namespace Nimut\TestingFramework\TestCase;
  * LICENSE file that was distributed with this source code.
  */
 
+use Nimut\TestingFramework\Rendering\RenderingContextFixture;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
-use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Fluid\Core\Variables\CmsVariableProvider;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Arguments;
+use TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
 /**
@@ -36,7 +39,7 @@ abstract class ViewHelperBaseTestcase extends UnitTestCase
     protected $viewHelperVariableContainer;
 
     /**
-     * @var \TYPO3\CMS\Fluid\Core\Variables\CmsVariableProvider|\TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer
+     * @var CmsVariableProvider|TemplateVariableContainer
      */
     protected $templateVariableContainer;
 
@@ -56,7 +59,7 @@ abstract class ViewHelperBaseTestcase extends UnitTestCase
     protected $tagBuilder;
 
     /**
-     * @var \TYPO3\CMS\Fluid\Core\ViewHelper\Arguments
+     * @var Arguments
      */
     protected $arguments;
 
@@ -66,7 +69,7 @@ abstract class ViewHelperBaseTestcase extends UnitTestCase
     protected $request;
 
     /**
-     * @var \TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering\RenderingContext
+     * @var RenderingContextFixture
      */
     protected $renderingContext;
 

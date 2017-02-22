@@ -17,6 +17,9 @@ namespace Nimut\TestingFramework\TestCase;
 use Nimut\TestingFramework\Bootstrap\FunctionalTestCaseBootstrapUtility;
 use Nimut\TestingFramework\Exception\Exception;
 use Nimut\TestingFramework\Http\Response;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Base test case class for functional tests, all TYPO3 CMS
@@ -219,7 +222,7 @@ abstract class FunctionalTestCase extends BaseTestCase
      * This method should be used instead of direct access to
      * $GLOBALS['TYPO3_DB'] for easy IDE auto completion.
      *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     * @return DatabaseConnection
      */
     protected function getDatabaseConnection()
     {
@@ -231,7 +234,7 @@ abstract class FunctionalTestCase extends BaseTestCase
      *
      * @param int $userUid uid of the user we want to initialize. This user must exist in the fixture file
      * @throws Exception
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
     protected function setUpBackendUserFromFixture($userUid)
     {
@@ -239,8 +242,8 @@ abstract class FunctionalTestCase extends BaseTestCase
         $database = $this->getDatabaseConnection();
         $userRow = $database->exec_SELECTgetSingleRow('*', 'be_users', 'uid = ' . (int)$userUid);
 
-        /** @var $backendUser \TYPO3\CMS\Core\Authentication\BackendUserAuthentication */
-        $backendUser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
+        /** @var $backendUser BackendUserAuthentication */
+        $backendUser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
         $sessionId = $backendUser->createSessionId();
         $_COOKIE['be_typo_user'] = $sessionId;
         $backendUser->id = $sessionId;

@@ -18,6 +18,8 @@ use Nimut\TestingFramework\Exception\Exception;
 use Nimut\TestingFramework\File\NtfStreamWrapper;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Core\CliBootstrap;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -608,7 +610,7 @@ class FunctionalTestCaseBootstrapUtility
             $classLoader = require $autoloadFilepath;
         } else {
             require_once $this->instancePath . '/typo3/sysext/core/Classes/Core/CliBootstrap.php';
-            \TYPO3\CMS\Core\Core\CliBootstrap::checkEnvironmentOrDie();
+            CliBootstrap::checkEnvironmentOrDie();
         }
 
         $bootstrap = Bootstrap::getInstance();
@@ -707,7 +709,7 @@ class FunctionalTestCaseBootstrapUtility
 
         if (class_exists('TYPO3\\CMS\\Core\\Database\\ConnectionPool')) {
             $connection = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ConnectionPool')
-                ->getConnectionByName(\TYPO3\CMS\Core\Database\ConnectionPool::DEFAULT_CONNECTION_NAME);
+                ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
             $schemaManager = $connection->getSchemaManager();
             foreach ($schemaManager->listTables() as $table) {
                 $connection->truncate($table->getName());
