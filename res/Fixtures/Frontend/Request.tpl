@@ -6,4 +6,3 @@ if (!file_exists($autoloadFilepath)) {
 require $autoloadFilepath;
 \Nimut\TestingFramework\Frontend\RequestBootstrap::setGlobalVariables({arguments});
 \Nimut\TestingFramework\Frontend\RequestBootstrap::executeAndOutput();
-?>
