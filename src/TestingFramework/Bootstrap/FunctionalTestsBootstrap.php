@@ -96,7 +96,6 @@ class FunctionalTestsBootstrap
      */
     protected function createNecessaryDirectoriesInDocumentRoot()
     {
-        $this->createDirectory(ORIGINAL_ROOT . 'typo3temp');
         $this->createDirectory(ORIGINAL_ROOT . 'typo3temp/var/tests');
         $this->createDirectory(ORIGINAL_ROOT . 'typo3temp/var/transient');
 
@@ -142,7 +141,7 @@ class FunctionalTestsBootstrap
         if (is_dir($directory)) {
             return;
         }
-        @mkdir($directory, 0777, true);
+        mkdir($directory, 0777, true);
         clearstatcache();
         if (!is_dir($directory)) {
             throw new \RuntimeException('Directory "' . $directory . '" could not be created', 1404038665);
