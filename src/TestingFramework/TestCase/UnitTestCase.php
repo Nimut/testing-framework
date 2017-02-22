@@ -35,7 +35,7 @@ abstract class UnitTestCase extends BaseTestCase
      *
      * @var array
      */
-    protected $testFilesToDelete = [];
+    protected $testFilesToDelete = array();
 
     /**
      * Unset all additional properties of test classes to help PHP
@@ -88,6 +88,6 @@ abstract class UnitTestCase extends BaseTestCase
                 throw new \RuntimeException('tearDown() cleanup: File, link or directory does not exist', 1410633510);
             }
         }
-        $this->testFilesToDelete = [];
+        $this->testFilesToDelete = array();
     }
 }

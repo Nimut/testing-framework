@@ -54,7 +54,7 @@ class FunctionalTestCaseBootstrapUtility
     /**
      * @var array These extensions are always loaded
      */
-    protected $defaultActivatedCoreExtensions = [
+    protected $defaultActivatedCoreExtensions = array(
         'core',
         'backend',
         'frontend',
@@ -62,12 +62,12 @@ class FunctionalTestCaseBootstrapUtility
         'extbase',
         'install',
         'cms',
-    ];
+    );
 
     /**
      * @var array These folder are always created
      */
-    protected $defaultFoldersToCreate = [
+    protected $defaultFoldersToCreate = array(
         '',
         '/fileadmin',
         '/typo3conf',
@@ -77,7 +77,7 @@ class FunctionalTestCaseBootstrapUtility
         '/typo3temp/var/tests',
         '/typo3temp/var/transient',
         '/uploads',
-    ];
+    );
 
     /**
      * Calculate a "unique" identifier for the test database and the
@@ -208,7 +208,7 @@ class FunctionalTestCaseBootstrapUtility
      * @throws Exception
      * @return void
      */
-    protected function setUpInstanceDirectories(array $additionalFoldersToCreate = [])
+    protected function setUpInstanceDirectories(array $additionalFoldersToCreate = array())
     {
         $foldersToCreate = array_merge($this->defaultFoldersToCreate, $additionalFoldersToCreate);
         foreach ($foldersToCreate as $folder) {
@@ -233,10 +233,10 @@ class FunctionalTestCaseBootstrapUtility
      */
     protected function setUpInstanceCoreLinks()
     {
-        $linksToSet = [
+        $linksToSet = array(
             ORIGINAL_ROOT . 'typo3' => $this->instancePath . '/typo3',
             ORIGINAL_ROOT . 'index.php' => $this->instancePath . '/index.php',
-        ];
+        );
         foreach ($linksToSet as $from => $to) {
             $success = symlink($from, $to);
             if (!$success) {
@@ -339,23 +339,23 @@ class FunctionalTestCaseBootstrapUtility
         $finalConfigurationArray = require ORIGINAL_ROOT . 'typo3/sysext/core/Configuration/FactoryConfiguration.php';
 
         $configurationToMerge = array_replace_recursive(
-            [
-                'SYS' => [
-                    'caching' => [
-                        'cacheConfigurations' => [
-                            'extbase_object' => [
+            array(
+                'SYS' => array(
+                    'caching' => array(
+                        'cacheConfigurations' => array(
+                            'extbase_object' => array(
                                 'backend' => NullBackend::class,
-                            ],
-                        ],
-                    ],
+                            ),
+                        ),
+                    ),
                     'displayErrors' => '1',
                     'debugExceptionHandler' => '',
                     'isInitialDatabaseImportDone' => true,
                     'isInitialInstallationInProgress' => false,
                     'setDBinit' => 'SET SESSION sql_mode = \'STRICT_ALL_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_VALUE_ON_ZERO,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,ONLY_FULL_GROUP_BY\';',
                     'trustedHostsPattern' => '.*',
-                ],
-            ],
+                ),
+            ),
             $configurationToMerge
         );
         $this->mergeRecursiveWithOverrule($finalConfigurationArray, $configurationToMerge);
@@ -402,7 +402,7 @@ class FunctionalTestCaseBootstrapUtility
      */
     protected function getDoctrineDatabaseSettings()
     {
-        $originalConfigurationArray = [];
+        $originalConfigurationArray = array();
 
         $databaseName = trim(getenv('typo3DatabaseName'));
         $databaseHost = trim(getenv('typo3DatabaseHost'));
@@ -414,15 +414,15 @@ class FunctionalTestCaseBootstrapUtility
         $databaseDriver = trim(getenv('typo3DatabaseDriver'));
         if ($databaseName || $databaseHost || $databaseUsername || $databasePassword || $databasePort || $databaseSocket) {
             // Try to get database credentials from environment variables first
-            $originalConfigurationArray = [
-                'DB' => [
-                    'Connections' => [
-                        'Default' => [
+            $originalConfigurationArray = array(
+                'DB' => array(
+                    'Connections' => array(
+                        'Default' => array(
                             'driver' => 'mysqli',
-                        ],
-                    ],
-                ],
-            ];
+                        ),
+                    ),
+                ),
+            );
             if ($databaseName) {
                 $originalConfigurationArray['DB']['Connections']['Default']['dbname'] = $databaseName;
             }
@@ -454,7 +454,7 @@ class FunctionalTestCaseBootstrapUtility
      */
     protected function getDatabaseConnectionSettings()
     {
-        $originalConfigurationArray = [];
+        $originalConfigurationArray = array();
 
         $databaseName = trim(getenv('typo3DatabaseName'));
         $databaseHost = trim(getenv('typo3DatabaseHost'));
@@ -464,9 +464,9 @@ class FunctionalTestCaseBootstrapUtility
         $databaseSocket = trim(getenv('typo3DatabaseSocket'));
         if ($databaseName || $databaseHost || $databaseUsername || $databasePassword || $databasePort || $databaseSocket) {
             // Try to get database credentials from environment variables first
-            $originalConfigurationArray = [
-                'DB' => [],
-            ];
+            $originalConfigurationArray = array(
+                'DB' => array(),
+            );
             if ($databaseName) {
                 $originalConfigurationArray['DB']['database'] = $databaseName;
             }
@@ -502,19 +502,19 @@ class FunctionalTestCaseBootstrapUtility
      */
     protected function setUpPackageStates(array $coreExtensionsToLoad, array $testExtensionPaths)
     {
-        $packageStates = [
-            'packages' => [],
+        $packageStates = array(
+            'packages' => array(),
             'version' => $this->getPackageStatesVersion(),
-        ];
+        );
 
         // Register default list of extensions and set active
         foreach ($this->defaultActivatedCoreExtensions as $extensionName) {
             if (is_dir($this->instancePath . '/typo3/sysext/' . $extensionName)) {
-                $packageStates['packages'][$extensionName] = [
+                $packageStates['packages'][$extensionName] = array(
                     'state' => 'active',
                     'packagePath' => 'typo3/sysext/' . $extensionName . '/',
                     'classesPath' => 'Classes/',
-                ];
+                );
             }
         }
 
@@ -526,11 +526,11 @@ class FunctionalTestCaseBootstrapUtility
                     1390913893
                 );
             }
-            $packageStates['packages'][$extensionName] = [
+            $packageStates['packages'][$extensionName] = array(
                 'state' => 'active',
                 'packagePath' => 'typo3/sysext/' . $extensionName . '/',
                 'classesPath' => 'Classes/',
-            ];
+            );
         }
 
         // Activate test extensions that have been symlinked before
@@ -542,11 +542,11 @@ class FunctionalTestCaseBootstrapUtility
                     1390913894
                 );
             }
-            $packageStates['packages'][$extensionName] = [
+            $packageStates['packages'][$extensionName] = array(
                 'state' => 'active',
                 'packagePath' => 'typo3conf/ext/' . $extensionName . '/',
                 'classesPath' => 'Classes/',
-            ];
+            );
         }
 
         $result = $this->writeFile(
@@ -579,7 +579,7 @@ class FunctionalTestCaseBootstrapUtility
         }
 
         $fileContent = file_get_contents($packageManagerClassFile);
-        $matches = [];
+        $matches = array();
         preg_match('/\$this->packageStatesConfiguration\[\'version\'\] = (\d+);/', $fileContent, $matches);
         if (empty($matches[1])) {
             return 4;
@@ -617,14 +617,14 @@ class FunctionalTestCaseBootstrapUtility
         if (empty($reflection->getNumberOfParameters())) {
             $bootstrap->baseSetup()->initializeClassLoader();
         } else {
-            if (is_callable([$bootstrap, 'setRequestType'])) {
+            if (is_callable(array($bootstrap, 'setRequestType'))) {
                 $bootstrap->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_CLI);
             }
             $bootstrap->initializeClassLoader($classLoader)->baseSetup();
         }
         $bootstrap->loadConfigurationAndInitialize(true)
             ->loadTypo3LoadedExtAndExtLocalconf(true);
-        if (is_callable([$bootstrap, 'setFinalCachingFrameworkCacheConfiguration'])) {
+        if (is_callable(array($bootstrap, 'setFinalCachingFrameworkCacheConfiguration'))) {
             $bootstrap->setFinalCachingFrameworkCacheConfiguration()
                 ->defineLoggingAndExceptionConstants()
                 ->unsetReservedGlobalVariables();
@@ -900,7 +900,7 @@ class FunctionalTestCaseBootstrapUtility
      * @throws \RuntimeException
      * @return string String representation of array
      */
-    protected function arrayExport(array $array = [], $level = 0)
+    protected function arrayExport(array $array = array(), $level = 0)
     {
         $lines = 'array(' . chr(10);
         $level++;

@@ -67,7 +67,7 @@ abstract class FunctionalTestCase extends BaseTestCase
      * @see FunctionalTestCaseUtility $defaultActivatedCoreExtensions
      * @var array
      */
-    protected $coreExtensionsToLoad = [];
+    protected $coreExtensionsToLoad = array();
 
     /**
      * Array of test/fixture extensions paths that should be loaded for a test.
@@ -89,7 +89,7 @@ abstract class FunctionalTestCase extends BaseTestCase
      *
      * @var array
      */
-    protected $testExtensionsToLoad = [];
+    protected $testExtensionsToLoad = array();
 
     /**
      * Array of test/fixture folder or file paths that should be linked for a test.
@@ -119,7 +119,7 @@ abstract class FunctionalTestCase extends BaseTestCase
      *
      * @var array
      */
-    protected $pathsToLinkInTestInstance = [];
+    protected $pathsToLinkInTestInstance = array();
 
     /**
      * This configuration array is merged with TYPO3_CONF_VARS
@@ -127,7 +127,7 @@ abstract class FunctionalTestCase extends BaseTestCase
      *
      * @var array
      */
-    protected $configurationToUseInTestInstance = [];
+    protected $configurationToUseInTestInstance = array();
 
     /**
      * Array of folders that should be created inside the test instance document root.
@@ -153,7 +153,7 @@ abstract class FunctionalTestCase extends BaseTestCase
      *
      * @var array
      */
-    protected $additionalFoldersToCreate = [];
+    protected $additionalFoldersToCreate = array();
 
     /**
      * The fixture which is used when initializing a backend user
@@ -284,11 +284,11 @@ abstract class FunctionalTestCase extends BaseTestCase
         $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
         $xml = simplexml_load_string($fileContent);
         libxml_disable_entity_loader($previousValueOfEntityLoader);
-        $foreignKeys = [];
+        $foreignKeys = array();
 
         /** @var $table \SimpleXMLElement */
         foreach ($xml->children() as $table) {
-            $insertArray = [];
+            $insertArray = array();
 
             /** @var $column \SimpleXMLElement */
             foreach ($table->children() as $column) {
@@ -326,7 +326,7 @@ abstract class FunctionalTestCase extends BaseTestCase
      * @param int $pageId
      * @param array $typoScriptFiles
      */
-    protected function setUpFrontendRootPage($pageId, array $typoScriptFiles = [])
+    protected function setUpFrontendRootPage($pageId, array $typoScriptFiles = array())
     {
         $pageId = (int)$pageId;
         $page = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'pages', 'uid=' . $pageId);
@@ -335,19 +335,19 @@ abstract class FunctionalTestCase extends BaseTestCase
             $this->fail('Cannot set up frontend root page "' . $pageId . '"');
         }
 
-        $pagesFields = [
+        $pagesFields = array(
             'is_siteroot' => 1,
-        ];
+        );
 
         $this->getDatabaseConnection()->exec_UPDATEquery('pages', 'uid=' . $pageId, $pagesFields);
 
-        $templateFields = [
+        $templateFields = array(
             'pid' => $pageId,
             'title' => '',
             'config' => '',
             'clear' => 3,
             'root' => 1,
-        ];
+        );
 
         foreach ($typoScriptFiles as $typoScriptFile) {
             $templateFields['config'] .= '<INCLUDE_TYPOSCRIPT: source="FILE:' . $typoScriptFile . '">' . LF;
@@ -383,17 +383,17 @@ abstract class FunctionalTestCase extends BaseTestCase
             $additionalParameter .= '&workspaceId=' . (int)$workspaceId;
         }
 
-        $arguments = [
+        $arguments = array(
             'documentRoot' => $this->getInstancePath(),
             'requestUrl' => 'http://localhost/?id=' . $pageId . '&L=' . $languageId . $additionalParameter,
-        ];
+        );
 
         $template = new \Text_Template(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/request.tpl');
         $template->setVar(
-            [
+            array(
                 'arguments' => var_export($arguments, true),
                 'originalRoot' => ORIGINAL_ROOT,
-            ]
+            )
         );
 
         $php = \PHPUnit_Util_PHP::factory();

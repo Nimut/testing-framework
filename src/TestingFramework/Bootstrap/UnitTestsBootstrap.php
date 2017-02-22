@@ -195,7 +195,7 @@ class UnitTestsBootstrap
         if (empty($reflection->getNumberOfParameters())) {
             $bootstrap->baseSetup()->initializeClassLoader();
         } else {
-            if (is_callable([$bootstrap, 'setRequestType'])) {
+            if (is_callable(array($bootstrap, 'setRequestType'))) {
                 $bootstrap->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_CLI);
             }
             $bootstrap->initializeClassLoader($classLoader)->baseSetup();
@@ -228,7 +228,7 @@ class UnitTestsBootstrap
     protected function finishCoreBootstrap()
     {
         $bootstrap = Bootstrap::getInstance();
-        if (is_callable([$bootstrap, 'disableCoreCache'])) {
+        if (is_callable(array($bootstrap, 'disableCoreCache'))) {
             $bootstrap->disableCoreCache()
                 ->initializeCachingFramework()
                 ->initializePackageManagement(UnitTestPackageManager::class)

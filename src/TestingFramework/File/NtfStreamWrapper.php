@@ -401,11 +401,11 @@ class NtfStreamWrapper
      */
     protected function resolvePath($path)
     {
-        $newPath = [];
+        $newPath = array();
 
         $path = trim($path);
         $path = substr($path, strlen(self::$scheme . '://'));
-        $path = strtr($path, ['\\' => '/', '//' => '/']);
+        $path = strtr($path, array('\\' => '/', '//' => '/'));
 
         foreach (explode('/', $path) as $part) {
             if ($part !== '.') {
