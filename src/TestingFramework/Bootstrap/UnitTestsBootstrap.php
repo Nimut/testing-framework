@@ -17,7 +17,6 @@ namespace Nimut\TestingFramework\Bootstrap;
 use Nimut\TestingFramework\File\NtfStreamWrapper;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Package\UnitTestPackageManager;
 
 /**
  * This file is defined as bootstrap configuration in UnitTests.xml and called by PHPUnit
@@ -192,10 +191,11 @@ class UnitTestsBootstrap
 
         $bootstrap = Bootstrap::getInstance();
         $reflection = new \ReflectionMethod($bootstrap, 'initializeClassLoader');
-        if (empty($reflection->getNumberOfParameters())) {
+        $parameterCount = $reflection->getNumberOfParameters();
+        if (empty($parameterCount)) {
             $bootstrap->baseSetup()->initializeClassLoader();
         } else {
-            if (is_callable([$bootstrap, 'setRequestType'])) {
+            if (is_callable(array($bootstrap, 'setRequestType'))) {
                 $bootstrap->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_CLI);
             }
             $bootstrap->initializeClassLoader($classLoader)->baseSetup();
@@ -228,16 +228,16 @@ class UnitTestsBootstrap
     protected function finishCoreBootstrap()
     {
         $bootstrap = Bootstrap::getInstance();
-        if (is_callable([$bootstrap, 'disableCoreCache'])) {
+        if (is_callable(array($bootstrap, 'disableCoreCache'))) {
             $bootstrap->disableCoreCache()
                 ->initializeCachingFramework()
-                ->initializePackageManagement(UnitTestPackageManager::class)
+                ->initializePackageManagement('TYPO3\\CMS\\Core\\Package\\UnitTestPackageManager')
                 ->ensureClassLoadingInformationExists();
         } else {
             $bootstrap->disableCoreAndClassesCache()
                 ->initializeCachingFramework()
                 ->initializeClassLoaderCaches()
-                ->initializePackageManagement(UnitTestPackageManager::class);
+                ->initializePackageManagement('TYPO3\\CMS\\Core\\Package\\UnitTestPackageManager');
         }
 
         return $this;

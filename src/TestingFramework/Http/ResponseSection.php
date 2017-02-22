@@ -107,7 +107,7 @@ class ResponseSection
      */
     public function findStructures($recordIdentifier, $fieldName = '')
     {
-        $structures = [];
+        $structures = array();
 
         if (empty($this->structurePaths[$recordIdentifier])) {
             return $structures;

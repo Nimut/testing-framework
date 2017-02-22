@@ -25,7 +25,7 @@ class RenderChildrenViewHelperTest extends ViewHelperBaseTestcase
     protected function setUp()
     {
         parent::setUp();
-        $this->viewHelper = $this->getMock(RenderChildrenViewHelper::class, ['renderChildren']);
+        $this->viewHelper = $this->getMock('Nimut\\Testbase\\ViewHelpers\\RenderChildrenViewHelper', array('renderChildren'));
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->initializeArguments();
     }

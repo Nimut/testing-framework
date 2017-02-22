@@ -31,17 +31,12 @@ class NtfStreamWrapper
     /**
      * @var string
      */
-    protected $root;
+    protected static $root;
 
     /**
      * @var string
      */
     protected static $scheme = 'ntf';
-
-    public function __construct()
-    {
-        $this->root = rtrim(realpath(__DIR__ . '/../../../res/Fixtures'), '\\/') . '/';
-    }
 
     /**
      * Method to register the stream wrapper
@@ -63,6 +58,7 @@ class NtfStreamWrapper
             throw new NtfStreamException('A handler has already been registered for the ' . self::$scheme . ' protocol.');
         }
 
+        self::$root = rtrim(realpath(__DIR__ . '/../../../res/Fixtures'), '\\/') . '/';
         self::$registered = true;
     }
 
@@ -401,11 +397,11 @@ class NtfStreamWrapper
      */
     protected function resolvePath($path)
     {
-        $newPath = [];
+        $newPath = array();
 
         $path = trim($path);
         $path = substr($path, strlen(self::$scheme . '://'));
-        $path = strtr($path, ['\\' => '/', '//' => '/']);
+        $path = strtr($path, array('\\' => '/', '//' => '/'));
 
         foreach (explode('/', $path) as $part) {
             if ($part !== '.') {
@@ -417,6 +413,6 @@ class NtfStreamWrapper
             }
         }
 
-        return $this->root . implode('/', $newPath);
+        return self::$root . implode('/', $newPath);
     }
 }

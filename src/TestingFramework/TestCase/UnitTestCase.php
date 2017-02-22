@@ -35,7 +35,7 @@ abstract class UnitTestCase extends BaseTestCase
      *
      * @var array
      */
-    protected $testFilesToDelete = [];
+    protected $testFilesToDelete = array();
 
     /**
      * Unset all additional properties of test classes to help PHP
@@ -57,8 +57,8 @@ abstract class UnitTestCase extends BaseTestCase
             $declaringClass = $property->getDeclaringClass()->getName();
             if (
                 !$property->isStatic()
-                && $declaringClass !== self::class
-                && $declaringClass !== BaseTestCase::class
+                && $declaringClass !== 'Nimut\\TestingFramework\\TestCase\\BaseTestCase'
+                && $declaringClass !== get_class($this)
                 && strpos($property->getDeclaringClass()->getName(), 'PHPUnit_') !== 0
             ) {
                 $propertyName = $property->getName();
@@ -88,6 +88,6 @@ abstract class UnitTestCase extends BaseTestCase
                 throw new \RuntimeException('tearDown() cleanup: File, link or directory does not exist', 1410633510);
             }
         }
-        $this->testFilesToDelete = [];
+        $this->testFilesToDelete = array();
     }
 }

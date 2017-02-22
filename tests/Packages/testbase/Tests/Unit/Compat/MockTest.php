@@ -24,7 +24,7 @@ class MockTest extends UnitTestCase
     public function getMockReturnsMock()
     {
         /** @var Mock|\PHPUnit_Framework_MockObject_MockObject $subjectMock */
-        $subjectMock = $this->getMock(Mock::class, ['dummy'], ['foo']);
+        $subjectMock = $this->getMock('Nimut\\Testbase\\Mock', array('dummy'), array('foo'));
 
         $this->assertSame('foo', $subjectMock->getAProtectedProperty());
     }
@@ -35,7 +35,7 @@ class MockTest extends UnitTestCase
     public function getAccessibleMockReturnsAccessibleMock()
     {
         /** @var Mock|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $subjectAccessibleMock */
-        $subjectAccessibleMock = $this->getAccessibleMock(Mock::class, ['dummy']);
+        $subjectAccessibleMock = $this->getAccessibleMock('Nimut\\Testbase\\Mock', array('dummy'));
         $subjectAccessibleMock->_set('aProtectedProperty', 'foo');
 
         $this->assertSame('foo', $subjectAccessibleMock->getAProtectedProperty());

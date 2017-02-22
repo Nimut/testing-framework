@@ -42,7 +42,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
      *
      */
     protected function getAccessibleMock(
-        $originalClassName, $methods = [], array $arguments = [], $mockClassName = '',
+        $originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '',
         $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true
     ) {
         if ($originalClassName === '') {
@@ -73,7 +73,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
      * @param null $proxyTarget
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    public function getMock($originalClassName, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false, $callOriginalMethods = false, $proxyTarget = null)
+    public function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false, $callOriginalMethods = false, $proxyTarget = null)
     {
         if (method_exists($this, 'createMock')) {
             $mockBuilder = $this->getMockBuilder($originalClassName)
@@ -132,8 +132,8 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
      *
      */
     protected function getAccessibleMockForAbstractClass(
-        $originalClassName, array $arguments = [], $mockClassName = '',
-        $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = []
+        $originalClassName, array $arguments = array(), $mockClassName = '',
+        $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = array()
     ) {
         if ($originalClassName === '') {
             throw new \InvalidArgumentException('$originalClassName must not be empty.', 1384268260);
@@ -165,7 +165,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
 
         eval(
             $abstractModifier . 'class ' . $accessibleClassName .
-            ' extends ' . $className . ' implements ' . AccessibleMockObjectInterface::class . ' {' .
+            ' extends ' . $className . ' implements Nimut\\TestingFramework\\MockObject\\AccessibleMockObjectInterface {' .
             'public function _call($methodName) {' .
             'if ($methodName === \'\') {' .
             'throw new \InvalidArgumentException(\'$methodName must not be empty.\', 1334663993);' .
