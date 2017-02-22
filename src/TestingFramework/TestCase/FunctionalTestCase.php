@@ -240,7 +240,7 @@ abstract class FunctionalTestCase extends BaseTestCase
         $userRow = $database->exec_SELECTgetSingleRow('*', 'be_users', 'uid = ' . (int)$userUid);
 
         /** @var $backendUser \TYPO3\CMS\Core\Authentication\BackendUserAuthentication */
-        $backendUser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
+        $backendUser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
         $sessionId = $backendUser->createSessionId();
         $_COOKIE['be_typo_user'] = $sessionId;
         $backendUser->id = $sessionId;

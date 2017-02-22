@@ -17,7 +17,6 @@ namespace Nimut\TestingFramework\Bootstrap;
 use Nimut\TestingFramework\Exception\Exception;
 use Nimut\TestingFramework\File\NtfStreamWrapper;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
-use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -344,7 +343,7 @@ class FunctionalTestCaseBootstrapUtility
                     'caching' => array(
                         'cacheConfigurations' => array(
                             'extbase_object' => array(
-                                'backend' => NullBackend::class,
+                                'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\NullBackend',
                             ),
                         ),
                     ),
@@ -571,7 +570,7 @@ class FunctionalTestCaseBootstrapUtility
      */
     protected function getPackageStatesVersion()
     {
-        $reflection = new \ReflectionClass(PackageManager::class);
+        $reflection = new \ReflectionClass('TYPO3\\CMS\\Core\\Package\\PackageManager');
         $packageManagerClassFile = $reflection->getFileName();
 
         if ($packageManagerClassFile === false) {
@@ -707,7 +706,7 @@ class FunctionalTestCaseBootstrapUtility
         Bootstrap::getInstance()->initializeTypo3DbGlobal();
 
         if (class_exists('TYPO3\\CMS\\Core\\Database\\ConnectionPool')) {
-            $connection = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)
+            $connection = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ConnectionPool')
                 ->getConnectionByName(\TYPO3\CMS\Core\Database\ConnectionPool::DEFAULT_CONNECTION_NAME);
             $schemaManager = $connection->getSchemaManager();
             foreach ($schemaManager->listTables() as $table) {
@@ -740,11 +739,11 @@ class FunctionalTestCaseBootstrapUtility
     protected function createDatabaseStructure()
     {
         /** @var SqlSchemaMigrationService $schemaMigrationService */
-        $schemaMigrationService = GeneralUtility::makeInstance(SqlSchemaMigrationService::class);
+        $schemaMigrationService = GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Service\\SqlSchemaMigrationService');
         /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
         /** @var SqlExpectedSchemaService $expectedSchemaService */
-        $expectedSchemaService = $objectManager->get(SqlExpectedSchemaService::class);
+        $expectedSchemaService = $objectManager->get('TYPO3\\CMS\\Install\\Service\\SqlExpectedSchemaService');
 
         // Raw concatenated ext_tables.sql and friends string
         $expectedSchemaString = $expectedSchemaService->getTablesDefinitionString(true);

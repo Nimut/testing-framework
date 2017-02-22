@@ -17,7 +17,6 @@ namespace Nimut\TestingFramework\Bootstrap;
 use Nimut\TestingFramework\File\NtfStreamWrapper;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Package\UnitTestPackageManager;
 
 /**
  * This file is defined as bootstrap configuration in UnitTests.xml and called by PHPUnit
@@ -231,13 +230,13 @@ class UnitTestsBootstrap
         if (is_callable(array($bootstrap, 'disableCoreCache'))) {
             $bootstrap->disableCoreCache()
                 ->initializeCachingFramework()
-                ->initializePackageManagement(UnitTestPackageManager::class)
+                ->initializePackageManagement('TYPO3\\CMS\\Core\\Package\\UnitTestPackageManager')
                 ->ensureClassLoadingInformationExists();
         } else {
             $bootstrap->disableCoreAndClassesCache()
                 ->initializeCachingFramework()
                 ->initializeClassLoaderCaches()
-                ->initializePackageManagement(UnitTestPackageManager::class);
+                ->initializePackageManagement('TYPO3\\CMS\\Core\\Package\\UnitTestPackageManager');
         }
 
         return $this;

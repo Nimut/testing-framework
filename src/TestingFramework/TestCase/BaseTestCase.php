@@ -165,7 +165,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
 
         eval(
             $abstractModifier . 'class ' . $accessibleClassName .
-            ' extends ' . $className . ' implements ' . AccessibleMockObjectInterface::class . ' {' .
+            ' extends ' . $className . ' implements Nimut\\TestingFramework\\MockObject\\AccessibleMockObjectInterface {' .
             'public function _call($methodName) {' .
             'if ($methodName === \'\') {' .
             'throw new \InvalidArgumentException(\'$methodName must not be empty.\', 1334663993);' .
