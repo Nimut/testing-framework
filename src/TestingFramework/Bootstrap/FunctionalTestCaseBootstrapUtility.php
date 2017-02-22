@@ -615,7 +615,8 @@ class FunctionalTestCaseBootstrapUtility
 
         $bootstrap = Bootstrap::getInstance();
         $reflection = new \ReflectionMethod($bootstrap, 'initializeClassLoader');
-        if (empty($reflection->getNumberOfParameters())) {
+        $parameterCount = $reflection->getNumberOfParameters();
+        if (empty($parameterCount)) {
             $bootstrap->baseSetup()->initializeClassLoader();
         } else {
             if (is_callable(array($bootstrap, 'setRequestType'))) {
