@@ -141,7 +141,7 @@ class FunctionalTestsBootstrap
         if (is_dir($directory)) {
             return;
         }
-        @mkdir($directory, 0777, true);
+        mkdir($directory, 0777, true);
         clearstatcache();
         if (!is_dir($directory)) {
             throw new \RuntimeException('Directory "' . $directory . '" could not be created', 1404038665);
