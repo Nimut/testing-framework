@@ -15,9 +15,9 @@ namespace Nimut\TestingFramework\Bootstrap;
  */
 
 /**
- * This file is defined in FunctionalTests.xml and called by phpunit
- * before instantiating the test suites, it must also be included
- * with phpunit parameter --bootstrap if executing single test case classes.
+ * This file is defined as bootstrap configuration in FunctionalTests.xml and called by PHPUnit
+ * before instantiating the test suites. It must also be called on CLI
+ * with PHPUnit parameter --bootstrap if executing single test case classes.
  */
 class FunctionalTestsBootstrap
 {

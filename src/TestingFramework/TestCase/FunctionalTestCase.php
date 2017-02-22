@@ -19,34 +19,22 @@ use Nimut\TestingFramework\Exception\Exception;
 use Nimut\TestingFramework\Http\Response;
 
 /**
- * Base test case class for functional tests, all TYPO3 CMS
- * functional tests should extend from this class!
+ * Base test case class for functional tests.
  *
  * If functional tests need additional setUp() and tearDown() code,
  * they *must* call parent::setUp() and parent::tearDown() to properly
  * set up and destroy the test system.
  *
  * The functional test system creates a full new TYPO3 CMS instance
- * within typo3temp/ of the base system and the bootstraps this TYPO3 instance.
+ * within typo3temp/var/tests of the base system and bootstraps this TYPO3 instance.
  * This abstract class takes care of creating this instance with its
- * folder structure and a LocalConfiguration, creates an own database
+ * folder structure, a LocalConfiguration.php file, creates an own database
  * for each test run and imports tables of loaded extensions.
  *
- * Functional tests must be run standalone (calling native phpunit
- * directly) and can not be executed by eg. the ext:phpunit backend module.
- * Additionally, the script must be called from the document root
- * of the instance, otherwise path calculation is not successfully.
- *
- * Call whole functional test suite, example:
- * - cd /var/www/t3master/foo  # Document root of CMS instance, here is index.php of frontend
- * - typo3/../bin/phpunit -c typo3/sysext/core/Build/FunctionalTests.xml
- *
- * Call single test case, example:
- * - cd /var/www/t3master/foo  # Document root of CMS instance, here is index.php of frontend
- * - typo3/../bin/phpunit \
- *     --process-isolation \
- *     --bootstrap typo3/sysext/core/Build/FunctionalTestsBootstrap.php \
- *     typo3/sysext/core/Tests/Functional/DataHandling/DataHandlerTest.php
+ * Example: call whole functional test suite
+ * - cd /var/www/t3master/foo  # Document root of TYPO3 CMS sources (location of index.php)
+ * - vendor/bin/phpunit -c vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml \
+ *     typo3conf/ext/example_extension/Tests/Functional
  */
 abstract class FunctionalTestCase extends BaseTestCase
 {
