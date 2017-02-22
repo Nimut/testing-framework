@@ -341,7 +341,8 @@ abstract class FunctionalTestCase extends BaseTestCase
         );
 
         foreach ($typoScriptFiles as $typoScriptFile) {
-            $templateFields['config'] .= '<INCLUDE_TYPOSCRIPT: source="FILE:' . $typoScriptFile . '">' . LF;
+            $templateFields['config'] .= '// <INCLUDE_TYPOSCRIPT: source="FILE:' . $typoScriptFile . '">' . LF;
+            $templateFields['config'] .= file_get_contents($typoScriptFile) . LF . LF;
         }
 
         $this->getDatabaseConnection()->exec_DELETEquery('sys_template', 'pid = ' . $pageId);
