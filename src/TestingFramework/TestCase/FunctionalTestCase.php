@@ -160,7 +160,7 @@ abstract class FunctionalTestCase extends BaseTestCase
      *
      * @var string
      */
-    protected $backendUserFixture = '/../../../res/Fixtures/Database/be_users.xml';
+    protected $backendUserFixture = 'ntf://Database/be_users.xml';
 
     /**
      * Private utility class used in setUp() and tearDown(). Do NOT use in test cases!
@@ -235,7 +235,7 @@ abstract class FunctionalTestCase extends BaseTestCase
      */
     protected function setUpBackendUserFromFixture($userUid)
     {
-        $this->importDataSet(__DIR__ . $this->backendUserFixture);
+        $this->importDataSet($this->backendUserFixture);
         $database = $this->getDatabaseConnection();
         $userRow = $database->exec_SELECTgetSingleRow('*', 'be_users', 'uid = ' . (int)$userUid);
 

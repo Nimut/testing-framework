@@ -14,6 +14,7 @@ namespace Nimut\TestingFramework\Bootstrap;
  * LICENSE file that was distributed with this source code.
  */
 
+use Nimut\TestingFramework\File\NtfStreamWrapper;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Package\UnitTestPackageManager;
@@ -44,7 +45,8 @@ class UnitTestsBootstrap
             ->createNecessaryDirectoriesInDocumentRoot()
             ->includeAndStartCoreBootstrap()
             ->initializeConfiguration()
-            ->finishCoreBootstrap();
+            ->finishCoreBootstrap()
+            ->registerNtfStreamWrapper();
     }
 
     /**
@@ -237,6 +239,18 @@ class UnitTestsBootstrap
                 ->initializeClassLoaderCaches()
                 ->initializePackageManagement(UnitTestPackageManager::class);
         }
+
+        return $this;
+    }
+
+    /**
+     * Registers the NtfStreamWrapper for ntf:// protocol
+     *
+     * @return UnitTestsBootstrap fluent interface
+     */
+    protected function registerNtfStreamWrapper()
+    {
+        NtfStreamWrapper::register();
 
         return $this;
     }
