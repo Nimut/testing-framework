@@ -1,3 +1,11 @@
+2017-02-22         [RELEASE] Release of nimut/testing-framework 0.3.0 (Nicole Cordes)
+2017-02-22 15063be [TASK] Set testbase version to 0.3.0 (Nicole Cordes)
+2017-02-21 903de19 [TASK] Add functional test for database fixture path resolving to testbase extension (Nicole Cordes)
+2017-02-21 4b1fa53 [TASK] Add additional database fixtures (Nicole Cordes)
+2017-02-21 11d7ed2 [FEATURE] Use ntf:// protocol for backendUserFixture in FunctionalTestCase (Nicole Cordes)
+2017-02-21 8005956 [TASK] Register NtfStreamWrapper in test bootstraps (Nicole Cordes)
+2017-02-21 4aded16 [FEATURE] Add stream wrapper for ntf:// protocol (Nicole Cordes)
+
 2017-02-21         [RELEASE] Release of nimut/testing-framework 0.2.1 (Nicole Cordes)
 2017-02-21 852bfdc [TASK] Set testbase version to 0.2.0 (Nicole Cordes)
 2017-02-21 c3009ec [FEATURE] Add functional test classes and ensure backend user login (Nicole Cordes)
