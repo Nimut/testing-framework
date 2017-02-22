@@ -379,11 +379,12 @@ abstract class FunctionalTestCase extends BaseTestCase
             'requestUrl' => 'http://localhost/?id=' . $pageId . '&L=' . $languageId . $additionalParameter,
         );
 
-        $template = new \Text_Template(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/request.tpl');
+        $template = new \Text_Template('ntf://Frontend/Request.tpl');
         $template->setVar(
             array(
                 'arguments' => var_export($arguments, true),
                 'originalRoot' => ORIGINAL_ROOT,
+                'ntfRoot' => __DIR__ . '/../../../',
             )
         );
 
