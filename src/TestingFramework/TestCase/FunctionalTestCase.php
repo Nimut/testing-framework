@@ -341,7 +341,8 @@ abstract class FunctionalTestCase extends BaseTestCase
         );
 
         foreach ($typoScriptFiles as $typoScriptFile) {
-            $templateFields['config'] .= '<INCLUDE_TYPOSCRIPT: source="FILE:' . $typoScriptFile . '">' . LF;
+            $templateFields['config'] .= '// <INCLUDE_TYPOSCRIPT: source="FILE:' . $typoScriptFile . '">' . LF;
+            $templateFields['config'] .= file_get_contents($typoScriptFile) . LF . LF;
         }
 
         $this->getDatabaseConnection()->exec_DELETEquery('sys_template', 'pid = ' . $pageId);
@@ -379,11 +380,12 @@ abstract class FunctionalTestCase extends BaseTestCase
             'requestUrl' => 'http://localhost/?id=' . $pageId . '&L=' . $languageId . $additionalParameter,
         );
 
-        $template = new \Text_Template(ORIGINAL_ROOT . 'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/request.tpl');
+        $template = new \Text_Template('ntf://Frontend/Request.tpl');
         $template->setVar(
             array(
                 'arguments' => var_export($arguments, true),
                 'originalRoot' => ORIGINAL_ROOT,
+                'ntfRoot' => __DIR__ . '/../../../',
             )
         );
 

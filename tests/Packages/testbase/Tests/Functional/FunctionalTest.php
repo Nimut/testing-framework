@@ -17,6 +17,13 @@ use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 class FunctionalTest extends FunctionalTestCase
 {
     /**
+     * @var array
+     */
+    protected $testExtensionsToLoad = array(
+        'typo3conf/ext/testbase',
+    );
+
+    /**
      * @test
      */
     public function adminUserIsLoggedIn()
@@ -36,5 +43,25 @@ class FunctionalTest extends FunctionalTestCase
 
         $this->assertSame(7, $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'pages'));
         $this->assertSame(2, $this->getDatabaseConnection()->exec_SELECTcountRows('*', 'pages_language_overlay'));
+    }
+
+    /**
+     * @test
+     */
+    public function frontendIsRendered()
+    {
+        $this->importDataSet('ntf://Database/pages.xml');
+        $this->importDataSet('ntf://Database/tt_content.xml');
+        $this->setUpFrontendRootPage(1, array('ntf://TypoScript/JsonRenderer.ts'));
+
+        $response = $this->getFrontendResponse(1);
+
+        $this->assertSame('success', $response->getStatus());
+
+        $sections = $response->getResponseSections();
+        $defaultSection = array_shift($sections);
+        $structure = $defaultSection->getStructure();
+
+        $this->assertTrue(is_array($structure['pages:1']['__contents']['tt_content:1']));
     }
 }
