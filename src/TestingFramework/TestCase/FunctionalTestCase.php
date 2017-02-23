@@ -398,7 +398,7 @@ abstract class FunctionalTestCase extends BaseTestCase
         $result = json_decode($response['stdout'], true);
 
         if ($result === null) {
-            $this->fail('Frontend Response is empty');
+            $this->fail('Frontend Response is empty.' . LF . 'Error: ' . LF . $response['stderr']);
         }
 
         if ($failOnFailure && $result['status'] === Response::STATUS_Failure) {
