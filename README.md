@@ -74,7 +74,99 @@ The nimut/testing-framework ships database fixtures for several TYPO3 CMS core d
 - tt_content
 
 To use the database fixtures you can trigger an import in your test file
- 
- ```php
- $this->importDataSet('ntf://Database/pages.xml');
- ```
+
+```php
+$this->importDataSet('ntf://Database/pages.xml');
+```
+
+### Frontend requests
+
+The nimut/testing-framework ships an own TypoScript file for supporting frontend requests out of the box.
+
+```php
+// First import some page records
+$this->importDataSet('ntf://Database/pages.xml');
+
+// Import tt_content record that should be shown on your home page
+$this->importDataSet('ntf://Database/tt_content.xml');
+
+// Setup the page with uid 1 and include the TypoScript as sys_template record
+$this->setUpFrontendRootPage(1, array('ntf://TypoScript/JsonRenderer.ts'));
+
+// Fetch the frontend response
+$response = $this->getFrontendResponse(1);
+
+// Assert no error has occured
+$this->assertSame('success', $response->getStatus());
+
+// Get the first section from the response
+$sections = $response->getResponseSections();
+$defaultSection = array_shift($sections);
+
+// Get the section structure
+$structure = $defaultSection->getStructure();
+
+// Make assertions for the structure
+$this->assertTrue(is_array($structure['pages:1']['__contents']['tt_content:1']));
+```
+
+#### Structure
+
+The returned structure of a frontend request is an array with some information about your page and its children.
+
+```php
+[
+    // Page for your request
+    'pages:1' => [
+        'uid' => '1',
+        'pid' => '0',
+        'sorting' => '0',
+        'title' => 'Root',
+        // Array with subpages
+        '__pages' => [
+            'pages:2' => [
+                'uid' => '2',
+                'pid' => '1',
+                'sorting' => '0',
+                'title' => 'Dummy 1-2',
+            ],
+            'pages:5' => [
+                'uid' => '5',
+                'pid' => '1',
+                'sorting' => '0',
+                'title' => 'Dummy 1-5',
+            ],
+        ],
+        // Array with content elements
+        '__contents' => [
+              'tt_content:1' => [
+                  'uid' => '1',
+                  'pid' => '1',
+                  'sorting' => '0',
+                  'header' => 'Test content',
+                  'sys_language_uid' => '0',
+                  'categories' => '0',
+              ],
+        ],
+    ],
+]
+```
+
+If you need additional information about a record, you can provide additional TypoScript with the needed configuration.
+
+```php
+// Setup the page with uid 1 and include ntf and own TypoScript
+$this->setUpFrontendRootPage(
+    1,
+    array(
+        'ntf://TypoScript/JsonRenderer.ts',
+        'EXT:example_extension/Tests/Functional/Fixtures/TypoScript/Config.js
+    )
+);
+```
+
+Content of the TypoScript file *Config.ts*
+
+```
+config.watcher.tableFields.tt_content = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,header,categories,CType,subheader,bodytext
+```
