@@ -1,3 +1,6 @@
+2017-02-23         [RELEASE] Release of nimut/testing-framework 1.0.0 (Nicole Cordes)
+2017-02-23 4c7a531 [TASK] Add basic documentation of frontend requests to README.md (Nicole Cordes)
+
 2017-02-23         [RELEASE] Release of nimut/testing-framework 0.4.1 (Nicole Cordes)
 2017-02-23 4e04fa5 [TASK] Set testbase version to 0.5.0 (Nicole Cordes)
 2017-02-23 bf30dd3 [TASK] Add test for own TypoScript in frontend request to testbase extension (Nicole Cordes)
