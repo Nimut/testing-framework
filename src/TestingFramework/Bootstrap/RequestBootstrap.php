@@ -1,5 +1,5 @@
 <?php
-namespace Nimut\TestingFramework\Frontend;
+namespace Nimut\TestingFramework\Bootstrap;
 
 /*
  * This file is part of the NIMUT testing-framework project.
