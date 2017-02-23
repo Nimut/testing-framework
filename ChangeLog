@@ -1,3 +1,12 @@
+2017-02-23         [RELEASE] Release of nimut/testing-framework 0.4.0 (Nicole Cordes)
+2017-02-23 ed0e8fc [TASK] Set testbase version to 0.4.0 (Nicole Cordes)
+2017-02-23 6eae8ee [TASK] Reformat database fixtures code style (Nicole Cordes)
+2017-02-23 5bd4647 [BUGFIX] Set necessary value for filelist_sorting in tt_content.xml (Nicole Cordes)
+2017-02-23 ab3b894 [BUGFIX] Write TypoScript to sys_template record for frontend request (Nicole Cordes)
+2017-02-22 e46480e [FEATURE] Add Request.tpl for frontend request in FunctionalTestCase (Nicole Cordes)
+2017-02-22 e5001f2 [TASK] Add frontend request test to testbase extension (Nicole Cordes)
+2017-02-22 c99f863 [FEATURE] Add classes for frontend request handling in functional tests (Nicole Cordes)
+
 2017-02-22         [RELEASE] Release of nimut/testing-framework 0.3.1 (Nicole Cordes)
 2017-02-22 22816a3 [BUGFIX] Fix NtfStreamWrapper for PHP 5.3 (Nicole Cordes)
 2017-02-22 aa4e0ff [BUGFIX] Prevent expressions in empty method (Nicole Cordes)
