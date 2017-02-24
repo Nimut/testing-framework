@@ -1,3 +1,8 @@
+2017-02-24         [RELEASE] Release of nimut/testing-framework 1.0.1 (Nicole Cordes)
+2017-02-24 c6db724 [BUGFIX] Add missing method getConnectionPool to FunctionalTestCase (Nicole Cordes)
+2017-02-24 df18c81 [BUGFIX] Ensure tag property is set only for AccessibleMockObjectInterface (Nicole Cordes)
+2017-02-24 dd17ebe [BUGFIX] Add missing use statement for TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface (Nicole Cordes)
+
 2017-02-23         [RELEASE] Release of nimut/testing-framework 1.0.0 (Nicole Cordes)
 2017-02-23 4c7a531 [TASK] Add basic documentation of frontend requests to README.md (Nicole Cordes)
 
