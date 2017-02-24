@@ -126,8 +126,14 @@ class UnitTestsBootstrap extends AbstractTestsBootstrap
     {
         $classLoaderFilepath = __DIR__ . '/../../../../../autoload.php';
         if (!file_exists($classLoaderFilepath)) {
-            $this->exitWithMessage('ClassLoader can\'t be loaded. Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.');
+            $classLoaderFilepath = __DIR__ . '/../../../.Build/vendor/autoload.php';
+            if (!file_exists($classLoaderFilepath)) {
+                $this->exitWithMessage('ClassLoader can\'t be loaded.'
+                    . ' Tried to find "' . $classLoaderFilepath . '".'
+                    . ' Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.');
+            }
         }
+
         $classLoader = require $classLoaderFilepath;
 
         $bootstrap = Bootstrap::getInstance();
