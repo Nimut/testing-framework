@@ -40,8 +40,10 @@ class LegacyUnitTestsBootstrap extends UnitTestsBootstrap
         $this->defineSitePath();
         $this->setTypo3Context();
         $this->createNecessaryDirectoriesInDocumentRoot();
-        $this->initializeConfiguration();
         $this->includeAndStartCoreBootstrap();
+        $this->initializeConfiguration();
+        $this->initializeCachingHandling();
+        $this->initializePackageManager();
         $this->registerNtfStreamWrapper();
     }
 
@@ -58,24 +60,32 @@ class LegacyUnitTestsBootstrap extends UnitTestsBootstrap
         }
 
         $bootstrap = Bootstrap::getInstance();
-
-        $reflection = new \ReflectionMethod($bootstrap, 'initializeClassLoader');
-        $parameterCount = $reflection->getNumberOfParameters();
-        if (empty($parameterCount)) {
-            $bootstrap->baseSetup()
-                ->initializeClassLoader()
-                ->disableCoreAndClassesCache()
-                ->initializeCachingFramework()
-                ->initializeClassLoaderCaches()
-                ->initializePackageManagement('TYPO3\\CMS\\Core\\Package\\UnitTestPackageManager');
-        } else {
+        if (!method_exists($bootstrap, 'disableCoreAndClassesCache')) {
             $classLoader = require $classLoaderFilepath;
             $bootstrap->initializeClassLoader($classLoader)
-                ->baseSetup()
-                ->disableCoreCache()
+                ->baseSetup();
+        } else {
+            $bootstrap->baseSetup()
+                ->initializeClassLoader();
+        }
+    }
+
+    /**
+     * Initializes core cache handling
+     *
+     * @return void
+     */
+    protected function initializeCachingHandling()
+    {
+        $bootstrap = Bootstrap::getInstance();
+        if (!method_exists($bootstrap, 'disableCoreAndClassesCache')) {
+            $bootstrap->disableCoreCache()
                 ->initializeCachingFramework()
-                ->initializePackageManagement('TYPO3\CMS\Core\Package\UnitTestPackageManager')
                 ->ensureClassLoadingInformationExists();
+        } else {
+            $bootstrap->disableCoreAndClassesCache()
+                ->initializeCachingFramework()
+                ->initializeClassLoaderCaches();
         }
     }
 }

@@ -14,7 +14,6 @@ namespace Nimut\TestingFramework\Bootstrap;
  * LICENSE file that was distributed with this source code.
  */
 
-use Nimut\TestingFramework\File\NtfStreamWrapper;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
@@ -43,8 +42,10 @@ class UnitTestsBootstrap extends AbstractTestsBootstrap
         $this->defineSitePath();
         $this->setTypo3Context();
         $this->createNecessaryDirectoriesInDocumentRoot();
-        $this->initializeConfiguration();
         $this->includeAndStartCoreBootstrap();
+        $this->initializeConfiguration();
+        $this->initializeCachingHandling();
+        $this->initializePackageManager();
         $this->registerNtfStreamWrapper();
     }
 
@@ -117,20 +118,6 @@ class UnitTestsBootstrap extends AbstractTestsBootstrap
     }
 
     /**
-     * Provides the default configuration in $GLOBALS['TYPO3_CONF_VARS'].
-     *
-     * @return void
-     */
-    protected function initializeConfiguration()
-    {
-        $configurationManager = new ConfigurationManager();
-        $GLOBALS['TYPO3_CONF_VARS'] = $configurationManager->getDefaultConfiguration();
-
-        // Avoid failing tests that rely on HTTP_HOST retrieval
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = '.*';
-    }
-
-    /**
      * Includes the Core Bootstrap class and calls its first few functions.
      *
      * @return void
@@ -146,15 +133,49 @@ class UnitTestsBootstrap extends AbstractTestsBootstrap
         $bootstrap = Bootstrap::getInstance();
         $bootstrap->initializeClassLoader($classLoader)
             ->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_CLI)
-            ->baseSetup()
-            ->disableCoreCache()
-            ->initializeCachingFramework()
-            ->initializePackageManagement('TYPO3\\CMS\\Core\\Package\\UnitTestPackageManager');
+            ->baseSetup();
+    }
+
+    /**
+     * Provides the default configuration in $GLOBALS['TYPO3_CONF_VARS'].
+     *
+     * @return void
+     */
+    protected function initializeConfiguration()
+    {
+        $configurationManager = new ConfigurationManager();
+        $GLOBALS['TYPO3_CONF_VARS'] = $configurationManager->getDefaultConfiguration();
+
+        // Avoid failing tests that rely on HTTP_HOST retrieval
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = '.*';
+    }
+
+    /**
+     * Initializes core cache handling
+     *
+     * @return void
+     */
+    protected function initializeCachingHandling()
+    {
+        $bootstrap = Bootstrap::getInstance();
+        $bootstrap->disableCoreCache()
+            ->initializeCachingFramework();
 
         if (!Bootstrap::usesComposerClassLoading()) {
             // Dump autoload info if in non composer mode
             ClassLoadingInformation::dumpClassLoadingInformation();
             ClassLoadingInformation::registerClassLoadingInformation();
         }
+    }
+
+    /**
+     * Initializes a package manager for tests that activates all packages by default
+     *
+     * @return void
+     */
+    protected function initializePackageManager()
+    {
+        $bootstrap = Bootstrap::getInstance();
+        $bootstrap->initializePackageManagement('TYPO3\\CMS\\Core\\Package\\UnitTestPackageManager');
     }
 }
