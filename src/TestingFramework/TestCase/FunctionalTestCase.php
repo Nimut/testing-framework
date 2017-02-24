@@ -18,6 +18,7 @@ use Nimut\TestingFramework\Bootstrap\FunctionalTestCaseBootstrapUtility;
 use Nimut\TestingFramework\Exception\Exception;
 use Nimut\TestingFramework\Http\Response;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -215,6 +216,14 @@ abstract class FunctionalTestCase extends BaseTestCase
     protected function getDatabaseConnection()
     {
         return $GLOBALS['TYPO3_DB'];
+    }
+
+    /**
+     * @return ConnectionPool
+     */
+    protected function getConnectionPool()
+    {
+        return GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ConnectionPool');
     }
 
     /**
