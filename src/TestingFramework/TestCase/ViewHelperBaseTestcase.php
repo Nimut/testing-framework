@@ -14,6 +14,7 @@ namespace Nimut\TestingFramework\TestCase;
  * LICENSE file that was distributed with this source code.
  */
 
+use Nimut\TestingFramework\MockObject\AccessibleMockObjectInterface;
 use Nimut\TestingFramework\Rendering\RenderingContextFixture;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -25,6 +26,7 @@ use TYPO3\CMS\Fluid\Core\Variables\CmsVariableProvider;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Arguments;
+use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
 use TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface;
@@ -107,6 +109,7 @@ abstract class ViewHelperBaseTestcase extends UnitTestCase
 
         if (class_exists('TYPO3\\CMS\\Fluid\\Core\\Variables\\CmsVariableProvider')) {
             $this->templateVariableContainer = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Variables\\CmsVariableProvider');
+            $this->tagBuilder = new TagBuilder();
         } else {
             $this->templateVariableContainer = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TemplateVariableContainer');
             $this->tagBuilder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder');
@@ -144,7 +147,7 @@ abstract class ViewHelperBaseTestcase extends UnitTestCase
             $reflectionServiceProphecy = $this->prophesize('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService');
             $viewHelper->injectReflectionService($reflectionServiceProphecy->reveal());
         }
-        if ($viewHelper instanceof AbstractTagBasedViewHelper) {
+        if ($viewHelper instanceof AbstractTagBasedViewHelper && $viewHelper instanceof AccessibleMockObjectInterface) {
             $viewHelper->_set('tag', $this->tagBuilder);
         }
     }
