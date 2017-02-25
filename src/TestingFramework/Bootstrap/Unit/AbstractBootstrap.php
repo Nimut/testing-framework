@@ -1,5 +1,5 @@
 <?php
-namespace Nimut\TestingFramework\Bootstrap;
+namespace Nimut\TestingFramework\Bootstrap\Unit;
 
 /*
  * This file is part of the NIMUT testing-framework project.
@@ -14,31 +14,20 @@ namespace Nimut\TestingFramework\Bootstrap;
  * LICENSE file that was distributed with this source code.
  */
 
+use Nimut\TestingFramework\Bootstrap\AbstractTestsBootstrap;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
-use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Core\ClassLoadingInformation;
+use TYPO3\CMS\Core\Core\Bootstrap as CoreBootstrap;
 
-/**
- * This file is defined as bootstrap configuration in UnitTests.xml and called by PHPUnit
- * before instantiating the test suites. It must also be called on CLI
- * with PHPUnit parameter --bootstrap if executing single test case classes.
- *
- * Example: call whole unit test suite
- * - cd /var/www/t3master/foo  # Document root of TYPO3 CMS sources (location of index.php)
- * - vendor/bin/phpunit -c vendor/nimut/testing-framework/res/Configuration/UnitTests.xml \
- *     typo3conf/ext/example_extension/Tests/Unit
- */
-class UnitTestsBootstrap extends AbstractTestsBootstrap
+abstract class AbstractBootstrap extends AbstractTestsBootstrap
 {
     /**
-     * Bootstraps the system for unit tests.
+     * Bootstraps the system for unit tests
      *
      * @return void
      */
     public function bootstrapSystem()
     {
         $this->enableDisplayErrors();
-        $this->defineBaseConstants();
         $this->defineSitePath();
         $this->setTypo3Context();
         $this->createNecessaryDirectoriesInDocumentRoot();
@@ -50,7 +39,7 @@ class UnitTestsBootstrap extends AbstractTestsBootstrap
     }
 
     /**
-     * Defines the PATH_site and PATH_thisScript constant and sets $_SERVER['SCRIPT_NAME'].
+     * Defines the PATH_site, PATH_thisScript constant and sets $_SERVER['SCRIPT_NAME'].
      *
      * @return void
      */
@@ -68,7 +57,7 @@ class UnitTestsBootstrap extends AbstractTestsBootstrap
     }
 
     /**
-     * Returns the absolute path the TYPO3 document root.
+     * Returns the absolute path to the TYPO3 document root
      *
      * @return string the TYPO3 document root using Unix path separators
      */
@@ -84,7 +73,7 @@ class UnitTestsBootstrap extends AbstractTestsBootstrap
     }
 
     /**
-     * Defines TYPO3_MODE, TYPO3_cliMode and sets the environment variable TYPO3_CONTEXT.
+     * Defines some constants and sets the environment variable TYPO3_CONTEXT
      *
      * @return void
      */
@@ -101,32 +90,33 @@ class UnitTestsBootstrap extends AbstractTestsBootstrap
 
     /**
      * Creates the following directories in the TYPO3 document root:
-     * - typo3conf
      * - typo3conf/ext
-     * - typo3temp
+     * - typo3temp/assets
+     * - typo3temp/var/tests
+     * - typo3temp/var/transient
      * - uploads
      *
      * @return void
      */
     protected function createNecessaryDirectoriesInDocumentRoot()
     {
-        $this->createDirectory(PATH_site . 'uploads');
         $this->createDirectory(PATH_site . 'typo3conf/ext');
         $this->createDirectory(PATH_site . 'typo3temp/assets');
         $this->createDirectory(PATH_site . 'typo3temp/var/tests');
         $this->createDirectory(PATH_site . 'typo3temp/var/transient');
+        $this->createDirectory(PATH_site . 'uploads');
     }
 
     /**
-     * Includes the Core Bootstrap class and calls its first few functions.
+     * Checks and returns the file path of the autoload.php
      *
-     * @return void
+     * @return string
      */
-    protected function includeAndStartCoreBootstrap()
+    protected function getClassLoaderFilepath()
     {
-        $classLoaderFilepath = __DIR__ . '/../../../../../autoload.php';
+        $classLoaderFilepath = __DIR__ . '/../../../../../../autoload.php';
         if (!file_exists($classLoaderFilepath)) {
-            $classLoaderFilepath = __DIR__ . '/../../../.Build/vendor/autoload.php';
+            $classLoaderFilepath = __DIR__ . '/../../../../.Build/vendor/autoload.php';
             if (!file_exists($classLoaderFilepath)) {
                 $this->exitWithMessage('ClassLoader can\'t be loaded.'
                     . ' Tried to find "' . $classLoaderFilepath . '".'
@@ -134,16 +124,18 @@ class UnitTestsBootstrap extends AbstractTestsBootstrap
             }
         }
 
-        $classLoader = require $classLoaderFilepath;
-
-        $bootstrap = Bootstrap::getInstance();
-        $bootstrap->initializeClassLoader($classLoader)
-            ->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_CLI)
-            ->baseSetup();
+        return $classLoaderFilepath;
     }
 
     /**
-     * Provides the default configuration in $GLOBALS['TYPO3_CONF_VARS'].
+     * Includes the Core Bootstrap class and calls its first few functions
+     *
+     * @return void
+     */
+    abstract protected function includeAndStartCoreBootstrap();
+
+    /**
+     * Provides the default configuration in $GLOBALS['TYPO3_CONF_VARS']
      *
      * @return void
      */
@@ -161,18 +153,7 @@ class UnitTestsBootstrap extends AbstractTestsBootstrap
      *
      * @return void
      */
-    protected function initializeCachingHandling()
-    {
-        $bootstrap = Bootstrap::getInstance();
-        $bootstrap->disableCoreCache()
-            ->initializeCachingFramework();
-
-        if (!Bootstrap::usesComposerClassLoading()) {
-            // Dump autoload info if in non composer mode
-            ClassLoadingInformation::dumpClassLoadingInformation();
-            ClassLoadingInformation::registerClassLoadingInformation();
-        }
-    }
+    abstract protected function initializeCachingHandling();
 
     /**
      * Initializes a package manager for tests that activates all packages by default
@@ -181,7 +162,7 @@ class UnitTestsBootstrap extends AbstractTestsBootstrap
      */
     protected function initializePackageManager()
     {
-        $bootstrap = Bootstrap::getInstance();
+        $bootstrap = CoreBootstrap::getInstance();
         $bootstrap->initializePackageManagement('TYPO3\\CMS\\Core\\Package\\UnitTestPackageManager');
     }
 }

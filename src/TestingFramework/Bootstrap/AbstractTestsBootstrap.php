@@ -15,7 +15,6 @@ namespace Nimut\TestingFramework\Bootstrap;
  */
 
 use Nimut\TestingFramework\File\NtfStreamWrapper;
-use TYPO3\CMS\Core\Core\Bootstrap;
 
 abstract class AbstractTestsBootstrap
 {
