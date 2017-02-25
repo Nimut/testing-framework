@@ -57,22 +57,6 @@ abstract class AbstractBootstrap extends AbstractTestsBootstrap
     }
 
     /**
-     * Returns the absolute path to the TYPO3 document root
-     *
-     * @return string the TYPO3 document root using Unix path separators
-     */
-    protected function getWebRoot()
-    {
-        if (getenv('TYPO3_PATH_WEB')) {
-            $webRoot = getenv('TYPO3_PATH_WEB');
-        } else {
-            $webRoot = getcwd();
-        }
-
-        return rtrim(strtr($webRoot, '\\', '/'), '/') . '/';
-    }
-
-    /**
      * Defines some constants and sets the environment variable TYPO3_CONTEXT
      *
      * @return void
@@ -105,26 +89,6 @@ abstract class AbstractBootstrap extends AbstractTestsBootstrap
         $this->createDirectory(PATH_site . 'typo3temp/var/tests');
         $this->createDirectory(PATH_site . 'typo3temp/var/transient');
         $this->createDirectory(PATH_site . 'uploads');
-    }
-
-    /**
-     * Checks and returns the file path of the autoload.php
-     *
-     * @return string
-     */
-    protected function getClassLoaderFilepath()
-    {
-        $classLoaderFilepath = __DIR__ . '/../../../../../../autoload.php';
-        if (!file_exists($classLoaderFilepath)) {
-            $classLoaderFilepath = __DIR__ . '/../../../../.Build/vendor/autoload.php';
-            if (!file_exists($classLoaderFilepath)) {
-                $this->exitWithMessage('ClassLoader can\'t be loaded.'
-                    . ' Tried to find "' . $classLoaderFilepath . '".'
-                    . ' Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.');
-            }
-        }
-
-        return $classLoaderFilepath;
     }
 
     /**

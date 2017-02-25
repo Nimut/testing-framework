@@ -91,6 +91,44 @@ abstract class AbstractTestsBootstrap
     }
 
     /**
+     * Checks and returns the file path of the autoload.php
+     *
+     * @return string
+     */
+    protected function getClassLoaderFilepath()
+    {
+        $classLoaderFilepath = __DIR__ . '/../../../../../autoload.php';
+        if (!file_exists($classLoaderFilepath)) {
+            if (file_exists(__DIR__ . '/../../../.Build/vendor/autoload.php')) {
+                $classLoaderFilepath = __DIR__ . '/../../../.Build/vendor/autoload.php';
+            } else {
+                $this->exitWithMessage('ClassLoader can\'t be loaded.'
+                    . ' Tried to find "' . $classLoaderFilepath . '".'
+                    . ' Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.'
+                );
+            }
+        }
+
+        return $classLoaderFilepath;
+    }
+
+    /**
+     * Returns the absolute path to the TYPO3 document root
+     *
+     * @return string the TYPO3 document root using Unix path separators
+     */
+    protected function getWebRoot()
+    {
+        if (getenv('TYPO3_PATH_WEB')) {
+            $webRoot = getenv('TYPO3_PATH_WEB');
+        } else {
+            $webRoot = getcwd();
+        }
+
+        return rtrim(strtr($webRoot, '\\', '/'), '/') . '/';
+    }
+
+    /**
      * Registers the NtfStreamWrapper for ntf:// protocol
      *
      * @return void
