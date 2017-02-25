@@ -76,8 +76,6 @@ before_script:
   - if [ "$TYPO3" == "^6.2" ]; then composer require typo3/cms-composer-installers="1.2.8 as 1.1.4" --no-update; fi
   - composer require typo3/cms="$TYPO3" phpunit/phpunit="$PHPUNIT"
   - git checkout composer.json
-  - mkdir -p .Build/vendor/nimut/testing-framework
-  - cp -R res src .Build/vendor/nimut/testing-framework/
   - export TYPO3_PATH_WEB=$PWD/.Build/Web
 
 script:
@@ -86,7 +84,7 @@ script:
     echo "Running unit tests";
     echo;
     echo;
-    .Build/bin/phpunit -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml .Build/Web/typo3conf/ext/testbase/Tests/Unit/;
+    .Build/bin/phpunit -c res/Configuration/UnitTests.xml .Build/Web/typo3conf/ext/testbase/Tests/Unit/;
 
   - >
     echo;
@@ -97,7 +95,7 @@ script:
     export typo3DatabaseHost="localhost";
     export typo3DatabaseUsername="root";
     export typo3DatabasePassword="";
-    find '.Build/Web/typo3conf/ext/testbase/Tests/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; .Build/bin/phpunit -c .Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml {}';
+    find '.Build/Web/typo3conf/ext/testbase/Tests/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; .Build/bin/phpunit -c res/Configuration/FunctionalTests.xml {}';
 
   - >
     echo;
