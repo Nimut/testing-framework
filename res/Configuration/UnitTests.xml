@@ -1,7 +1,7 @@
 <phpunit
     backupGlobals="true"
     backupStaticAttributes="false"
-    bootstrap="../../src/TestingFramework/Bootstrap/UnitTestsBootstrap.php"
+    bootstrap="UnitTestsBootstrap.php"
     colors="true"
     convertErrorsToExceptions="true"
     convertWarningsToExceptions="true"
