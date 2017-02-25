@@ -40,7 +40,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * - vendor/bin/phpunit -c vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml \
  *     typo3conf/ext/example_extension/Tests/Functional
  */
-abstract class FunctionalTestCase extends BaseTestCase
+abstract class FunctionalTestCase extends AbstractTestCase
 {
     /**
      * Core extensions to load.

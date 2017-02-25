@@ -15,6 +15,6 @@ namespace TYPO3\CMS\Core\Tests;
 /**
  * @deprecated will be removed once TYPO3 9 LTS is released
  */
-abstract class BaseTestCase extends \Nimut\TestingFramework\TestCase\BaseTestCase
+abstract class BaseTestCase extends \Nimut\TestingFramework\TestCase\AbstractTestCase
 {
 }
