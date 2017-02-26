@@ -12,8 +12,8 @@ namespace Nimut\TestingFramework\TestSystem;
  * LICENSE file that was distributed with this source code.
  */
 
-use Nimut\TestingFramework\Bootstrap\AbstractBootstrap;
 use Nimut\TestingFramework\Exception\Exception;
+use Nimut\TestingFramework\File\NtfStreamWrapper;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -21,7 +21,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Install\Service\SqlExpectedSchemaService;
 use TYPO3\CMS\Install\Service\SqlSchemaMigrationService;
 
-abstract class AbstractTestSystem extends AbstractBootstrap
+abstract class AbstractTestSystem
 {
     /**
      * @var Bootstrap
@@ -166,13 +166,30 @@ abstract class AbstractTestSystem extends AbstractBootstrap
     }
 
     /**
+     * Registers the NtfStreamWrapper for ntf:// protocol
+     *
+     * @return void
+     */
+    protected function registerNtfStreamWrapper()
+    {
+        NtfStreamWrapper::register();
+    }
+
+    /**
      * Defines some constants and sets the environment variable TYPO3_CONTEXT
      *
      * @return void
      */
     protected function setTypo3Context()
     {
-        parent::setTypo3Context();
+        /** @var string */
+        define('TYPO3_MODE', 'BE');
+        /** @var string */
+        define('TYPO3_cliMode', true);
+        // Disable TYPO3_DLOG
+        define('TYPO3_DLOG', false);
+        putenv('TYPO3_CONTEXT=Testing');
+
         $_SERVER['PWD'] = $this->systemPath;
         $_SERVER['argv'][0] = 'index.php';
     }
@@ -659,5 +676,29 @@ abstract class AbstractTestSystem extends AbstractBootstrap
     protected function getPackageStatesVersion()
     {
         return 4;
+    }
+
+    /**
+     * Checks and returns the file path of the autoload.php
+     *
+     * @throws Exception
+     * @return string
+     */
+    protected function getClassLoaderFilepath()
+    {
+        $classLoaderFilepath = __DIR__ . '/../../../../../autoload.php';
+        if (!file_exists($classLoaderFilepath)) {
+            if (file_exists(__DIR__ . '/../../../.Build/vendor/autoload.php')) {
+                $classLoaderFilepath = __DIR__ . '/../../../.Build/vendor/autoload.php';
+            } else {
+                throw new Exception(
+                    'ClassLoader can\'t be loaded.'
+                    . ' Tried to find "' . $classLoaderFilepath . '".'
+                    . ' Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.'
+                );
+            }
+        }
+
+        return $classLoaderFilepath;
     }
 }
