@@ -15,6 +15,6 @@ namespace TYPO3\CMS\Core\Tests;
 /**
  * @deprecated will be removed once TYPO3 9 LTS is released
  */
-class FunctionalTestCaseBootstrapUtility extends \Nimut\TestingFramework\Bootstrap\FunctionalTestCaseBootstrapUtility
+abstract class FunctionalTestCaseBootstrapUtility extends \Nimut\TestingFramework\TestSystem\AbstractTestSystem
 {
 }
