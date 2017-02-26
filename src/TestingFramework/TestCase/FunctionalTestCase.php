@@ -14,31 +14,17 @@ namespace Nimut\TestingFramework\TestCase;
  * LICENSE file that was distributed with this source code.
  */
 
-use Nimut\TestingFramework\Bootstrap\FunctionalTestCaseBootstrapUtility;
 use Nimut\TestingFramework\Exception\Exception;
 use Nimut\TestingFramework\Http\Response;
+use Nimut\TestingFramework\TestSystem\AbstractTestSystem;
+use Nimut\TestingFramework\TestSystem\TestSystemFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Base test case class for functional tests.
- *
- * If functional tests need additional setUp() and tearDown() code,
- * they *must* call parent::setUp() and parent::tearDown() to properly
- * set up and destroy the test system.
- *
- * The functional test system creates a full new TYPO3 CMS instance
- * within typo3temp/var/tests of the base system and bootstraps this TYPO3 instance.
- * This abstract class takes care of creating this instance with its
- * folder structure, a LocalConfiguration.php file, creates an own database
- * for each test run and imports tables of loaded extensions.
- *
- * Example: call whole functional test suite
- * - cd /var/www/t3master/foo  # Document root of TYPO3 CMS sources (location of index.php)
- * - vendor/bin/phpunit -c vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml \
- *     typo3conf/ext/example_extension/Tests/Functional
+ * Base test case class for functional tests
  */
 abstract class FunctionalTestCase extends AbstractTestCase
 {
@@ -132,8 +118,9 @@ abstract class FunctionalTestCase extends AbstractTestCase
      * Per default the following folder are created
      * /fileadmin
      * /typo3temp
-     * /typo3conf
      * /typo3conf/ext
+     * /typo3temp/var/tests
+     * /typo3temp/var/transient
      * /uploads
      *
      * To create additional folders add the paths to this array. Given paths are expected to be
@@ -157,35 +144,14 @@ abstract class FunctionalTestCase extends AbstractTestCase
     /**
      * Private utility class used in setUp() and tearDown(). Do NOT use in test cases!
      *
-     * @var FunctionalTestCaseBootstrapUtility
+     * @var AbstractTestSystem
      */
-    private $bootstrapUtility = null;
+    private $testSystem = null;
 
     /**
-     * Calculate a "unique" identifier for the test database and the
-     * instance patch based on the given test case class name.
+     * Setup creates a test instance and database
      *
-     * @return string
-     */
-    protected function getInstanceIdentifier()
-    {
-        return FunctionalTestCaseBootstrapUtility::getInstanceIdentifier(get_class($this));
-    }
-
-    /**
-     * Calculates path to TYPO3 CMS test installation for this test case.
-     *
-     * @return string
-     */
-    protected function getInstancePath()
-    {
-        return FunctionalTestCaseBootstrapUtility::getInstancePath(get_class($this));
-    }
-
-    /**
-     * Set up creates a test instance and database.
-     *
-     * This method should be called with parent::setUp() in your test cases!
+     * This method has to be called with parent::setUp() in your test cases
      *
      * @return void
      */
@@ -194,15 +160,34 @@ abstract class FunctionalTestCase extends AbstractTestCase
         if (!defined('ORIGINAL_ROOT')) {
             $this->markTestSkipped('Functional tests must be called through phpunit on CLI');
         }
-        $this->bootstrapUtility = new FunctionalTestCaseBootstrapUtility();
-        $this->bootstrapUtility->setUp(
-            get_class($this),
+        $this->testSystem = TestSystemFactory::getInstanceByIdentifier(get_class($this));
+        $this->testSystem->setUp(
             $this->coreExtensionsToLoad,
             $this->testExtensionsToLoad,
             $this->pathsToLinkInTestInstance,
             $this->configurationToUseInTestInstance,
             $this->additionalFoldersToCreate
         );
+    }
+
+    /**
+     * Returns the system identifier
+     *
+     * @return string
+     */
+    protected function getInstanceIdentifier()
+    {
+        return $this->testSystem->getSystemIdentifier();
+    }
+
+    /**
+     * Return the path for the test system
+     *
+     * @return string
+     */
+    protected function getInstancePath()
+    {
+        return $this->testSystem->getSystemPath();
     }
 
     /**
@@ -415,6 +400,7 @@ abstract class FunctionalTestCase extends AbstractTestCase
         }
 
         $response = new Response($result['status'], $result['content'], $result['error']);
+
         return $response;
     }
 }
