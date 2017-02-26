@@ -26,11 +26,11 @@ if (PHP_SAPI !== 'cli') {
 
 // In case PHPUnit is invoked from a global composer installation or from a phar file, we need to include
 // the autoloader to make the classes available
-if (!class_exists('Nimut\\TestingFramework\\Bootstrap\\FunctionalTestsBootstrapFactory')) {
+if (!class_exists('Nimut\\TestingFramework\\Bootstrap\\BootstrapFactory')) {
     require __DIR__ . '/../../../../autoload.php';
 }
 
 call_user_func(function () {
-    $bootstrap = \Nimut\TestingFramework\Bootstrap\FunctionalTestsBootstrapFactory::getBootstrapInstance();
-    $bootstrap->bootstrapSystem();
+    $bootstrap = \Nimut\TestingFramework\Bootstrap\BootstrapFactory::getBootstrapInstance();
+    $bootstrap->bootstrapFunctionalTestSystem();
 });
