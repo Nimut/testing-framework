@@ -12,11 +12,7 @@ namespace Nimut\TestingFramework\Bootstrap;
  * LICENSE file that was distributed with this source code.
  */
 
-use Nimut\TestingFramework\Bootstrap\Functional\AbstractBootstrap;
-use Nimut\TestingFramework\Bootstrap\Functional\Bootstrap;
-use Nimut\TestingFramework\Bootstrap\Functional\OldBootstrap;
-
-final class FunctionalTestsBootstrapFactory
+final class BootstrapFactory
 {
     /**
      * Analyses the system and returns proper bootstrap instance
@@ -27,8 +23,10 @@ final class FunctionalTestsBootstrapFactory
     {
         if (interface_exists('TYPO3Fluid\\Fluid\\View\\ViewInterface')) {
             return new Bootstrap();
+        } elseif (method_exists('TYPO3\\CMS\\Core\\Core\\Bootstrap', 'ensureClassLoadingInformationExists')) {
+            return new OldBootstrap();
         }
 
-        return new OldBootstrap();
+        return new LegacyBootstrap();
     }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace Nimut\TestingFramework\Bootstrap\Unit;
+namespace Nimut\TestingFramework\Bootstrap;
 
 /*
  * This file is part of the NIMUT testing-framework project.
@@ -21,14 +21,14 @@ use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 class Bootstrap extends AbstractBootstrap
 {
     /**
-     * Defines some constants and sets the environment variable TYPO3_CONTEXT
+     * Defines the constant ORIGINAL_ROOT for the path to the original TYPO3 document root
      *
      * @return void
      */
-    protected function setTypo3Context()
+    protected function defineOriginalRootPath()
     {
+        parent::defineOriginalRootPath();
         $this->defineBaseConstants();
-        parent::setTypo3Context();
     }
 
     /**
@@ -64,5 +64,16 @@ class Bootstrap extends AbstractBootstrap
             ClassLoadingInformation::dumpClassLoadingInformation();
             ClassLoadingInformation::registerClassLoadingInformation();
         }
+    }
+
+    /**
+     * Defines some constants and sets the environment variable TYPO3_CONTEXT
+     *
+     * @return void
+     */
+    protected function setTypo3Context()
+    {
+        parent::setTypo3Context();
+        $this->defineBaseConstants();
     }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace Nimut\TestingFramework\Bootstrap\Unit;
+namespace Nimut\TestingFramework\Bootstrap;
 
 /*
  * This file is part of the NIMUT testing-framework project.
@@ -15,9 +15,9 @@ namespace Nimut\TestingFramework\Bootstrap\Unit;
 use TYPO3\CMS\Core\Core\Bootstrap as CoreBootstrap;
 
 /**
- * Unit Test Bootstrap for TYPO3 ^7.6
+ * Unit Test Bootstrap for TYPO3 ^6.2
  */
-class OldBootstrap extends AbstractBootstrap
+class LegacyBootstrap extends AbstractBootstrap
 {
     /**
      * Includes the Core Bootstrap class and calls its first few functions
@@ -26,13 +26,11 @@ class OldBootstrap extends AbstractBootstrap
      */
     protected function includeAndStartCoreBootstrap()
     {
-        $classLoaderFilepath = $this->getClassLoaderFilepath();
-
-        $classLoader = require $classLoaderFilepath;
+        $this->getClassLoaderFilepath();
 
         $bootstrap = CoreBootstrap::getInstance();
-        $bootstrap->initializeClassLoader($classLoader)
-            ->baseSetup();
+        $bootstrap->baseSetup()
+            ->initializeClassLoader();
     }
 
     /**
@@ -43,8 +41,8 @@ class OldBootstrap extends AbstractBootstrap
     protected function initializeCachingHandling()
     {
         $bootstrap = CoreBootstrap::getInstance();
-        $bootstrap->disableCoreCache()
+        $bootstrap->disableCoreAndClassesCache()
             ->initializeCachingFramework()
-            ->ensureClassLoadingInformationExists();
+            ->initializeClassLoaderCaches();
     }
 }
