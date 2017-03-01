@@ -31,6 +31,6 @@ if (!class_exists('Nimut\\TestingFramework\\Bootstrap\\BootstrapFactory')) {
 }
 
 call_user_func(function () {
-    $bootstrap = \Nimut\TestingFramework\Bootstrap\BootstrapFactory::getBootstrapInstance();
+    $bootstrap = \Nimut\TestingFramework\Bootstrap\BootstrapFactory::createBootstrapInstance();
     $bootstrap->bootstrapUnitTestSystem();
 });

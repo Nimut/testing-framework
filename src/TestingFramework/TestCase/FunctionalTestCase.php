@@ -160,7 +160,7 @@ abstract class FunctionalTestCase extends AbstractTestCase
         if (!defined('ORIGINAL_ROOT')) {
             $this->markTestSkipped('Functional tests must be called through phpunit on CLI');
         }
-        $this->testSystem = TestSystemFactory::getInstanceByIdentifier(get_class($this));
+        $this->testSystem = TestSystemFactory::createInstanceByIdentifier(get_class($this));
         $this->testSystem->setUp(
             $this->coreExtensionsToLoad,
             $this->testExtensionsToLoad,

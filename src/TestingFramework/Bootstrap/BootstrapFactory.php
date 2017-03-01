@@ -19,7 +19,7 @@ final class BootstrapFactory
      *
      * @return AbstractBootstrap
      */
-    public static function getBootstrapInstance()
+    public static function createBootstrapInstance()
     {
         if (interface_exists('TYPO3Fluid\\Fluid\\View\\ViewInterface')) {
             return new Bootstrap();

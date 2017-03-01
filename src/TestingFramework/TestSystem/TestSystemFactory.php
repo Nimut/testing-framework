@@ -20,7 +20,7 @@ final class TestSystemFactory
      * @param string $identifier Name of test case class
      * @return AbstractTestSystem
      */
-    public static function getInstanceByIdentifier($identifier)
+    public static function createInstanceByIdentifier($identifier)
     {
         if (interface_exists('TYPO3Fluid\\Fluid\\View\\ViewInterface')) {
             return new TestSystem($identifier);
