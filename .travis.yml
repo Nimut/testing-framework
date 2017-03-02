@@ -4,7 +4,7 @@ matrix:
   fast_finish: true
   include:
     - php: 7.1
-      env: TYPO3="dev-master as 8.6.0" PHPUNIT=5.7.5
+      env: TYPO3="dev-master" PHPUNIT=5.7.5
     - php: 7.1
       env: TYPO3=~8.6.0 PHPUNIT=5.7.5
     - php: 7.1
@@ -22,9 +22,9 @@ matrix:
     - php: 7.1
       env: TYPO3=^7.6 PHPUNIT=^4.8
     - php: 7.1
-      env: TYPO3="7.x-dev as 7.6.0" PHPUNIT=^4.8
+      env: TYPO3="7.x-dev" PHPUNIT=^4.8
     - php: 7.0
-      env: TYPO3="dev-master as 8.6.0" PHPUNIT=5.7.5
+      env: TYPO3="dev-master" PHPUNIT=5.7.5
     - php: 7.0
       env: TYPO3=~8.6.0 PHPUNIT=5.7.5
     - php: 7.0
@@ -46,7 +46,7 @@ matrix:
     - php: 5.6
       env: TYPO3=^6.2 PHPUNIT=^4.8
     - php: 5.6
-      env: TYPO3="6.2.x-dev as 6.2.0" PHPUNIT=^4.8
+      env: TYPO3="6.2.x-dev" PHPUNIT=^4.8
     - php: 5.5
       env: TYPO3=^7.6 PHPUNIT=^4.8
     - php: 5.5
@@ -56,7 +56,7 @@ matrix:
     - php: 5.3
       env: TYPO3=^6.2 PHPUNIT=^4.8
   allow_failures:
-    - env: TYPO3="dev-master as 8.6.0" PHPUNIT=5.7.5
+    - env: TYPO3="dev-master" PHPUNIT=5.7.5
 
 addons:
   apt:
