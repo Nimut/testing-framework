@@ -18,15 +18,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
- * Base test case for unit tests.
- *
- * This class currently only inherits the base test case. However, it is recommended
- * to extend this class for unit test cases instead of the base test case because if,
- * at some point, specific behavior needs to be implemented for unit tests, your test cases
- * will profit from it automatically.
+ * Base test case for unit tests
  *
  */
-abstract class UnitTestCase extends BaseTestCase
+abstract class UnitTestCase extends AbstractTestCase
 {
     /**
      * Absolute path to files that should be removed after a test.
@@ -57,7 +52,7 @@ abstract class UnitTestCase extends BaseTestCase
             $declaringClass = $property->getDeclaringClass()->getName();
             if (
                 !$property->isStatic()
-                && $declaringClass !== 'Nimut\\TestingFramework\\TestCase\\BaseTestCase'
+                && $declaringClass !== 'Nimut\\TestingFramework\\TestCase\\AbstractTestCase'
                 && $declaringClass !== get_class($this)
                 && strpos($property->getDeclaringClass()->getName(), 'PHPUnit_') !== 0
             ) {

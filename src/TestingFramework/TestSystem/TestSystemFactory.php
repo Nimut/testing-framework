@@ -1,5 +1,5 @@
 <?php
-namespace Nimut\TestingFramework\Bootstrap;
+namespace Nimut\TestingFramework\TestSystem;
 
 /*
  * This file is part of the NIMUT testing-framework project.
@@ -12,21 +12,22 @@ namespace Nimut\TestingFramework\Bootstrap;
  * LICENSE file that was distributed with this source code.
  */
 
-final class BootstrapFactory
+final class TestSystemFactory
 {
     /**
      * Analyses the system and returns proper bootstrap instance
      *
-     * @return AbstractBootstrap
+     * @param string $identifier Name of test case class
+     * @return AbstractTestSystem
      */
-    public static function createBootstrapInstance()
+    public static function createInstanceByIdentifier($identifier)
     {
         if (interface_exists('TYPO3Fluid\\Fluid\\View\\ViewInterface')) {
-            return new Bootstrap();
+            return new TestSystem($identifier);
         } elseif (method_exists('TYPO3\\CMS\\Core\\Core\\Bootstrap', 'ensureClassLoadingInformationExists')) {
-            return new OldBootstrap();
+            return new OldTestSystem($identifier);
         }
 
-        return new LegacyBootstrap();
+        return new LegacyTestSystem($identifier);
     }
 }

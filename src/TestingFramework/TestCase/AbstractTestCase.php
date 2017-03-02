@@ -17,49 +17,14 @@ namespace Nimut\TestingFramework\TestCase;
 use Nimut\TestingFramework\MockObject\AccessibleMockObjectInterface;
 
 /**
- * The mother of all test cases.
+ * The mother of all test cases
  *
- * Don't sub class this test case but rather choose a more specialized base test case,
+ * Don't inherit this test case but rather choose a more specialized base test case,
  * such as UnitTestCase or FunctionalTestCase
  *
  */
-abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
+abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * Creates a mock object which allows for calling protected methods and access of protected properties.
-     *
-     * @param string $originalClassName name of class to create the mock object of, must not be empty
-     * @param string[]|null $methods name of the methods to mock, null for "mock no methods"
-     * @param array $arguments arguments to pass to constructor
-     * @param string $mockClassName the class name to use for the mock class
-     * @param bool $callOriginalConstructor whether to call the constructor
-     * @param bool $callOriginalClone whether to call the __clone method
-     * @param bool $callAutoload whether to call any autoload function
-     *
-     * @throws \InvalidArgumentException
-     * @return \PHPUnit_Framework_MockObject_MockObject|AccessibleMockObjectInterface
-     *         a mock of $originalClassName with access methods added
-     *
-     */
-    protected function getAccessibleMock(
-        $originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '',
-        $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true
-    ) {
-        if ($originalClassName === '') {
-            throw new \InvalidArgumentException('$originalClassName must not be empty.', 1334701880);
-        }
-
-        return $this->getMock(
-            $this->buildAccessibleProxy($originalClassName),
-            $methods,
-            $arguments,
-            $mockClassName,
-            $callOriginalConstructor,
-            $callOriginalClone,
-            $callAutoload
-        );
-    }
-
     /**
      * @param string $originalClassName
      * @param array $methods
@@ -71,6 +36,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
      * @param bool $cloneArguments
      * @param bool $callOriginalMethods
      * @param null $proxyTarget
+     * @throws \PHPUnit_Framework_Exception
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
     public function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false, $callOriginalMethods = false, $proxyTarget = null)
@@ -99,6 +65,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
 
             return $mockBuilder->getMock();
         }
+
         return parent::getMock(
                 $originalClassName,
                 $methods,
@@ -114,6 +81,39 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Creates a mock object which allows for calling protected methods and access of protected properties.
+     *
+     * @param string $originalClassName name of class to create the mock object of, must not be empty
+     * @param string[]|null $methods name of the methods to mock, null for "mock no methods"
+     * @param array $arguments arguments to pass to constructor
+     * @param string $mockClassName the class name to use for the mock class
+     * @param bool $callOriginalConstructor whether to call the constructor
+     * @param bool $callOriginalClone whether to call the __clone method
+     * @param bool $callAutoload whether to call any autoload function
+     * @throws \InvalidArgumentException
+     * @throws \PHPUnit_Framework_Exception
+     * @return \PHPUnit_Framework_MockObject_MockObject|AccessibleMockObjectInterface
+     */
+    protected function getAccessibleMock(
+        $originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '',
+        $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true
+    ) {
+        if ($originalClassName === '') {
+            throw new \InvalidArgumentException('$originalClassName must not be empty.', 1334701880);
+        }
+
+        return $this->getMock(
+            $this->buildAccessibleProxy($originalClassName),
+            $methods,
+            $arguments,
+            $mockClassName,
+            $callOriginalConstructor,
+            $callOriginalClone,
+            $callAutoload
+        );
+    }
+
+    /**
      * Returns a mock object which allows for calling protected methods and access
      * of protected properties. Concrete methods to mock can be specified with
      * the last parameter
@@ -125,9 +125,8 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
      * @param bool $callOriginalClone
      * @param bool $callAutoload
      * @param array $mockedMethods
-     *
      * @throws \InvalidArgumentException
-     *
+     * @throws \PHPUnit_Framework_Exception
      * @return \PHPUnit_Framework_MockObject_MockObject|AccessibleMockObjectInterface
      *
      */
