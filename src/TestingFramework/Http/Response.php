@@ -86,6 +86,7 @@ class Response
         if (!isset($this->responseContent)) {
             $this->responseContent = new ResponseContent($this);
         }
+
         return $this->responseContent;
     }
 

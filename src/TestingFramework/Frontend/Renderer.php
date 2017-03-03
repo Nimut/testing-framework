@@ -80,6 +80,7 @@ class Renderer implements SingletonInterface
     public function renderSections($content, array $configuration = null)
     {
         $content = json_encode($this->sections);
+
         return $content;
     }
 

@@ -102,6 +102,7 @@ class Collector implements SingletonInterface
             $recordData,
             array_flip($this->getTableFields($tableName))
         );
+
         return $recordData;
     }
 
@@ -173,6 +174,7 @@ class Collector implements SingletonInterface
         if (isset($this->getFrontendController()->register['watcher'])) {
             $watcherValue = $this->getFrontendController()->register['watcher'];
         }
+
         return $watcherValue;
     }
 

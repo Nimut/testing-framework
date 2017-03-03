@@ -334,9 +334,9 @@ class FileStreamWrapper
     /**
      * Retrieve the underlying resource
      *
-     * @param int $castAs Can be STREAM_CAST_FOR_SELECT when stream_select()
+     * @param int $castAs can be STREAM_CAST_FOR_SELECT when stream_select()
      * is calling stream_cast() or STREAM_CAST_AS_STREAM when stream_cast()
-     * is called for other uses.
+     * is called for other uses
      * @return resource|bool
      */
     public function stream_cast($castAs)
@@ -344,6 +344,7 @@ class FileStreamWrapper
         if ($this->fileHandle !== null && $castAs & STREAM_CAST_AS_STREAM) {
             return $this->fileHandle;
         }
+
         return false;
     }
 

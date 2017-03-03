@@ -599,8 +599,8 @@ abstract class AbstractTestSystem
      * @param array $original Original array. It will be *modified* by this method and contains the result afterwards!
      * @param array $overrule Overrule array, overruling the original array
      * @param bool $addKeys If set to FALSE, keys that are NOT found in $original will not be set. Thus only existing value can/will be overruled from overrule array.
-     * @param bool $includeEmptyValues If set, values from $overrule will overrule if they are empty or zero.
-     * @param bool $enableUnsetFeature If set, special values "__UNSET" can be used in the overrule array in order to unset array keys in the original array.
+     * @param bool $includeEmptyValues if set, values from $overrule will overrule if they are empty or zero
+     * @param bool $enableUnsetFeature if set, special values "__UNSET" can be used in the overrule array in order to unset array keys in the original array
      * @return void
      */
     protected function mergeRecursiveWithOverrule(array &$original, array $overrule, $addKeys = true, $includeEmptyValues = true, $enableUnsetFeature = true)
