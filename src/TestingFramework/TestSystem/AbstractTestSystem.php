@@ -264,7 +264,13 @@ abstract class AbstractTestSystem
         $foldersToCreate = array_merge($this->defaultFoldersToCreate, $additionalFoldersToCreate);
         foreach ($foldersToCreate as $folder) {
             $folder = ltrim($folder, '/');
-            if (!mkdir($this->systemPath . $folder, 0777, true)) {
+
+            clearstatcache();
+            if (is_dir($this->systemPath . $folder)) {
+                continue;
+            }
+
+            if (!@mkdir($this->systemPath . $folder, 0777, true) && !is_dir($this->systemPath . $folder)) {
                 throw new Exception(
                     'Creating directory failed: ' . $this->systemPath . $folder,
                     1376657189

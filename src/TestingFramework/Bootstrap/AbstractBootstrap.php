@@ -145,8 +145,7 @@ abstract class AbstractBootstrap
             return;
         }
 
-        mkdir($directory, 0777, true);
-        if (!is_dir($directory)) {
+        if (!@mkdir($directory, 0777, true) && !is_dir($directory)) {
             throw new \RuntimeException('Directory "' . $directory . '" could not be created', 1423043755);
         }
     }
