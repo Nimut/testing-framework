@@ -1,3 +1,6 @@
+2017-03-03         [RELEASE] Release of nimut/testing-framework 1.1.1 (Nicole Cordes)
+2017-03-03 a34716d [BUGFIX] Re-add moved bootstrap files for compatibility (Nicole Cordes)
+
 2017-03-03         [RELEASE] Release of nimut/testing-framework 1.1.0 (Nicole Cordes)
 2017-03-03 8cb754d [TASK] Streamline mk_dir usage and prevent warnings (Nicole Cordes)
 2017-03-03 34cbba1 [TASK] Add branch alias 1.x-dev for dev-master (Nicole Cordes)
