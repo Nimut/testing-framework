@@ -42,8 +42,7 @@ class Bootstrap extends AbstractBootstrap
 
         $classLoader = require $classLoaderFilepath;
 
-        $bootstrap = CoreBootstrap::getInstance();
-        $bootstrap->initializeClassLoader($classLoader)
+        $this->bootstrap->initializeClassLoader($classLoader)
             ->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_CLI)
             ->baseSetup();
     }
@@ -55,8 +54,7 @@ class Bootstrap extends AbstractBootstrap
      */
     protected function initializeCachingHandling()
     {
-        $bootstrap = CoreBootstrap::getInstance();
-        $bootstrap->disableCoreCache()
+        $this->bootstrap->disableCoreCache()
             ->initializeCachingFramework();
     }
 
