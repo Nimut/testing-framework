@@ -58,6 +58,16 @@ class Bootstrap extends AbstractBootstrap
         $bootstrap = CoreBootstrap::getInstance();
         $bootstrap->disableCoreCache()
             ->initializeCachingFramework();
+    }
+
+    /**
+     * Initializes a package manager for tests that activates all packages by default
+     *
+     * @return void
+     */
+    protected function initializePackageManager()
+    {
+        parent::initializePackageManager();
 
         if (!CoreBootstrap::usesComposerClassLoading()) {
             // Dump autoload info if in non composer mode
