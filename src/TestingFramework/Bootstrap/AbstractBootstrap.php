@@ -21,6 +21,21 @@ use TYPO3\CMS\Core\Core\Bootstrap as CoreBootstrap;
 abstract class AbstractBootstrap
 {
     /**
+     * @var CoreBootstrap
+     */
+    protected $bootstrap;
+
+    /**
+     * AbstractBootstrap constructor.
+     *
+     * @param CoreBootstrap $bootstrap
+     */
+    public function __construct(CoreBootstrap $bootstrap = null)
+    {
+        $this->bootstrap = (null !== $bootstrap) ? $bootstrap : CoreBootstrap::getInstance();
+    }
+
+    /**
      * Includes the Core Bootstrap class and calls its first few functions
      *
      * @return void
@@ -216,8 +231,7 @@ abstract class AbstractBootstrap
      */
     protected function initializePackageManager()
     {
-        $bootstrap = CoreBootstrap::getInstance();
-        $bootstrap->initializePackageManagement('TYPO3\\CMS\\Core\\Package\\UnitTestPackageManager');
+        $this->bootstrap->initializePackageManagement('TYPO3\\CMS\\Core\\Package\\UnitTestPackageManager');
     }
 
     /**

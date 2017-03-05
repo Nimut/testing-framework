@@ -12,8 +12,6 @@ namespace Nimut\TestingFramework\Bootstrap;
  * LICENSE file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Core\Core\Bootstrap as CoreBootstrap;
-
 /**
  * Unit Test Bootstrap for TYPO3 ^6.2
  */
@@ -28,8 +26,7 @@ class LegacyBootstrap extends AbstractBootstrap
     {
         $this->getClassLoaderFilepath();
 
-        $bootstrap = CoreBootstrap::getInstance();
-        $bootstrap->baseSetup()
+        $this->bootstrap->baseSetup()
             ->initializeClassLoader();
     }
 
@@ -40,8 +37,7 @@ class LegacyBootstrap extends AbstractBootstrap
      */
     protected function initializeCachingHandling()
     {
-        $bootstrap = CoreBootstrap::getInstance();
-        $bootstrap->disableCoreAndClassesCache()
+        $this->bootstrap->disableCoreAndClassesCache()
             ->initializeCachingFramework()
             ->initializeClassLoaderCaches();
     }
