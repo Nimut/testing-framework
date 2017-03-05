@@ -1,3 +1,8 @@
+2017-03-05         [RELEASE] Release of nimut/testing-framework 1.1.2 (Nicole Cordes)
+2017-03-04 665eba1 [TASK] Bind Core\Bootstrap to Bootstrap classes (Nicole Cordes)
+2017-03-04 6423258 [BUGFIX] Correct class loading information in non-composer mode (Nicole Cordes)
+2017-03-04 1b4546b [TASK] Add more coding style rules (Nicole Cordes)
+
 2017-03-03         [RELEASE] Release of nimut/testing-framework 1.1.1 (Nicole Cordes)
 2017-03-03 a34716d [BUGFIX] Re-add moved bootstrap files for compatibility (Nicole Cordes)
 
