@@ -20,7 +20,7 @@
  * - vendor/bin/phpunit -c vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml \
  *     typo3conf/ext/example_extension/Tests/Functional
  */
-if (PHP_SAPI !== 'cli') {
+if (PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg') {
     die('This script supports command line usage only. Please check your command.');
 }
 
