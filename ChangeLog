@@ -1,3 +1,7 @@
+2017-03-12         [RELEASE] Release of nimut/testing-framework 1.1.3 (Nicole Cordes)
+2017-03-10 dc6c399 [BUGFIX] Support phpdbg (Mathias Brodala)
+2017-03-05 76ef7ab [TASk] Move friendsofphp/php-cs-fixer to suggest section (Nicole Cordes)
+
 2017-03-05         [RELEASE] Release of nimut/testing-framework 1.1.2 (Nicole Cordes)
 2017-03-04 665eba1 [TASK] Bind Core\Bootstrap to Bootstrap classes (Nicole Cordes)
 2017-03-04 6423258 [BUGFIX] Correct class loading information in non-composer mode (Nicole Cordes)
