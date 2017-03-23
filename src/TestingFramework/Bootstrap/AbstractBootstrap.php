@@ -160,8 +160,12 @@ abstract class AbstractBootstrap
             return;
         }
 
-        if (!@mkdir($directory, 0777, true) && !is_dir($directory)) {
-            throw new \RuntimeException('Directory "' . $directory . '" could not be created', 1423043755);
+        if (!@mkdir($directory, 0777, true)) {
+            // Wait a couple of microseconds to prevent multiple derectory access due to parallel testing
+            usleep(mt_rand(1000, 2000));
+            if (!@mkdir($directory, 0777, true) && !is_dir($directory)) {
+                throw new \RuntimeException('Directory "' . $directory . '" could not be created', 1423043755);
+            }
         }
     }
 
