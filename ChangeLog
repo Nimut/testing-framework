@@ -1,3 +1,6 @@
+2017-03-30         [RELEASE] Release of nimut/testing-framework 1.1.4 (Nicole Cordes)
+2017-03-23 7b7af2d [BUGFIX] Try to stabilize mkdir for parallel test execution (Nicole Cordes)
+
 2017-03-12         [RELEASE] Release of nimut/testing-framework 1.1.3 (Nicole Cordes)
 2017-03-10 dc6c399 [BUGFIX] Support phpdbg (Mathias Brodala)
 2017-03-05 76ef7ab [TASk] Move friendsofphp/php-cs-fixer to suggest section (Nicole Cordes)
