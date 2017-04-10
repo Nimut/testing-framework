@@ -6,19 +6,7 @@ matrix:
     - php: 7.1
       env: TYPO3="dev-master" PHPUNIT=5.7.5
     - php: 7.1
-      env: TYPO3=~8.6.0 PHPUNIT=5.7.5
-    - php: 7.1
-      env: TYPO3=~8.5.0 PHPUNIT=5.7.5
-    - php: 7.1
-      env: TYPO3=~8.4.0 PHPUNIT=5.7.5
-    - php: 7.1
-      env: TYPO3=~8.3.0 PHPUNIT=5.7.5
-    - php: 7.1
-      env: TYPO3=~8.2.0 PHPUNIT=5.7.5
-    - php: 7.1
-      env: TYPO3=~8.1.0 PHPUNIT=5.7.5
-    - php: 7.1
-      env: TYPO3=~8.0.0 PHPUNIT=^4.8
+      env: TYPO3=^8.7 PHPUNIT=5.7.5
     - php: 7.1
       env: TYPO3=^7.6 PHPUNIT=^4.8
     - php: 7.1
@@ -26,19 +14,7 @@ matrix:
     - php: 7.0
       env: TYPO3="dev-master" PHPUNIT=5.7.5
     - php: 7.0
-      env: TYPO3=~8.6.0 PHPUNIT=5.7.5
-    - php: 7.0
-      env: TYPO3=~8.5.0 PHPUNIT=5.7.5
-    - php: 7.0
-      env: TYPO3=~8.4.0 PHPUNIT=5.7.5
-    - php: 7.0
-      env: TYPO3=~8.3.0 PHPUNIT=5.7.5
-    - php: 7.0
-      env: TYPO3=~8.2.0 PHPUNIT=5.7.5
-    - php: 7.0
-      env: TYPO3=~8.1.0 PHPUNIT=5.7.5
-    - php: 7.0
-      env: TYPO3=~8.0.0 PHPUNIT=^4.8
+      env: TYPO3=^8.7 PHPUNIT=5.7.5
     - php: 7.0
       env: TYPO3=^7.6 PHPUNIT=^4.8
     - php: 5.6
