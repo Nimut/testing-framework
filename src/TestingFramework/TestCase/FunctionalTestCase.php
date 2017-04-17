@@ -149,6 +149,19 @@ abstract class FunctionalTestCase extends AbstractTestCase
     private $testSystem = null;
 
     /**
+     * Avoid serlialization of the test system object
+     *
+     * @return array
+     */
+    public function __sleep()
+    {
+        $objectVars = get_object_vars($this);
+        unset($objectVars['testSystem']);
+
+        return $objectVars;
+    }
+
+    /**
      * Setup creates a test instance and database
      *
      * This method has to be called with parent::setUp() in your test cases
