@@ -243,7 +243,7 @@ abstract class AbstractTestSystem
     protected function removeOldSystemIfExists()
     {
         if (is_dir($this->systemPath)) {
-            if (!GeneralUtility::rmdir($this->systemPath, true)) {
+            if (!$this->rmdir($this->systemPath, true)) {
                 throw new Exception(
                     'Can not remove folder: ' . $this->systemPath,
                     1376657210
@@ -650,6 +650,53 @@ abstract class AbstractTestSystem
         $databaseConfiguration['database'] = $databaseName;
 
         return $databaseConfiguration;
+    }
+
+    /**
+     * Wrapper function for rmdir, allowing recursive deletion of folders and files
+     *
+     * @param string $path Absolute path to folder, see PHP rmdir() function. Removes trailing slash internally.
+     * @param bool $removeNonEmpty Allow deletion of non-empty directories
+     * @return bool true if @rmdir went well!
+     */
+    protected function rmdir($path, $removeNonEmpty = false)
+    {
+        $OK = false;
+        // Remove trailing slash
+        $path = preg_replace('|/$|', '', $path);
+        if (file_exists($path)) {
+            $OK = true;
+            if (!is_link($path) && is_dir($path)) {
+                if ($removeNonEmpty == true && ($handle = opendir($path))) {
+                    while ($OK && false !== ($file = readdir($handle))) {
+                        if ($file === '.' || $file === '..') {
+                            continue;
+                        }
+                        $OK = $this->rmdir($path . '/' . $file, $removeNonEmpty);
+                    }
+                    closedir($handle);
+                }
+                if ($OK) {
+                    $OK = @rmdir($path);
+                }
+            } else {
+                // If $path is a symlink to a folder we need rmdir() on Windows systems
+                if (DIRECTORY_SEPARATOR === '\\'
+                    && is_link($path)
+                    && is_dir($path . '/')
+                ) {
+                    $OK = rmdir($path);
+                } else {
+                    $OK = unlink($path);
+                }
+            }
+            clearstatcache();
+        } elseif (is_link($path)) {
+            $OK = unlink($path);
+            clearstatcache();
+        }
+
+        return $OK;
     }
 
     /**
