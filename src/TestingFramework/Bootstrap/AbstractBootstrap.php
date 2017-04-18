@@ -121,7 +121,7 @@ abstract class AbstractBootstrap
             define('ORIGINAL_ROOT', $this->getWebRoot());
         }
 
-        if (!file_exists(ORIGINAL_ROOT . 'typo3/cli_dispatch.phpsh')) {
+        if (!file_exists(ORIGINAL_ROOT . 'typo3/index.php')) {
             $this->exitWithMessage('Unable to determine path to entry script.'
                 . ' Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.'
             );
@@ -190,7 +190,7 @@ abstract class AbstractBootstrap
         /** @var string */
         define('PATH_site', $this->getWebRoot());
         /** @var string */
-        define('PATH_thisScript', PATH_site . 'typo3/cli_dispatch.phpsh');
+        define('PATH_thisScript', PATH_site . 'typo3/index.php');
         $_SERVER['SCRIPT_NAME'] = PATH_thisScript;
 
         if (!file_exists(PATH_thisScript)) {
