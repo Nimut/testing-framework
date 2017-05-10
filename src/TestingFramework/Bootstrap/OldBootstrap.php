@@ -40,7 +40,17 @@ class OldBootstrap extends AbstractBootstrap
     protected function initializeCachingHandling()
     {
         $this->bootstrap->disableCoreCache()
-            ->initializeCachingFramework()
-            ->ensureClassLoadingInformationExists();
+            ->initializeCachingFramework();
+    }
+
+    /**
+     * Initializes a package manager for tests that activates all packages by default
+     *
+     * @return void
+     */
+    protected function initializePackageManager()
+    {
+        parent::initializePackageManager();
+        $this->bootstrap->ensureClassLoadingInformationExists();
     }
 }
