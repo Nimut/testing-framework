@@ -143,7 +143,9 @@ class TestSystem extends AbstractTestSystem
         if (!class_exists('TYPO3\\CMS\\Core\\Database\\ConnectionPool')) {
             parent::initializeTestDatabase();
         } else {
-            $this->bootstrap->initializeTypo3DbGlobal();
+            if (method_exists($this->bootstrap, 'initializeTypo3DbGlobal')) {
+                $this->bootstrap->initializeTypo3DbGlobal();
+            }
 
             $connection = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ConnectionPool')
                 ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
@@ -196,7 +198,9 @@ class TestSystem extends AbstractTestSystem
         if (!class_exists('TYPO3\\CMS\\Core\\Database\\ConnectionPool')) {
             parent::setUpTestDatabase();
         } else {
-            $this->bootstrap->initializeTypo3DbGlobal();
+            if (method_exists($this->bootstrap, 'initializeTypo3DbGlobal')) {
+                $this->bootstrap->initializeTypo3DbGlobal();
+            }
 
             $connectionParameters = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default'];
             $databaseName = $connectionParameters['dbname'];
