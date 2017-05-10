@@ -129,7 +129,7 @@ abstract class AbstractTestSystem
         if ($this->recentTestSystemExists()) {
             $this->includeAndStartCoreBootstrap();
             $this->initializeTestDatabase();
-            $this->bootstrap->loadExtensionTables(true);
+            $this->loadExtensionConfiguration();
         } else {
             $this->removeOldSystemIfExists();
             $this->setUpSystemDirectories($additionalFoldersToCreate);
@@ -140,7 +140,7 @@ abstract class AbstractTestSystem
             $this->setUpPackageStates($coreExtensionsToLoad, $testExtensionsToLoad);
             $this->includeAndStartCoreBootstrap();
             $this->setUpTestDatabase();
-            $this->bootstrap->loadExtensionTables(true);
+            $this->loadExtensionConfiguration();
             $this->createDatabaseStructure();
         }
     }
@@ -232,6 +232,16 @@ abstract class AbstractTestSystem
         foreach ($database->admin_get_tables() as $table) {
             $database->admin_query('TRUNCATE ' . $table['Name'] . ';');
         }
+    }
+
+    /**
+     * Loads extension configuration from ext_localconf.php and ext_tables.php files
+     *
+     * @return void
+     */
+    protected function loadExtensionConfiguration()
+    {
+        $this->bootstrap->loadExtensionTables(true);
     }
 
     /**

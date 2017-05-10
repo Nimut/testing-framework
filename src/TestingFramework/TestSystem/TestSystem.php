@@ -157,6 +157,16 @@ class TestSystem extends AbstractTestSystem
     }
 
     /**
+     * Loads extension configuration from ext_localconf.php and ext_tables.php files
+     *
+     * @return void
+     */
+    protected function loadExtensionConfiguration()
+    {
+        $this->bootstrap->loadBaseTca(true)->loadExtTables(true);
+    }
+
+    /**
      * Sets the new database name for the test system in configuration
      *
      * @param array $databaseConfiguration
