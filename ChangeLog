@@ -1,3 +1,10 @@
+2017-05-13         [RELEASE] Release of testing-framework 1.1.6 (Nicole Cordes)
+2017-05-10 0325afb [BUGFIX] Prevent calling removed initializeTypo3DbGlobal function (Nicole Cordes)
+2017-05-10 b1d3933 [BUGFIX] Prevent calling removed initializeTypo3DbGlobal function (Nicole Cordes)
+2017-05-10 1925ca8 [BUGFIX] Correct class loading information in OldBootstrap for non-composer mode (Nicole Cordes)
+2017-04-19 2796cc1 [TASK] Drop 6.2.x-dev build job on Travis CI (Nicole Cordes)
+2017-04-19 b77b46b [BUGFIX] Add version alias for dev-master (Nicole Cordes)
+
 2017-04-19         [RELEASE] Release of nimut/testing-framework 1.1.5 (Nicole Cordes)
 2017-04-18 a8284d7 [BUGFIX] Fix detection of path to entry script for TYPO3 CMS 9.x (Nicole Cordes)
 2017-04-17 4cf56aa [BUGFIX] Do not require TYPO3_OS constant to be set (Helmut Hummel)
