@@ -32,6 +32,7 @@ abstract class AbstractBootstrap
      */
     public function __construct(CoreBootstrap $bootstrap = null)
     {
+        putenv('TYPO3_CONTEXT=Testing');
         $this->bootstrap = (null !== $bootstrap) ? $bootstrap : CoreBootstrap::getInstance();
     }
 
@@ -211,7 +212,6 @@ abstract class AbstractBootstrap
         define('TYPO3_cliMode', true);
         // Disable TYPO3_DLOG
         define('TYPO3_DLOG', false);
-        putenv('TYPO3_CONTEXT=Testing');
     }
 
     /**

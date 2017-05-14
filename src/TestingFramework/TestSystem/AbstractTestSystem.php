@@ -95,6 +95,7 @@ abstract class AbstractTestSystem
      */
     public function __construct($identifier, Bootstrap $bootstrap = null)
     {
+        putenv('TYPO3_CONTEXT=Testing');
         $this->bootstrap = $bootstrap === null ? Bootstrap::getInstance() : $bootstrap;
         $this->identifier = substr(sha1($identifier), 0, 7);
         $this->systemPath = ORIGINAL_ROOT . 'typo3temp/var/tests/functional-' . $this->identifier . '/';
@@ -188,7 +189,6 @@ abstract class AbstractTestSystem
         define('TYPO3_cliMode', true);
         // Disable TYPO3_DLOG
         define('TYPO3_DLOG', false);
-        putenv('TYPO3_CONTEXT=Testing');
 
         $_SERVER['PWD'] = $this->systemPath;
         $_SERVER['argv'][0] = 'index.php';
