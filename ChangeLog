@@ -1,3 +1,6 @@
+2017-05-14         [RELEASE] Release of testing-framework 1.1.7 (Nicole Cordes)
+2017-05-14 bba9b4b [BUGFIX] Ensure TYPO3_CONTEXT is set before bootstrap initialization (Nicole Cordes)
+
 2017-05-13         [RELEASE] Release of testing-framework 1.1.6 (Nicole Cordes)
 2017-05-10 0325afb [BUGFIX] Prevent calling removed initializeTypo3DbGlobal function (Nicole Cordes)
 2017-05-10 b1d3933 [BUGFIX] Prevent calling removed initializeTypo3DbGlobal function (Nicole Cordes)
