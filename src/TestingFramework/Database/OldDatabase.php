@@ -27,7 +27,7 @@ class OldDatabase implements DatabaseInterface
     }
 
     /**
-     * @param string$fields
+     * @param string $fields
      * @param string $table
      * @param string $where
      * @return bool|\mysqli_result
@@ -79,31 +79,39 @@ class OldDatabase implements DatabaseInterface
 
     /**
      * @param string $table
-     * @param string $where
+     * @param array $whereArray
      * @param array $updateArray
      * @return bool|\mysqli_result
      */
-    public function updateArray($table, array $where, array $updateArray)
+    public function updateArray($table, array $whereArray, array $updateArray)
     {
-        return $this->databaseConnection->exec_UPDATEquery($table, $where, $updateArray);
+        $whereClause = array();
+        foreach ($whereArray as $key => $value) {
+            if ((int)$value !== $value) {
+                $value = $this->databaseConnection->fullQuoteStr($value, $table);
+            }
+            $whereClause[] = $key . '=' . $value;
+        }
+
+        return $this->databaseConnection->exec_UPDATEquery($table, implode(' AND ', $whereClause), $updateArray);
     }
 
     /**
      * @param string $table
-     * @param string $where
+     * @param array $whereArray
      * @return bool|\mysqli_result
      */
-    public function delete($table, array $where)
+    public function delete($table, array $whereArray)
     {
-        return $this->databaseConnection->exec_DELETEquery($table, $where);
-    }
+        $whereClause = array();
+        foreach ($whereArray as $key => $value) {
+            if ((int)$value !== $value) {
+                $value = $this->databaseConnection->fullQuoteStr($value, $table);
+            }
+            $whereClause[] = $key . '=' . $value;
+        }
 
-    /**
-     * @return string
-     */
-    public function getSqlError()
-    {
-        return $this->databaseConnection->sql_error();
+        return $this->databaseConnection->exec_DELETEquery($table, implode(' AND ', $whereClause));
     }
 
     /**

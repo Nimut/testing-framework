@@ -12,6 +12,9 @@ namespace Nimut\TestingFramework\Database;
  * LICENSE file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 final class DatabaseFactory
 {
     /**
@@ -21,6 +24,13 @@ final class DatabaseFactory
      */
     public static function createDatabaseInstance()
     {
+        if (class_exists('TYPO3\\CMS\\Core\\Database\\ConnectionPool')) {
+            $connection = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ConnectionPool')
+                ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+
+            return new Database($connection);
+        }
+
         return new OldDatabase($GLOBALS['TYPO3_DB']);
     }
 }

@@ -14,6 +14,7 @@ namespace Nimut\TestingFramework\TestCase;
  * LICENSE file that was distributed with this source code.
  */
 
+use Doctrine\DBAL\DBALException;
 use Nimut\TestingFramework\Database\DatabaseFactory;
 use Nimut\TestingFramework\Database\DatabaseInterface;
 use Nimut\TestingFramework\Exception\Exception;
@@ -22,6 +23,7 @@ use Nimut\TestingFramework\TestSystem\AbstractTestSystem;
 use Nimut\TestingFramework\TestSystem\TestSystemFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -319,12 +321,23 @@ abstract class FunctionalTestCase extends AbstractTestCase
             }
 
             $tableName = $table->getName();
-            $result = $database->insertArray($tableName, $insertArray);
-            if ($result === false) {
-                throw new Exception(
-                    'Error when processing fixture file: ' . $path . ' Can not insert data to table ' . $tableName . ': ' . $database->getSqlError(),
-                    1376746262
-                );
+            if ($database->getDatabaseInstance() instanceof QueryBuilder) {
+                try {
+                    $database->insertArray($tableName, $insertArray);
+                } catch (DBALException $e) {
+                    throw new Exception(
+                        'Error when processing fixture file: ' . $path . ' Can not insert data to table ' . $tableName . ': ' . $e->getMessage(),
+                        1494782046
+                    );
+                }
+            } else {
+                $result = $database->insertArray($tableName, $insertArray);
+                if ($result === false) {
+                    throw new Exception(
+                        'Error when processing fixture file: ' . $path . ' Can not insert data to table ' . $tableName . ': ' . $database->getDatabaseInstance()->sql_error(),
+                        1376746262
+                    );
+                }
             }
             if (isset($table['id'])) {
                 $elementId = (string)$table['id'];
@@ -350,7 +363,7 @@ abstract class FunctionalTestCase extends AbstractTestCase
             'is_siteroot' => 1,
         );
 
-        $this->getDatabaseConnection()->updateArray('pages', 'uid=' . $pageId, $pagesFields);
+        $this->getDatabaseConnection()->updateArray('pages', array('uid' => $pageId), $pagesFields);
 
         $templateFields = array(
             'pid' => $pageId,
@@ -369,7 +382,7 @@ abstract class FunctionalTestCase extends AbstractTestCase
             }
         }
 
-        $this->getDatabaseConnection()->delete('sys_template', 'pid = ' . $pageId);
+        $this->getDatabaseConnection()->delete('sys_template', array('pid' => $pageId));
         $this->getDatabaseConnection()->insertArray('sys_template', $templateFields);
     }
 

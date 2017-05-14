@@ -52,23 +52,18 @@ interface DatabaseInterface
 
     /**
      * @param string $table
-     * @param string $where
+     * @param array $whereArray
      * @param array $updateArray
      * @return mixed
      */
-    public function updateArray($table, array $where, array $updateArray);
+    public function updateArray($table, array $whereArray, array $updateArray);
 
     /**
      * @param string $table
-     * @param string $where
+     * @param array $whereArray
      * @return mixed
      */
-    public function delete($table, array $where);
-
-    /**
-     * @return string
-     */
-    public function getSqlError();
+    public function delete($table, array $whereArray);
 
     /**
      * @return mixed
