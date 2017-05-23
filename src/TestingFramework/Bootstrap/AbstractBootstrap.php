@@ -124,7 +124,7 @@ abstract class AbstractBootstrap
 
         if (!file_exists(ORIGINAL_ROOT . 'typo3/index.php')) {
             $this->exitWithMessage('Unable to determine path to entry script.'
-                . ' Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.'
+                . ' Please check your path or set an environment variable \'TYPO3_PATH_ROOT\' to your root path.'
             );
         }
     }
@@ -136,7 +136,9 @@ abstract class AbstractBootstrap
      */
     protected function getWebRoot()
     {
-        if (getenv('TYPO3_PATH_WEB')) {
+        if (getenv('TYPO3_PATH_ROOT')) {
+            $webRoot = getenv('TYPO3_PATH_ROOT');
+        } elseif (getenv('TYPO3_PATH_WEB')) {
             $webRoot = getenv('TYPO3_PATH_WEB');
         } else {
             $webRoot = getcwd();
@@ -195,7 +197,7 @@ abstract class AbstractBootstrap
         $_SERVER['SCRIPT_NAME'] = PATH_thisScript;
 
         if (!file_exists(PATH_thisScript)) {
-            $this->exitWithMessage('Unable to determine path to entry script. Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.');
+            $this->exitWithMessage('Unable to determine path to entry script. Please check your path or set an environment variable \'TYPO3_PATH_ROOT\' to your root path.');
         }
     }
 
@@ -291,7 +293,7 @@ abstract class AbstractBootstrap
             } else {
                 $this->exitWithMessage('ClassLoader can\'t be loaded.'
                     . ' Tried to find "' . $classLoaderFilepath . '".'
-                    . ' Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.'
+                    . ' Please check your path or set an environment variable \'TYPO3_PATH_ROOT\' to your root path.'
                 );
             }
         }
