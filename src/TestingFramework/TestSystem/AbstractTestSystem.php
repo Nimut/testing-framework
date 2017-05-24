@@ -190,6 +190,9 @@ abstract class AbstractTestSystem
         // Disable TYPO3_DLOG
         define('TYPO3_DLOG', false);
 
+        // Ensure TYPO3_PATH_ROOT is pointing to the document root of the test environment
+        // It will be evaluated in the TYPO3 bootstrap and a previously set value may interfere here
+        putenv('TYPO3_PATH_ROOT=' . rtrim($this->systemPath, '/'));
         $_SERVER['PWD'] = $this->systemPath;
         $_SERVER['argv'][0] = 'index.php';
     }
@@ -757,7 +760,7 @@ abstract class AbstractTestSystem
                 throw new Exception(
                     'ClassLoader can\'t be loaded.'
                     . ' Tried to find "' . $classLoaderFilepath . '".'
-                    . ' Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your root path.'
+                    . ' Please check your path or set an environment variable \'TYPO3_PATH_ROOT\' to your root path.'
                 );
             }
         }
