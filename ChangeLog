@@ -1,3 +1,6 @@
+2017-05-24         [RELEASE] Release of testing-framework 1.1.8 (Nicole Cordes)
+2017-05-23 445ea06 [BUGFIX] Fix path to test environment (Helmut Hummel)
+
 2017-05-14         [RELEASE] Release of testing-framework 1.1.7 (Nicole Cordes)
 2017-05-14 bba9b4b [BUGFIX] Ensure TYPO3_CONTEXT is set before bootstrap initialization (Nicole Cordes)
 
