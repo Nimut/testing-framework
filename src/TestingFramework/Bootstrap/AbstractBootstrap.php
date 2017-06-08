@@ -14,6 +14,7 @@ namespace Nimut\TestingFramework\Bootstrap;
  * LICENSE file that was distributed with this source code.
  */
 
+use Dotenv\Dotenv;
 use Nimut\TestingFramework\File\NtfStreamWrapper;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\Bootstrap as CoreBootstrap;
@@ -33,6 +34,8 @@ abstract class AbstractBootstrap
     public function __construct(CoreBootstrap $bootstrap = null)
     {
         putenv('TYPO3_CONTEXT=Testing');
+        $dotenv = new Dotenv('.', '.env');
+        $dotenv->load();
         $this->bootstrap = (null !== $bootstrap) ? $bootstrap : CoreBootstrap::getInstance();
     }
 
