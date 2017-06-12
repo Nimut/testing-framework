@@ -139,7 +139,9 @@ abstract class AbstractBootstrap
         if (getenv('TYPO3_PATH_ROOT')) {
             $webRoot = getenv('TYPO3_PATH_ROOT');
         } elseif (getenv('TYPO3_PATH_WEB')) {
-            $webRoot = getenv('TYPO3_PATH_WEB');
+            $webRoot = preg_match('/\.\//', getenv('TYPO3_PATH_WEB'))
+                ? getcwd() . '/' . getenv('TYPO3_PATH_WEB')
+                : getenv('TYPO3_PATH_WEB');
         } else {
             $webRoot = getcwd();
         }
