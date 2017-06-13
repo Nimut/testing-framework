@@ -20,6 +20,11 @@ dependencies.
 
 ## Usage
 
+See the [TYPO3 Wiki](https://wiki.typo3.org/Automated_testing) for an introduction on automated testing
+([unit tests](https://wiki.typo3.org/Unit_Testing_TYPO3),
+[functional tests](https://wiki.typo3.org/Functional_testing),
+[acceptance tests](https://wiki.typo3.org/Acceptance_testing)).
+
 ### Unit Tests
 
 Inherit your test class from `\Nimut\TestingFramework\TestCase\UnitTestCase`.
