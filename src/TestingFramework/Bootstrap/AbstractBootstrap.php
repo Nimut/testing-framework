@@ -34,8 +34,7 @@ abstract class AbstractBootstrap
     public function __construct(CoreBootstrap $bootstrap = null)
     {
         putenv('TYPO3_CONTEXT=Testing');
-        $dotenv = new Dotenv('.', '.env');
-        $dotenv->load();
+        $this->loadEnvFileIfExists();
         $this->bootstrap = (null !== $bootstrap) ? $bootstrap : CoreBootstrap::getInstance();
     }
 
@@ -93,6 +92,18 @@ abstract class AbstractBootstrap
         @ini_set('display_errors', 1);
     }
 
+    /**
+     * Loads environment variables from .env file if this file exists in root directory of an extension.
+     *
+     * @return void
+     */
+    protected function loadEnvFileIfExists()
+    {
+        if (file_exists('./.env')) {
+            $dotenv = new Dotenv('.', '.env');
+            $dotenv->load();
+        }
+    }
     /**
      * Creates the following directories in the TYPO3 document root:
      * - typo3conf/ext
