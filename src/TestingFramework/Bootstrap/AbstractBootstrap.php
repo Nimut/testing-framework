@@ -14,6 +14,7 @@ namespace Nimut\TestingFramework\Bootstrap;
  * LICENSE file that was distributed with this source code.
  */
 
+use Dotenv\Dotenv;
 use Nimut\TestingFramework\File\NtfStreamWrapper;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\Bootstrap as CoreBootstrap;
@@ -33,6 +34,7 @@ abstract class AbstractBootstrap
     public function __construct(CoreBootstrap $bootstrap = null)
     {
         putenv('TYPO3_CONTEXT=Testing');
+        $this->loadEnvFileIfExists();
         $this->bootstrap = (null !== $bootstrap) ? $bootstrap : CoreBootstrap::getInstance();
     }
 
@@ -91,6 +93,18 @@ abstract class AbstractBootstrap
     }
 
     /**
+     * Loads environment variables from .env file if this file exists in root directory of an extension.
+     *
+     * @return void
+     */
+    protected function loadEnvFileIfExists()
+    {
+        if (file_exists('./.env')) {
+            $dotenv = new Dotenv('.', '.env');
+            $dotenv->load();
+        }
+    }
+    /**
      * Creates the following directories in the TYPO3 document root:
      * - typo3conf/ext
      * - typo3temp/assets
@@ -139,7 +153,9 @@ abstract class AbstractBootstrap
         if (getenv('TYPO3_PATH_ROOT')) {
             $webRoot = getenv('TYPO3_PATH_ROOT');
         } elseif (getenv('TYPO3_PATH_WEB')) {
-            $webRoot = getenv('TYPO3_PATH_WEB');
+            $webRoot = preg_match('/\.\//', getenv('TYPO3_PATH_WEB'))
+                ? getcwd() . '/' . getenv('TYPO3_PATH_WEB')
+                : getenv('TYPO3_PATH_WEB');
         } else {
             $webRoot = getcwd();
         }
