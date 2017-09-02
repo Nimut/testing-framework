@@ -129,8 +129,11 @@ class TestSystem extends AbstractTestSystem
             ->loadConfigurationAndInitialize(true)
             ->loadTypo3LoadedExtAndExtLocalconf(true)
             ->setFinalCachingFrameworkCacheConfiguration()
-            ->defineLoggingAndExceptionConstants()
             ->unsetReservedGlobalVariables();
+
+        if (method_exists($this->bootstrap, 'defineLoggingAndExceptionConstants')) {
+            $this->bootstrap->defineLoggingAndExceptionConstants();
+        }
     }
 
     /**
