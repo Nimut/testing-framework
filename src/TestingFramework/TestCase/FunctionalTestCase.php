@@ -14,13 +14,16 @@ namespace Nimut\TestingFramework\TestCase;
  * LICENSE file that was distributed with this source code.
  */
 
+use Doctrine\DBAL\DBALException;
+use Nimut\TestingFramework\Database\DatabaseFactory;
+use Nimut\TestingFramework\Database\DatabaseInterface;
 use Nimut\TestingFramework\Exception\Exception;
 use Nimut\TestingFramework\Http\Response;
 use Nimut\TestingFramework\TestSystem\AbstractTestSystem;
 use Nimut\TestingFramework\TestSystem\TestSystemFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -142,6 +145,13 @@ abstract class FunctionalTestCase extends AbstractTestCase
     protected $backendUserFixture = 'ntf://Database/be_users.xml';
 
     /**
+     * Private utility class used for database abstraction. Do NOT use it in test cases"
+     *
+     * @var DatabaseInterface
+     */
+    private $database = null;
+
+    /**
      * Private utility class used in setUp() and tearDown(). Do NOT use in test cases!
      *
      * @var AbstractTestSystem
@@ -204,20 +214,25 @@ abstract class FunctionalTestCase extends AbstractTestCase
     }
 
     /**
-     * Get DatabaseConnection instance - $GLOBALS['TYPO3_DB']
+     * Get database connection instance
      *
      * This method should be used instead of direct access to
-     * $GLOBALS['TYPO3_DB'] for easy IDE auto completion.
+     * any database instance.
      *
-     * @return DatabaseConnection
+     * @return DatabaseInterface
      */
     protected function getDatabaseConnection()
     {
-        return $GLOBALS['TYPO3_DB'];
+        if (null === $this->database) {
+            $this->database = DatabaseFactory::createDatabaseInstance();
+        }
+
+        return $this->database;
     }
 
     /**
      * @return ConnectionPool
+     * @deprecated will be removed once TYPO3 9 LTS is released
      */
     protected function getConnectionPool()
     {
@@ -235,7 +250,7 @@ abstract class FunctionalTestCase extends AbstractTestCase
     {
         $this->importDataSet($this->backendUserFixture);
         $database = $this->getDatabaseConnection();
-        $userRow = $database->exec_SELECTgetSingleRow('*', 'be_users', 'uid = ' . (int)$userUid);
+        $userRow = $database->selectSingleRow('*', 'be_users', 'uid = ' . (int)$userUid);
 
         /** @var $backendUser BackendUserAuthentication */
         $backendUser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
@@ -306,16 +321,27 @@ abstract class FunctionalTestCase extends AbstractTestCase
             }
 
             $tableName = $table->getName();
-            $result = $database->exec_INSERTquery($tableName, $insertArray);
-            if ($result === false) {
-                throw new Exception(
-                    'Error when processing fixture file: ' . $path . ' Can not insert data to table ' . $tableName . ': ' . $database->sql_error(),
-                    1376746262
-                );
+            if ($database->getDatabaseInstance() instanceof QueryBuilder) {
+                try {
+                    $database->insertArray($tableName, $insertArray);
+                } catch (DBALException $e) {
+                    throw new Exception(
+                        'Error when processing fixture file: ' . $path . ' Can not insert data to table ' . $tableName . ': ' . $e->getMessage(),
+                        1494782046
+                    );
+                }
+            } else {
+                $result = $database->insertArray($tableName, $insertArray);
+                if ($result === false) {
+                    throw new Exception(
+                        'Error when processing fixture file: ' . $path . ' Can not insert data to table ' . $tableName . ': ' . $database->getDatabaseInstance()->sql_error(),
+                        1376746262
+                    );
+                }
             }
             if (isset($table['id'])) {
                 $elementId = (string)$table['id'];
-                $foreignKeys[$tableName][$elementId] = $database->sql_insert_id();
+                $foreignKeys[$tableName][$elementId] = $database->lastInsertId();
             }
         }
     }
@@ -327,7 +353,7 @@ abstract class FunctionalTestCase extends AbstractTestCase
     protected function setUpFrontendRootPage($pageId, array $typoScriptFiles = array())
     {
         $pageId = (int)$pageId;
-        $page = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', 'pages', 'uid=' . $pageId);
+        $page = $this->getDatabaseConnection()->selectSingleRow('*', 'pages', 'uid=' . $pageId);
 
         if (empty($page)) {
             $this->fail('Cannot set up frontend root page "' . $pageId . '"');
@@ -337,7 +363,7 @@ abstract class FunctionalTestCase extends AbstractTestCase
             'is_siteroot' => 1,
         );
 
-        $this->getDatabaseConnection()->exec_UPDATEquery('pages', 'uid=' . $pageId, $pagesFields);
+        $this->getDatabaseConnection()->updateArray('pages', array('uid' => $pageId), $pagesFields);
 
         $templateFields = array(
             'pid' => $pageId,
@@ -356,8 +382,8 @@ abstract class FunctionalTestCase extends AbstractTestCase
             }
         }
 
-        $this->getDatabaseConnection()->exec_DELETEquery('sys_template', 'pid = ' . $pageId);
-        $this->getDatabaseConnection()->exec_INSERTquery('sys_template', $templateFields);
+        $this->getDatabaseConnection()->delete('sys_template', array('pid' => $pageId));
+        $this->getDatabaseConnection()->insertArray('sys_template', $templateFields);
     }
 
     /**
