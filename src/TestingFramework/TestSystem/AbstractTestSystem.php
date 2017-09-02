@@ -757,6 +757,8 @@ abstract class AbstractTestSystem
         if (!file_exists($classLoaderFilepath)) {
             if (file_exists(__DIR__ . '/../../../.Build/vendor/autoload.php')) {
                 $classLoaderFilepath = __DIR__ . '/../../../.Build/vendor/autoload.php';
+            } elseif (file_exists(ORIGINAL_ROOT . '../vendor/autoload.php')) {
+                $classLoaderFilepath = ORIGINAL_ROOT . '../vendor/autoload.php';
             } else {
                 throw new Exception(
                     'ClassLoader can\'t be loaded.'
