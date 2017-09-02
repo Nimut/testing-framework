@@ -290,6 +290,8 @@ abstract class AbstractBootstrap
         if (!file_exists($classLoaderFilepath)) {
             if (file_exists(__DIR__ . '/../../../.Build/vendor/autoload.php')) {
                 $classLoaderFilepath = __DIR__ . '/../../../.Build/vendor/autoload.php';
+            } elseif (file_exists($this->getWebRoot() . '../vendor/autoload.php')) {
+                $classLoaderFilepath = $this->getWebRoot() . '../vendor/autoload.php';
             } else {
                 $this->exitWithMessage('ClassLoader can\'t be loaded.'
                     . ' Tried to find "' . $classLoaderFilepath . '".'
