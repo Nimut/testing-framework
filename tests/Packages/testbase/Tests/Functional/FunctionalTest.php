@@ -64,4 +64,18 @@ class FunctionalTest extends FunctionalTestCase
 
         $this->assertTrue(is_array($structure['pages:1']['__contents']['tt_content:1']));
     }
+
+    /**
+     * @test
+     */
+    public function utf8DatabaseFixtureIsImported()
+    {
+        $fixturePath = ORIGINAL_ROOT . 'typo3conf/ext/testbase/Tests/Functional/Fixtures/Database/';
+        $this->importDataSet($fixturePath . 'tt_content.xml');
+
+        $this->assertSame(
+            1,
+            $this->getDatabaseConnection()->selectCount('*', 'tt_content', 'bodytext="Our awesome men jeans products prices starting at 50€"')
+        );
+    }
 }
