@@ -1,3 +1,12 @@
+2017-09-03         [RELEASE] Release of nimut/testing-framework 2.0.0 (Nicole Cordes)
+2017-09-03 b21a595 [TASK] Add documentation for database abstraction layer (Nicole Cordes)
+2017-09-02 7de1398 [BUGFIX] Search autoload.php in web root (Nicole Cordes)
+2017-09-02 e0211e9 [BUGFIX] Prevent calling removed function in Bootstrap (Nicole Cordes)
+2017-05-14 30bc0f4 [TASK] Raise branch alias (Nicole Cordes)
+2017-05-14 469b01d [FEATURE] Add database abstraction for Doctrine DBAL api (Nicole Cordes)
+2017-05-14 b7a560f [!!!][FEATURE] Introduce database abstraction layer (Nicole Cordes)
+2017-09-02 2949fee [TASK] Downgrade Travis CI dist (Nicole Cordes)
+
 2017-08-30         [RELEASE] Release of nimut/testing-framework 1.1.9 (Nicole Cordes)
 2017-08-30 75f1a9d [TASK] Set an encryptionKey in functional test framework (Nicole Cordes)
 
