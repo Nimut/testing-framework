@@ -63,6 +63,29 @@ $ vendor/bin/phpunit -c vendor/nimut/testing-framework/res/Configuration/Functio
     typo3conf/ext/example_extension/Tests/Functional
 ```
 
+### Database abstraction
+
+To be able to test against TYPO3 CMS 8 and later, nimut/testing-framework provides an own database abstraction layer.
+
+In your FunctionalTestCase call `$this->getDatabaseConnection()` to get an instance of 
+`\Nimut\TestingFramework\Database\DatabaseInterface`.
+
+Following database functions are built in the nimut/testing-framework database interface:
+
+- select
+- selectSingleRow
+- selectCount
+- insertArray
+- lastInsertId
+- updateArray
+- delete
+- getDatabaseInstance
+
+If you need own database requests you can get the proper database instance of the current TYPO3 version by using
+`$this->getDatabaseConnection()->getDatabaseInstance()`. You have to check weather this instance is a
+`\TYPO3\CMS\Core\Database\Query\QueryBuilder` (TYPO3 CMS 8 and above) or an instance of 
+`\TYPO3\CMS\Core\Database\DatabaseConnection` (TYPO3 CMS 7 and 6.2). 
+
 #### Database fixtures
 
 The nimut/testing-framework ships database fixtures for several TYPO3 CMS core database tables:
