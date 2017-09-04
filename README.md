@@ -193,3 +193,13 @@ Content of the TypoScript file *Config.ts*
 ```
 config.watcher.tableFields.tt_content = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,header,categories,CType,subheader,bodytext
 ```
+## Additional information
+
+Following links provide documentation and additional information about TYPO3 CMS extension testing
+
+- [Unit tests for dummies](https://de.slideshare.net/cpsitgmbh/unit-tests-for-dummies)
+- [How to write functional test](https://wiki.typo3.org/Functional_testing#How_to_write_functional_test.3F)
+- [Functional tests with TYPO3](https://de.slideshare.net/cpsitgmbh/functional-tests-with-typo3)
+- [Functional tests for dummies](https://de.slideshare.net/cpsitgmbh/functional-tests-for-dummies-65673214)
+
+Last but not least you may ask for further support in the Slack channel "[#cig-testing](https://typo3.slack.com/messages/cig-testing)".
