@@ -14,11 +14,50 @@ Use [Composer](https://getcomposer.org/) to install the testing framework.
 ```bash
 $ composer require --dev nimut/testing-framework
 ```
-
 Composer will add the package as a dev requirement to your composer.json and install PHPUnit and vfsStream as its
 dependencies.
 
 ## Usage
+
+### Prepare Your Test Environment
+
+Create an `.env` file where you are going to execute your tests from (usually the root folder of your extension).
+This will set environment variables required for running your tests, e.g.
+
+```bash
+TYPO3_PATH_WEB=/home/user/dev/example_extension/.build/web
+typo3DatabaseName=typo3_test_db
+typo3DatabaseHost=db_host
+typo3DatabaseUsername=your_test_db_username
+typo3DatabasePassword=your_test_db_password
+```
+
+Make sure the following things are defined in your `composer.json` file:
+
+```json
+      ...
+      "require-dev": {
+        "typo3/cms-core": ">=6.2.0,<=8.7.0",
+        "typo3/cms": "^7.6",
+        "nimut/testing-framework": "^1.0"
+      },
+      "autoload-dev": {
+        "psr-4": {
+          "My\\ExampleExtension\\Tests\\": "Tests/"
+        }
+      },
+      "config": {
+        "vendor-dir": ".build/vendor",
+        "bin-dir": ".build/bin"
+      },
+      "scripts": {
+        "post-autoload-dump": [
+          "mkdir -p .build/web/typo3conf/ext/",
+          "[ -L .build/web/typo3conf/ext/example_extension ] || ln -snvf ../../../../. .build/web/typo3conf/ext/example_extension"
+        ]
+      },
+      ...
+```
 
 ### Unit Tests
 
@@ -97,7 +136,6 @@ The nimut/testing-framework ships database fixtures for several TYPO3 CMS core d
 - tt_content
 
 To use the database fixtures you can trigger an import in your test file
-
 ```php
 $this->importDataSet('ntf://Database/pages.xml');
 ```
