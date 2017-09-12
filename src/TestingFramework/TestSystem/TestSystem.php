@@ -37,7 +37,16 @@ class TestSystem extends AbstractTestSystem
 
             $createTableStatements = $sqlReader->getCreateTableStatementArray($sqlCode);
 
-            $schemaMigrationService->install($createTableStatements);
+            $updateResult = $schemaMigrationService->install($createTableStatements);
+            $failedStatements = array_filter($updateResult);
+            $result = array();
+            foreach ($failedStatements as $query => $error) {
+                $result[] = 'Query "' . $query . '" returned "' . $error . '"';
+            }
+
+            if (!empty($result)) {
+                throw new \RuntimeException(implode("\n", $result), 1505058450);
+            }
 
             $insertStatements = $sqlReader->getInsertStatementArray($sqlCode);
             $schemaMigrationService->importStaticData($insertStatements);

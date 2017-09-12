@@ -540,9 +540,32 @@ abstract class AbstractTestSystem
         $difference = $schemaMigrationService->getDatabaseExtra($fieldDefinitionsFile, $fieldDefinitionsDatabase);
         $updateStatements = $schemaMigrationService->getUpdateSuggestions($difference);
 
-        $schemaMigrationService->performUpdateQueries($updateStatements['add'], $updateStatements['add']);
-        $schemaMigrationService->performUpdateQueries($updateStatements['change'], $updateStatements['change']);
-        $schemaMigrationService->performUpdateQueries($updateStatements['create_table'], $updateStatements['create_table']);
+        $result = array();
+        $updateResult = $schemaMigrationService->performUpdateQueries($updateStatements['add'], $updateStatements['add']);
+        if (is_array($updateResult)) {
+            $failedStatements = array_intersect_key($updateStatements['add'], $updateResult);
+            foreach ($failedStatements as $key => $query) {
+                $result[$key] = 'Query "' . $query . '" returned "' . $updateResult[$key] . '"';
+            }
+        }
+        $updateResult = $schemaMigrationService->performUpdateQueries($updateStatements['change'], $updateStatements['change']);
+        if (is_array($updateResult)) {
+            $failedStatements = array_intersect_key($updateStatements['change'], $updateResult);
+            foreach ($failedStatements as $key => $query) {
+                $result[$key] = 'Query "' . $query . '" returned "' . $updateResult[$key] . '"';
+            }
+        }
+        $updateResult = $schemaMigrationService->performUpdateQueries($updateStatements['create_table'], $updateStatements['create_table']);
+        if (is_array($updateResult)) {
+            $failedStatements = array_intersect_key($updateStatements['create_table'], $updateResult);
+            foreach ($failedStatements as $key => $query) {
+                $result[$key] = 'Query "' . $query . '" returned "' . $updateResult[$key] . '"';
+            }
+        }
+
+        if (!empty($result)) {
+            throw new \RuntimeException(implode("\n", $result), 1505058450);
+        }
 
         foreach ($insertCount as $table => $count) {
             $insertStatements = $schemaMigrationService->getTableInsertStatements($statements, $table);
