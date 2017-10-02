@@ -30,6 +30,8 @@ if (!class_exists('Nimut\\TestingFramework\\Bootstrap\\BootstrapFactory')) {
     require __DIR__ . '/../../../../autoload.php';
 }
 
+require __DIR__ . '/../../compat/phpunit6.php';
+
 call_user_func(function () {
     $bootstrap = \Nimut\TestingFramework\Bootstrap\BootstrapFactory::createBootstrapInstance();
     $bootstrap->bootstrapUnitTestSystem();
