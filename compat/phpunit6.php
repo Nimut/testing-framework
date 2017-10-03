@@ -36,5 +36,4 @@ if (!class_exists('PHPUnit_Framework_TestCase') && class_exists('PHPUnit\Framewo
     class_alias('PHPUnit\Util\TestDox\ResultPrinter', 'PHPUnit_Util_TestDox_ResultPrinter');
     class_alias('PHPUnit\Framework\BaseTestListener', 'PHPUnit_Framework_BaseTestListener');
     class_alias('PHPUnit\Util\PHP\AbstractPhpProcess', 'PHPUnit_Util_PHP');
-
 }
