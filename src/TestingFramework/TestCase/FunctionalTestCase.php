@@ -159,14 +159,14 @@ abstract class FunctionalTestCase extends AbstractTestCase
     private $testSystem = null;
 
     /**
-     * Avoid serlialization of the test system object
+     * Avoid serialization of some properties
      *
      * @return array
      */
     public function __sleep()
     {
         $objectVars = get_object_vars($this);
-        unset($objectVars['testSystem']);
+        unset($objectVars['testSystem'], $objectVars['database']);
 
         return $objectVars;
     }
