@@ -1,3 +1,11 @@
+2017-11-15         [RELEASE] Release of nimut/testing-framework 2.0.1 (Nicole Cordes)
+2017-10-29 d95e865 Update FunctionalTestCase.php (Nicole Cordes)
+2017-10-27 68304b9 [BUGFIX] Avoid serialization of database (Mathias Brodala)
+2017-09-13 b6ba24a [BUGFIX] Remove symlinks from pathsToLinkInTestInstance in tearDown (Nicole Cordes)
+2017-09-13 e653c85 [TASK] Add additional test to ensure database exception is thrown (Nicole Cordes)
+2017-09-12 a85f8d8 [FEATURE] Throws exception on database errors during Testsystem::setUp (Nicole Cordes)
+2017-09-04 c082b01 [TASK] Add additional information links to README.md (Nicole Cordes)
+
 2017-09-03         [RELEASE] Release of nimut/testing-framework 2.0.0 (Nicole Cordes)
 2017-09-03 b21a595 [TASK] Add documentation for database abstraction layer (Nicole Cordes)
 2017-09-02 7de1398 [BUGFIX] Search autoload.php in web root (Nicole Cordes)
