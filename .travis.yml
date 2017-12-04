@@ -5,6 +5,10 @@ dist: precise
 matrix:
   fast_finish: true
   include:
+    - php: 7.2
+      env: TYPO3="dev-master as 8.7.0" PHPUNIT=5.7.5
+    - php: 7.2
+      env: TYPO3=^8.7 PHPUNIT=5.7.5
     - php: 7.1
       env: TYPO3="dev-master as 8.7.0" PHPUNIT=5.7.5
     - php: 7.1
