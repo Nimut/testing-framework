@@ -87,7 +87,7 @@ abstract class ViewHelperBaseTestcase extends UnitTestCase
     protected function setUp()
     {
         $this->viewHelperVariableContainer = $this->prophesize('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\ViewHelperVariableContainer');
-        $this->uriBuilder = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
+        $this->uriBuilder = $this->getMockBuilder(UriBuilder::class)->getMock();
         $this->uriBuilder->expects($this->any())->method('reset')->will($this->returnValue($this->uriBuilder));
         $this->uriBuilder->expects($this->any())->method('setArguments')->will($this->returnValue($this->uriBuilder));
         $this->uriBuilder->expects($this->any())->method('setSection')->will($this->returnValue($this->uriBuilder));
@@ -102,17 +102,17 @@ abstract class ViewHelperBaseTestcase extends UnitTestCase
         $this->uriBuilder->expects($this->any())->method('setUseCacheHash')->will($this->returnValue($this->uriBuilder));
         $this->uriBuilder->expects($this->any())->method('setAddQueryStringMethod')->will($this->returnValue($this->uriBuilder));
         $this->request = $this->prophesize('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request');
-        $this->controllerContext = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerContext');
+        $this->controllerContext = $this->getMockBuilder(ControllerContext::class)->getMock();
         $this->controllerContext->expects($this->any())->method('getUriBuilder')->will($this->returnValue($this->uriBuilder));
         $this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request->reveal()));
         $this->arguments = array();
 
         if (class_exists('TYPO3\\CMS\\Fluid\\Core\\Variables\\CmsVariableProvider')) {
-            $this->templateVariableContainer = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Variables\\CmsVariableProvider');
+            $this->templateVariableContainer = $this->getMockBuilder(CmsVariableProvider::class)->getMock();
             $this->tagBuilder = new TagBuilder();
         } else {
-            $this->templateVariableContainer = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TemplateVariableContainer');
-            $this->tagBuilder = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder');
+            $this->templateVariableContainer = $this->getMockBuilder(TemplateVariableContainer::class)->getMock();
+            $this->tagBuilder = $this->getMockBuilder(TagBuilder::class)->getMock();
         }
 
         $this->renderingContext = $this->getAccessibleMock('Nimut\\TestingFramework\\Rendering\\RenderingContextFixture', array('getControllerContext'));

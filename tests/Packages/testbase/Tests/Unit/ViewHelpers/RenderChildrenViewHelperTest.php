@@ -14,18 +14,21 @@ namespace Nimut\Testbase\Tests\Unit\ViewHelpers;
 
 use Nimut\Testbase\ViewHelpers\RenderChildrenViewHelper;
 use Nimut\TestingFramework\TestCase\ViewHelperBaseTestcase;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class RenderChildrenViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
-     * @var RenderChildrenViewHelper|\PHPUnit_Framework_MockObject_MockObject
+     * @var RenderChildrenViewHelper|MockObject
      */
     protected $viewHelper;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->viewHelper = $this->getMock('Nimut\\Testbase\\ViewHelpers\\RenderChildrenViewHelper', array('renderChildren'));
+        $this->viewHelper = $this->getMockBuilder(RenderChildrenViewHelper::class)
+            ->setMethods(array('renderChildren'))
+            ->getMock();
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->initializeArguments();
     }
