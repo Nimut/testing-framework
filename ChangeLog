@@ -1,3 +1,7 @@
+2017-12-14         [RELEASE] Release of nimut/testing-framework 2.0.2 (Nicole Cordes)
+2017-12-14 9f11259 [BUGFIX] Apply SYS/setDBinit to default database configuration in TestSystem (Nicole Cordes)
+2017-12-14 1d11ca6 [BUGFIX] Add missing dependency typo3/cms-frontend (Nicole Cordes)
+
 2017-11-15         [RELEASE] Release of nimut/testing-framework 2.0.1 (Nicole Cordes)
 2017-10-29 d95e865 Update FunctionalTestCase.php (Nicole Cordes)
 2017-10-27 68304b9 [BUGFIX] Avoid serialization of database (Mathias Brodala)
