@@ -143,7 +143,7 @@ abstract class ViewHelperBaseTestcase extends UnitTestCase
         $viewHelper->setArguments($this->arguments);
         // this condition is needed, because the (Be)/Security\*ViewHelper don't extend the
         // AbstractViewHelper and contain no method injectReflectionService()
-        if ($viewHelper instanceof AbstractViewHelper) {
+        if ($viewHelper instanceof AbstractViewHelper && method_exists($viewHelper, 'injectReflectionService')) {
             $reflectionServiceProphecy = $this->prophesize('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService');
             $viewHelper->injectReflectionService($reflectionServiceProphecy->reveal());
         }
