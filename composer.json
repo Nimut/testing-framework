@@ -40,7 +40,7 @@
         "typo3/cms-fluid": ">=6.2 <9.0",
         "typo3/cms-frontend": ">=6.2 <9.0",
         "typo3/cms-install": ">=6.2 <9.0",
-        "phpunit/phpunit": "^4.8 || ^5.6",
+        "phpunit/phpunit": ">=4.8 <7",
         "mikey179/vfsStream": "^1.6"
     },
     "require-dev": {
