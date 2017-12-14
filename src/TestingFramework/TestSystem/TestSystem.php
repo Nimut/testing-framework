@@ -81,6 +81,7 @@ class TestSystem extends AbstractTestSystem
                     'Connections' => array(
                         'Default' => array(
                             'driver' => 'mysqli',
+                            'initCommands' => $this->defaultConfiguration['SYS']['setDBinit'],
                         ),
                     ),
                 ),
