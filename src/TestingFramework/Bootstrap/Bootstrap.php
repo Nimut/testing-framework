@@ -32,33 +32,6 @@ class Bootstrap extends AbstractBootstrap
     }
 
     /**
-     * Includes the Core Bootstrap class and calls its first few functions
-     *
-     * @return void
-     */
-    protected function includeAndStartCoreBootstrap()
-    {
-        $classLoaderFilepath = $this->getClassLoaderFilepath();
-
-        $classLoader = require $classLoaderFilepath;
-
-        $this->bootstrap->initializeClassLoader($classLoader)
-            ->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_CLI)
-            ->baseSetup();
-    }
-
-    /**
-     * Initializes core cache handling
-     *
-     * @return void
-     */
-    protected function initializeCachingHandling()
-    {
-        $this->bootstrap->disableCoreCache()
-            ->initializeCachingFramework();
-    }
-
-    /**
      * Initializes a package manager for tests that activates all packages by default
      *
      * @return void

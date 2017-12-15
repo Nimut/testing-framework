@@ -12,6 +12,8 @@ namespace Nimut\TestingFramework\Bootstrap;
  * LICENSE file that was distributed with this source code.
  */
 
+use Composer\Autoload\ClassLoader;
+
 final class BootstrapFactory
 {
     /**
@@ -21,10 +23,37 @@ final class BootstrapFactory
      */
     public static function createBootstrapInstance()
     {
-        if (interface_exists('TYPO3Fluid\\Fluid\\View\\ViewInterface')) {
+        if (class_exists('TYPO3\\CMS\\Install\\Service\\ExtensionConfigurationService')) {
             return new Bootstrap();
         }
 
-        return new OldBootstrap();
+        if (interface_exists('TYPO3Fluid\\Fluid\\View\\ViewInterface')) {
+            self::initializeCompatibilityLayer('v87');
+        } else {
+            self::initializeCompatibilityLayer('v76');
+        }
+
+        return new Bootstrap();
+    }
+
+    private static function initializeCompatibilityLayer($version)
+    {
+        $compatibilityClassesPath = __DIR__ . '/../../../compat/' . $version . '/';
+        $compatibilityNamespace = 'Nimut\\TestingFramework\\' . $version . '\\';
+
+        $classLoader = new ClassLoader();
+        $classLoader->addPsr4($compatibilityNamespace, $compatibilityClassesPath);
+
+        spl_autoload_register(function ($className) use ($classLoader, $compatibilityNamespace) {
+            if (strpos($className, 'Nimut\\TestingFramework\\') === false) {
+                return;
+            }
+
+            $compatibilityClassName = str_replace('Nimut\\TestingFramework\\', $compatibilityNamespace, $className);
+            if ($file = $classLoader->findFile($compatibilityClassName)) {
+                require $file;
+                class_alias($compatibilityClassName, $className);
+            }
+        }, true, true);
     }
 }
