@@ -15,7 +15,7 @@ namespace Nimut\TestingFramework\TestCase;
  */
 
 use Doctrine\DBAL\DBALException;
-use Nimut\TestingFramework\Database\DatabaseFactory;
+use Nimut\TestingFramework\Database\Database;
 use Nimut\TestingFramework\Database\DatabaseInterface;
 use Nimut\TestingFramework\Exception\Exception;
 use Nimut\TestingFramework\Http\Response;
@@ -237,7 +237,7 @@ abstract class FunctionalTestCase extends AbstractTestCase
     protected function getDatabaseConnection()
     {
         if (null === $this->database) {
-            $this->database = DatabaseFactory::createDatabaseInstance();
+            $this->database = new Database();
         }
 
         return $this->database;

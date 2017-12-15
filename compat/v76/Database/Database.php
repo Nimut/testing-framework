@@ -1,5 +1,5 @@
 <?php
-namespace Nimut\TestingFramework\Database;
+namespace Nimut\TestingFramework\v76\Database;
 
 /*
  * This file is part of the NIMUT testing-framework project.
@@ -12,18 +12,19 @@ namespace Nimut\TestingFramework\Database;
  * LICENSE file that was distributed with this source code.
  */
 
+use Nimut\TestingFramework\Database\DatabaseInterface;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 
-class OldDatabase implements DatabaseInterface
+class Database implements DatabaseInterface
 {
     /**
      * @var DatabaseConnection
      */
     private $databaseConnection;
 
-    public function __construct(DatabaseConnection $databaseConnection)
+    public function __construct(DatabaseConnection $databaseConnection = null)
     {
-        $this->databaseConnection = $databaseConnection;
+        $this->databaseConnection = $databaseConnection ?? $GLOBALS['TYPO3_DB'];
     }
 
     /**
