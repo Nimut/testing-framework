@@ -1,5 +1,5 @@
 <?php
-namespace Nimut\TestingFramework\TestSystem;
+namespace Nimut\TestingFramework\v87\TestSystem;
 
 /*
  * This file is part of the NIMUT testing-framework project.
@@ -12,7 +12,10 @@ namespace Nimut\TestingFramework\TestSystem;
  * LICENSE file that was distributed with this source code.
  */
 
-class OldTestSystem extends AbstractTestSystem
+use Nimut\TestingFramework\Exception\Exception;
+use Nimut\TestingFramework\TestSystem\AbstractTestSystem;
+
+class TestSystem extends AbstractTestSystem
 {
     /**
      * Includes the Core Bootstrap class and calls its first few functions
@@ -26,11 +29,37 @@ class OldTestSystem extends AbstractTestSystem
         $classLoader = require $classLoaderFilepath;
 
         $this->bootstrap->initializeClassLoader($classLoader)
+            ->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_CLI)
             ->baseSetup()
             ->loadConfigurationAndInitialize(true)
             ->loadTypo3LoadedExtAndExtLocalconf(true)
             ->setFinalCachingFrameworkCacheConfiguration()
-            ->defineLoggingAndExceptionConstants()
-            ->unsetReservedGlobalVariables();
+            ->unsetReservedGlobalVariables()
+            ->defineLoggingAndExceptionConstants();
+    }
+
+    /**
+     * Populate $GLOBALS['TYPO3_DB'] reusing an existing database with all tables truncated
+     *
+     * @return void
+     */
+    protected function initializeTestDatabase()
+    {
+        $this->bootstrap->initializeTypo3DbGlobal();
+
+        parent::initializeTestDatabase();
+    }
+
+    /**
+     * Populate $GLOBALS['TYPO3_DB'] and create test database
+     *
+     * @throws Exception
+     * @return void
+     */
+    protected function setUpTestDatabase()
+    {
+        $this->bootstrap->initializeTypo3DbGlobal();
+
+        parent::setUpTestDatabase();
     }
 }

@@ -12,14 +12,14 @@ namespace Nimut\TestingFramework\TestSystem;
  * LICENSE file that was distributed with this source code.
  */
 
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\DriverManager;
 use Nimut\TestingFramework\Exception\Exception;
 use Nimut\TestingFramework\File\NtfStreamWrapper;
 use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Install\Service\SqlExpectedSchemaService;
-use TYPO3\CMS\Install\Service\SqlSchemaMigrationService;
+use TYPO3\CMS\Install\Service\ExtensionConfigurationService;
 
 abstract class AbstractTestSystem
 {
@@ -107,7 +107,25 @@ abstract class AbstractTestSystem
      *
      * @return void
      */
-    abstract protected function includeAndStartCoreBootstrap();
+    protected function includeAndStartCoreBootstrap()
+    {
+        $classLoaderFilepath = $this->getClassLoaderFilepath();
+
+        $classLoader = require $classLoaderFilepath;
+
+        $this->bootstrap->initializeClassLoader($classLoader)
+            ->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_CLI)
+            ->baseSetup()
+            ->loadConfigurationAndInitialize(true);
+
+        $extensionConfigurationService = new ExtensionConfigurationService();
+        $extensionConfigurationService->synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions();
+        $this->bootstrap->populateLocalConfiguration();
+
+        $this->bootstrap->loadTypo3LoadedExtAndExtLocalconf(true)
+            ->setFinalCachingFrameworkCacheConfiguration()
+            ->unsetReservedGlobalVariables();
+    }
 
     /**
      * Setup creates a test system and database
@@ -215,26 +233,15 @@ abstract class AbstractTestSystem
     /**
      * Populate $GLOBALS['TYPO3_DB'] reusing an existing database with all tables truncated
      *
-     * @throws Exception
      * @return void
      */
     protected function initializeTestDatabase()
     {
-        $this->bootstrap->initializeTypo3DbGlobal();
-        /** @var DatabaseConnection $database */
-        $database = $GLOBALS['TYPO3_DB'];
-        if (!$database->sql_pconnect()) {
-            throw new Exception(
-                'TYPO3 Fatal Error: The current username, password or host was not accepted when the'
-                . ' connection to the database was attempted to be established!',
-                1377620117
-            );
-        }
-
-        $database->setDatabaseName($GLOBALS['TYPO3_CONF_VARS']['DB']['database']);
-        $database->sql_select_db();
-        foreach ($database->admin_get_tables() as $table) {
-            $database->admin_query('TRUNCATE ' . $table['Name'] . ';');
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        $schemaManager = $connection->getSchemaManager();
+        foreach ($schemaManager->listTables() as $table) {
+            $connection->truncate($table->getName());
         }
     }
 
@@ -245,7 +252,7 @@ abstract class AbstractTestSystem
      */
     protected function loadExtensionConfiguration()
     {
-        $this->bootstrap->loadExtensionTables(true);
+        $this->bootstrap->loadBaseTca(true)->loadExtTables(true);
     }
 
     /**
@@ -485,35 +492,28 @@ abstract class AbstractTestSystem
      */
     protected function setUpTestDatabase()
     {
-        $this->bootstrap->initializeTypo3DbGlobal();
+        $connectionParameters = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default'];
+        $databaseName = $connectionParameters['dbname'];
+        unset($connectionParameters['dbname']);
+        $schemaManager = DriverManager::getConnection($connectionParameters)->getSchemaManager();
 
-        /** @var DatabaseConnection $database */
-        $database = $GLOBALS['TYPO3_DB'];
-        if (!$database->sql_pconnect()) {
-            throw new Exception(
-                'TYPO3 Fatal Error: The current username, password or host was not accepted when the'
-                . ' connection to the database was attempted to be established!',
-                1377620117
-            );
+        if (in_array($databaseName, $schemaManager->listDatabases(), true)) {
+            $schemaManager->dropDatabase($databaseName);
         }
 
-        $databaseName = $GLOBALS['TYPO3_CONF_VARS']['DB']['database'];
-        // Drop database in case a previous test had a fatal and did not clean up properly
-        $database->admin_query('DROP DATABASE IF EXISTS `' . $databaseName . '`');
-        $createDatabaseResult = $database->admin_query('CREATE DATABASE `' . $databaseName . '`');
-        if (!$createDatabaseResult) {
-            $user = $GLOBALS['TYPO3_CONF_VARS']['DB']['username'];
-            $host = $GLOBALS['TYPO3_CONF_VARS']['DB']['host'];
+        try {
+            $schemaManager->createDatabase($databaseName);
+        } catch (DBALException $e) {
+            $user = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['user'];
+            $host = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default']['host'];
             throw new Exception(
                 'Unable to create database with name ' . $databaseName . '. This is probably a permission problem.'
-                . ' For this instance this could be fixed executing'
-                . ' "GRANT ALL ON `' . substr($databaseName, 0, -10) . '_ft%`.* TO `' . $user . '`@`' . $host . '`;"',
+                . ' For this instance this could be fixed executing:'
+                . ' GRANT ALL ON `' . substr($databaseName, 0, -10) . '_%`.* TO `' . $user . '`@`' . $host . '`;'
+                . ' Original message thrown by database layer: ' . $e->getMessage(),
                 1376579070
             );
         }
-        $database->setDatabaseName($databaseName);
-        // On windows, this still works, but throws a warning, which we need to discard.
-        @$database->sql_select_db();
     }
 
     /**
@@ -523,59 +523,25 @@ abstract class AbstractTestSystem
      */
     protected function createDatabaseStructure()
     {
-        /** @var SqlSchemaMigrationService $schemaMigrationService */
-        $schemaMigrationService = GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Service\\SqlSchemaMigrationService');
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-        /** @var SqlExpectedSchemaService $expectedSchemaService */
-        $expectedSchemaService = $objectManager->get('TYPO3\\CMS\\Install\\Service\\SqlExpectedSchemaService');
+        $schemaMigrationService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\Schema\\SchemaMigrator');
+        $sqlReader = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\Schema\\SqlReader');
+        $sqlCode = $sqlReader->getTablesDefinitionString(true);
 
-        // Raw concatenated ext_tables.sql and friends string
-        $expectedSchemaString = $expectedSchemaService->getTablesDefinitionString(true);
-        $statements = $schemaMigrationService->getStatementArray($expectedSchemaString, true);
-        list($_, $insertCount) = $schemaMigrationService->getCreateTables($statements, true);
+        $createTableStatements = $sqlReader->getCreateTableStatementArray($sqlCode);
 
-        $fieldDefinitionsFile = $schemaMigrationService->getFieldDefinitions_fileContent($expectedSchemaString);
-        $fieldDefinitionsDatabase = $schemaMigrationService->getFieldDefinitions_database();
-        $difference = $schemaMigrationService->getDatabaseExtra($fieldDefinitionsFile, $fieldDefinitionsDatabase);
-        $updateStatements = $schemaMigrationService->getUpdateSuggestions($difference);
-
+        $updateResult = $schemaMigrationService->install($createTableStatements);
+        $failedStatements = array_filter($updateResult);
         $result = array();
-        $updateResult = $schemaMigrationService->performUpdateQueries($updateStatements['add'], $updateStatements['add']);
-        if (is_array($updateResult)) {
-            $failedStatements = array_intersect_key($updateStatements['add'], $updateResult);
-            foreach ($failedStatements as $key => $query) {
-                $result[$key] = 'Query "' . $query . '" returned "' . $updateResult[$key] . '"';
-            }
-        }
-        $updateResult = $schemaMigrationService->performUpdateQueries($updateStatements['change'], $updateStatements['change']);
-        if (is_array($updateResult)) {
-            $failedStatements = array_intersect_key($updateStatements['change'], $updateResult);
-            foreach ($failedStatements as $key => $query) {
-                $result[$key] = 'Query "' . $query . '" returned "' . $updateResult[$key] . '"';
-            }
-        }
-        $updateResult = $schemaMigrationService->performUpdateQueries($updateStatements['create_table'], $updateStatements['create_table']);
-        if (is_array($updateResult)) {
-            $failedStatements = array_intersect_key($updateStatements['create_table'], $updateResult);
-            foreach ($failedStatements as $key => $query) {
-                $result[$key] = 'Query "' . $query . '" returned "' . $updateResult[$key] . '"';
-            }
+        foreach ($failedStatements as $query => $error) {
+            $result[] = 'Query "' . $query . '" returned "' . $error . '"';
         }
 
         if (!empty($result)) {
             throw new \RuntimeException(implode("\n", $result), 1505058450);
         }
 
-        foreach ($insertCount as $table => $count) {
-            $insertStatements = $schemaMigrationService->getTableInsertStatements($statements, $table);
-            foreach ($insertStatements as $insertQuery) {
-                $insertQuery = rtrim($insertQuery, ';');
-                /** @var DatabaseConnection $database */
-                $database = $GLOBALS['TYPO3_DB'];
-                $database->admin_query($insertQuery);
-            }
-        }
+        $insertStatements = $sqlReader->getInsertStatementArray($sqlCode);
+        $schemaMigrationService->importStaticData($insertStatements);
     }
 
     /**
@@ -590,31 +556,43 @@ abstract class AbstractTestSystem
         $databaseName = trim(getenv('typo3DatabaseName'));
         $databaseHost = trim(getenv('typo3DatabaseHost'));
         $databaseUsername = trim(getenv('typo3DatabaseUsername'));
-        $databasePassword = trim(getenv('typo3DatabasePassword'));
+        $databasePassword = getenv('typo3DatabasePassword');
+        $databasePasswordTrimmed = trim($databasePassword);
         $databasePort = trim(getenv('typo3DatabasePort'));
         $databaseSocket = trim(getenv('typo3DatabaseSocket'));
+        $databaseDriver = trim(getenv('typo3DatabaseDriver'));
         if ($databaseName || $databaseHost || $databaseUsername || $databasePassword || $databasePort || $databaseSocket) {
             // Try to get database credentials from environment variables first
             $originalConfigurationArray = array(
-                'DB' => array(),
+                'DB' => array(
+                    'Connections' => array(
+                        'Default' => array(
+                            'driver' => 'mysqli',
+                            'initCommands' => $this->defaultConfiguration['SYS']['setDBinit'],
+                        ),
+                    ),
+                ),
             );
             if ($databaseName) {
-                $originalConfigurationArray['DB']['database'] = $databaseName;
+                $originalConfigurationArray['DB']['Connections']['Default']['dbname'] = $databaseName;
             }
             if ($databaseHost) {
-                $originalConfigurationArray['DB']['host'] = $databaseHost;
+                $originalConfigurationArray['DB']['Connections']['Default']['host'] = $databaseHost;
             }
             if ($databaseUsername) {
-                $originalConfigurationArray['DB']['username'] = $databaseUsername;
+                $originalConfigurationArray['DB']['Connections']['Default']['user'] = $databaseUsername;
             }
-            if ($databasePassword) {
-                $originalConfigurationArray['DB']['password'] = $databasePassword;
+            if ($databasePassword !== false) {
+                $originalConfigurationArray['DB']['Connections']['Default']['password'] = $databasePasswordTrimmed;
             }
             if ($databasePort) {
-                $originalConfigurationArray['DB']['port'] = $databasePort;
+                $originalConfigurationArray['DB']['Connections']['Default']['port'] = $databasePort;
             }
             if ($databaseSocket) {
-                $originalConfigurationArray['DB']['socket'] = $databaseSocket;
+                $originalConfigurationArray['DB']['Connections']['Default']['unix_socket'] = $databaseSocket;
+            }
+            if ($databaseDriver) {
+                $originalConfigurationArray['DB']['Connections']['Default']['driver'] = $databaseDriver;
             }
         }
 
@@ -671,7 +649,7 @@ abstract class AbstractTestSystem
      */
     protected function setDatabaseName(array $databaseConfiguration)
     {
-        $originalDatabaseName = $databaseConfiguration['database'];
+        $originalDatabaseName = $databaseConfiguration['Connections']['Default']['dbname'];
         $databaseName = $originalDatabaseName . '_ft' . $this->identifier;
 
         // Maximum database name length for mysql is 64 characters
@@ -680,11 +658,11 @@ abstract class AbstractTestSystem
                 'The name of the database that is used for the functional test (' . $databaseName . ')' .
                 ' exceeds the maximum length of 64 character allowed by MySQL. You have to shorten your' .
                 ' original database name to 54 characters',
-                1377600104
+                1488117937
             );
         }
 
-        $databaseConfiguration['database'] = $databaseName;
+        $databaseConfiguration['Connections']['Default']['dbname'] = $databaseName;
 
         return $databaseConfiguration;
     }
@@ -765,7 +743,7 @@ abstract class AbstractTestSystem
      */
     protected function getPackageStatesVersion()
     {
-        return 4;
+        return 5;
     }
 
     /**
