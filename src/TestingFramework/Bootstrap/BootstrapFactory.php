@@ -12,8 +12,6 @@ namespace Nimut\TestingFramework\Bootstrap;
  * LICENSE file that was distributed with this source code.
  */
 
-use Composer\Autoload\ClassLoader;
-
 final class BootstrapFactory
 {
     /**
@@ -38,22 +36,29 @@ final class BootstrapFactory
 
     private static function initializeCompatibilityLayer($version)
     {
-        $compatibilityClassesPath = __DIR__ . '/../../../compat/' . $version . '/';
-        $compatibilityNamespace = 'Nimut\\TestingFramework\\' . $version . '\\';
+        spl_autoload_register(
+            function ($className) use ($version) {
+                if (strpos($className, 'Nimut\\TestingFramework\\') !== 0) {
+                    return;
+                }
 
-        $classLoader = new ClassLoader();
-        $classLoader->addPsr4($compatibilityNamespace, $compatibilityClassesPath);
+                $compatibilityClassName = str_replace('Nimut\\TestingFramework\\', 'Nimut\\TestingFramework\\' . $version . '\\', $className);
 
-        spl_autoload_register(function ($className) use ($classLoader, $compatibilityNamespace) {
-            if (strpos($className, 'Nimut\\TestingFramework\\') === false) {
-                return;
-            }
-
-            $compatibilityClassName = str_replace('Nimut\\TestingFramework\\', $compatibilityNamespace, $className);
-            if ($file = $classLoader->findFile($compatibilityClassName)) {
-                require $file;
-                class_alias($compatibilityClassName, $className);
-            }
-        }, true, true);
+                $classLoaderFilepath = __DIR__ . '/../../../../../autoload.php';
+                if (file_exists($classLoaderFilepath)) {
+                    $classLoader = require $classLoaderFilepath;
+                } elseif (file_exists(__DIR__ . '/../../../.Build/vendor/autoload.php')) {
+                    $classLoader = require __DIR__ . '/../../../.Build/vendor/autoload.php';
+                } else {
+                    throw  new \RuntimeException('ClassLoader can\'t be loaded.', 1513379551);
+                }
+                if ($file = $classLoader->findFile($compatibilityClassName)) {
+                    require $file;
+                    class_alias($compatibilityClassName, $className);
+                }
+            },
+            true,
+            true
+        );
     }
 }
