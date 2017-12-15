@@ -1,38 +1,26 @@
 language: php
 
-dist: precise
-
 matrix:
   fast_finish: true
   include:
+    - php: 7.2
+      env: TYPO3="dev-master"
+    - php: 7.2
+      env: TYPO3=^9.0
+    - php: 7.2
+      env: TYPO3=^8.7
+    - php: 7.2
+      env: TYPO3=^7.6
     - php: 7.1
-      env: TYPO3="dev-master as 8.7.0" PHPUNIT=5.7.5
+      env: TYPO3=^8.7
     - php: 7.1
-      env: TYPO3=^8.7 PHPUNIT=5.7.5
-    - php: 7.1
-      env: TYPO3=^7.6 PHPUNIT=^4.8
-    - php: 7.1
-      env: TYPO3="7.x-dev" PHPUNIT=^4.8
+      env: TYPO3=^7.6
     - php: 7.0
-      env: TYPO3="dev-master as 8.7.0" PHPUNIT=5.7.5
+      env: TYPO3=^8.7
     - php: 7.0
-      env: TYPO3=^8.7 PHPUNIT=5.7.5
-    - php: 7.0
-      env: TYPO3=^7.6 PHPUNIT=^4.8
-    - php: 5.6
-      env: TYPO3=^7.6 PHPUNIT=^4.8
-    - php: 5.6
-      env: TYPO3=^6.2 PHPUNIT=^4.8
-    - php: 5.5
-      env: TYPO3=^7.6 PHPUNIT=^4.8
-    - php: 5.5
-      env: TYPO3=^6.2 PHPUNIT=^4.8
-    - php: 5.4
-      env: TYPO3=^6.2 PHPUNIT=^4.8
-    - php: 5.3
-      env: TYPO3=^6.2 PHPUNIT=^4.8
+      env: TYPO3=^7.6
   allow_failures:
-    - env: TYPO3="dev-master as 8.7.0" PHPUNIT=5.7.5
+    - env: TYPO3="dev-master"
 
 addons:
   apt:
@@ -49,8 +37,7 @@ before_install:
   - if php -i | grep -q xdebug; then phpenv config-rm xdebug.ini; fi
 
 before_script:
-  - if [ "$TYPO3" == "^6.2" ]; then composer require typo3/cms-composer-installers="1.2.8 as 1.1.4" --no-update; fi
-  - composer require typo3/cms="$TYPO3" phpunit/phpunit="$PHPUNIT"
+  - composer require nimut/typo3-complete="$TYPO3"
   - git checkout composer.json
   - export TYPO3_PATH_WEB=$PWD/.Build/Web
 
@@ -82,6 +69,7 @@ script:
     export typo3DatabaseHost="localhost";
     export typo3DatabaseUsername="root";
     export typo3DatabasePassword="";
+    rm -Rf .Build/Web/typo3temp/*;
     .Build/bin/phpunit -c res/Configuration/FunctionalTests.xml --group destructive .Build/Web/typo3conf/ext/testbase/Tests/Functional/;
 
   - >

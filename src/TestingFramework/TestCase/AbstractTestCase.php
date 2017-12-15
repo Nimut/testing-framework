@@ -15,6 +15,9 @@ namespace Nimut\TestingFramework\TestCase;
  */
 
 use Nimut\TestingFramework\MockObject\AccessibleMockObjectInterface;
+use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 /**
  * The mother of all test cases
@@ -23,63 +26,8 @@ use Nimut\TestingFramework\MockObject\AccessibleMockObjectInterface;
  * such as UnitTestCase or FunctionalTestCase
  *
  */
-abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
+abstract class AbstractTestCase extends TestCase
 {
-    /**
-     * @param string $originalClassName
-     * @param array $methods
-     * @param array $arguments
-     * @param string $mockClassName
-     * @param bool $callOriginalConstructor
-     * @param bool $callOriginalClone
-     * @param bool $callAutoload
-     * @param bool $cloneArguments
-     * @param bool $callOriginalMethods
-     * @param null $proxyTarget
-     * @throws \PHPUnit_Framework_Exception
-     * @return \PHPUnit_Framework_MockObject_MockObject
-     */
-    public function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false, $callOriginalMethods = false, $proxyTarget = null)
-    {
-        if (method_exists($this, 'createMock')) {
-            $mockBuilder = $this->getMockBuilder($originalClassName)
-                ->setMethods($methods)
-                ->setConstructorArgs($arguments)
-                ->setMockClassName($mockClassName)
-                ->setProxyTarget($proxyTarget);
-            if (!$callOriginalConstructor) {
-                $mockBuilder->disableOriginalConstructor();
-            }
-            if (!$callOriginalClone) {
-                $mockBuilder->disableOriginalClone();
-            }
-            if (!$callAutoload) {
-                $mockBuilder->disableAutoload();
-            }
-            if ($cloneArguments) {
-                $mockBuilder->enableArgumentCloning();
-            }
-            if ($callOriginalMethods) {
-                $mockBuilder->enableProxyingToOriginalMethods();
-            }
-
-            return $mockBuilder->getMock();
-        }
-
-        return parent::getMock(
-                $originalClassName,
-                $methods,
-                $arguments,
-                $mockClassName,
-                $callOriginalConstructor,
-                $callOriginalClone,
-                $callAutoload,
-                $cloneArguments,
-                $callOriginalMethods,
-                $proxyTarget
-            );
-    }
-
     /**
      * Creates a mock object which allows for calling protected methods and access of protected properties.
      *
@@ -91,8 +39,8 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
      * @param bool $callOriginalClone whether to call the __clone method
      * @param bool $callAutoload whether to call any autoload function
      * @throws \InvalidArgumentException
-     * @throws \PHPUnit_Framework_Exception
-     * @return \PHPUnit_Framework_MockObject_MockObject|AccessibleMockObjectInterface
+     * @throws Exception
+     * @return MockObject|AccessibleMockObjectInterface
      */
     protected function getAccessibleMock(
         $originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '',
@@ -102,15 +50,24 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
             throw new \InvalidArgumentException('$originalClassName must not be empty.', 1334701880);
         }
 
-        return $this->getMock(
-            $this->buildAccessibleProxy($originalClassName),
-            $methods,
-            $arguments,
-            $mockClassName,
-            $callOriginalConstructor,
-            $callOriginalClone,
-            $callAutoload
-        );
+        $mockBuilder = $this->getMockBuilder($this->buildAccessibleProxy($originalClassName))
+            ->setMethods($methods)
+            ->setConstructorArgs($arguments)
+            ->setMockClassName($mockClassName);
+
+        if (!$callOriginalConstructor) {
+            $mockBuilder->disableOriginalConstructor();
+        }
+
+        if (!$callOriginalClone) {
+            $mockBuilder->disableOriginalClone();
+        }
+
+        if (!$callAutoload) {
+            $mockBuilder->disableAutoload();
+        }
+
+        return $mockBuilder->getMock();
     }
 
     /**
@@ -126,8 +83,8 @@ abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
      * @param bool $callAutoload
      * @param array $mockedMethods
      * @throws \InvalidArgumentException
-     * @throws \PHPUnit_Framework_Exception
-     * @return \PHPUnit_Framework_MockObject_MockObject|AccessibleMockObjectInterface
+     * @throws Exception
+     * @return MockObject|AccessibleMockObjectInterface
      *
      */
     protected function getAccessibleMockForAbstractClass(

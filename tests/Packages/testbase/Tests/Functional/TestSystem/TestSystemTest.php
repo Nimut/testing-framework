@@ -55,7 +55,9 @@ class TestSystemTest extends FunctionalTestCase
      */
     public function databaseExceptionContainsErrorMessage()
     {
-        $this->setExpectedExceptionRegExp('RuntimeException', '/Invalid default value for \'testdate\'/', 1505058450);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1505058450);
+        $this->expectExceptionMessageRegExp('/Invalid default value for \'testdate\'/');
 
         parent::setUp();
     }

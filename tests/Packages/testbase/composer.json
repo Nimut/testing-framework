@@ -20,8 +20,8 @@
         }
     ],
     "require": {
-        "typo3/cms-core": ">=6.2 <9.0",
-        "typo3/cms-fluid": ">=6.2 <9.0"
+        "typo3/cms-core": ">=7.6 <9.1 || dev-master",
+        "typo3/cms-fluid": ">=7.6 <9.1 || dev-master"
     },
     "autoload": {
         "psr-4": {

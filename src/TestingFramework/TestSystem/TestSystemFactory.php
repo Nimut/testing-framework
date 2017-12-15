@@ -24,10 +24,8 @@ final class TestSystemFactory
     {
         if (interface_exists('TYPO3Fluid\\Fluid\\View\\ViewInterface')) {
             return new TestSystem($identifier);
-        } elseif (method_exists('TYPO3\\CMS\\Core\\Core\\Bootstrap', 'ensureClassLoadingInformationExists')) {
-            return new OldTestSystem($identifier);
         }
 
-        return new LegacyTestSystem($identifier);
+        return new OldTestSystem($identifier);
     }
 }

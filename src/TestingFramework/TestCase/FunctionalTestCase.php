@@ -21,6 +21,7 @@ use Nimut\TestingFramework\Exception\Exception;
 use Nimut\TestingFramework\Http\Response;
 use Nimut\TestingFramework\TestSystem\AbstractTestSystem;
 use Nimut\TestingFramework\TestSystem\TestSystemFactory;
+use PHPUnit\Util\PHP\DefaultPhpProcess;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -438,7 +439,7 @@ abstract class FunctionalTestCase extends AbstractTestCase
             )
         );
 
-        $php = \PHPUnit_Util_PHP::factory();
+        $php = DefaultPhpProcess::factory();
         $response = $php->runJob($template->render());
         $result = json_decode($response['stdout'], true);
 

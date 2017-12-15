@@ -15,26 +15,16 @@ namespace Nimut\Testbase\Tests\Unit;
 use Nimut\Testbase\Mock;
 use Nimut\TestingFramework\MockObject\AccessibleMockObjectInterface;
 use Nimut\TestingFramework\TestCase\UnitTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class MockTest extends UnitTestCase
 {
     /**
      * @test
      */
-    public function getMockReturnsMock()
-    {
-        /** @var Mock|\PHPUnit_Framework_MockObject_MockObject $subjectMock */
-        $subjectMock = $this->getMock('Nimut\\Testbase\\Mock', array('dummy'), array('foo'));
-
-        $this->assertSame('foo', $subjectMock->getAProtectedProperty());
-    }
-
-    /**
-     * @test
-     */
     public function getAccessibleMockReturnsAccessibleMock()
     {
-        /** @var Mock|\PHPUnit_Framework_MockObject_MockObject|AccessibleMockObjectInterface $subjectAccessibleMock */
+        /** @var Mock|MockObject|AccessibleMockObjectInterface $subjectAccessibleMock */
         $subjectAccessibleMock = $this->getAccessibleMock('Nimut\\Testbase\\Mock', array('dummy'));
         $subjectAccessibleMock->_set('aProtectedProperty', 'foo');
 
