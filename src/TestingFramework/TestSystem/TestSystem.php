@@ -17,6 +17,7 @@ use Doctrine\DBAL\DriverManager;
 use Nimut\TestingFramework\Exception\Exception;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Service\ExtensionConfigurationService;
 
 class TestSystem extends AbstractTestSystem
 {
@@ -136,8 +137,15 @@ class TestSystem extends AbstractTestSystem
         $this->bootstrap->initializeClassLoader($classLoader)
             ->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_CLI)
             ->baseSetup()
-            ->loadConfigurationAndInitialize(true)
-            ->loadTypo3LoadedExtAndExtLocalconf(true)
+            ->loadConfigurationAndInitialize(true);
+
+        if (class_exists('TYPO3\\CMS\\Install\\Service\\ExtensionConfigurationService')) {
+            $extensionConfigurationService = new ExtensionConfigurationService();
+            $extensionConfigurationService->synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions();
+            $this->bootstrap->populateLocalConfiguration();
+        }
+
+        $this->bootstrap->loadTypo3LoadedExtAndExtLocalconf(true)
             ->setFinalCachingFrameworkCacheConfiguration()
             ->unsetReservedGlobalVariables();
 
