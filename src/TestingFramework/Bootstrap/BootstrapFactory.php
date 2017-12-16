@@ -21,10 +21,44 @@ final class BootstrapFactory
      */
     public static function createBootstrapInstance()
     {
-        if (interface_exists('TYPO3Fluid\\Fluid\\View\\ViewInterface')) {
+        if (class_exists('TYPO3\\CMS\\Install\\Service\\ExtensionConfigurationService')) {
             return new Bootstrap();
         }
 
-        return new OldBootstrap();
+        if (interface_exists('TYPO3Fluid\\Fluid\\View\\ViewInterface')) {
+            self::initializeCompatibilityLayer('v87');
+        } else {
+            self::initializeCompatibilityLayer('v76');
+        }
+
+        return new Bootstrap();
+    }
+
+    private static function initializeCompatibilityLayer($version)
+    {
+        spl_autoload_register(
+            function ($className) use ($version) {
+                if (strpos($className, 'Nimut\\TestingFramework\\') !== 0) {
+                    return;
+                }
+
+                $compatibilityClassName = str_replace('Nimut\\TestingFramework\\', 'Nimut\\TestingFramework\\' . $version . '\\', $className);
+
+                $classLoaderFilepath = __DIR__ . '/../../../../../autoload.php';
+                if (file_exists($classLoaderFilepath)) {
+                    $classLoader = require $classLoaderFilepath;
+                } elseif (file_exists(__DIR__ . '/../../../.Build/vendor/autoload.php')) {
+                    $classLoader = require __DIR__ . '/../../../.Build/vendor/autoload.php';
+                } else {
+                    throw  new \RuntimeException('ClassLoader can\'t be loaded.', 1513379551);
+                }
+                if ($file = $classLoader->findFile($compatibilityClassName)) {
+                    require $file;
+                    class_alias($compatibilityClassName, $className);
+                }
+            },
+            true,
+            true
+        );
     }
 }

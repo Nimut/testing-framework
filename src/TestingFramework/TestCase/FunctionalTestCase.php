@@ -15,12 +15,12 @@ namespace Nimut\TestingFramework\TestCase;
  */
 
 use Doctrine\DBAL\DBALException;
-use Nimut\TestingFramework\Database\DatabaseFactory;
+use Nimut\TestingFramework\Database\Database;
 use Nimut\TestingFramework\Database\DatabaseInterface;
 use Nimut\TestingFramework\Exception\Exception;
 use Nimut\TestingFramework\Http\Response;
 use Nimut\TestingFramework\TestSystem\AbstractTestSystem;
-use Nimut\TestingFramework\TestSystem\TestSystemFactory;
+use Nimut\TestingFramework\TestSystem\TestSystem;
 use PHPUnit\Util\PHP\DefaultPhpProcess;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -184,7 +184,7 @@ abstract class FunctionalTestCase extends AbstractTestCase
         if (!defined('ORIGINAL_ROOT')) {
             $this->markTestSkipped('Functional tests must be called through phpunit on CLI');
         }
-        $this->testSystem = TestSystemFactory::createInstanceByIdentifier(get_class($this));
+        $this->testSystem = new TestSystem(get_class($this));
         $this->testSystem->setUp(
             $this->coreExtensionsToLoad,
             $this->testExtensionsToLoad,
@@ -237,7 +237,7 @@ abstract class FunctionalTestCase extends AbstractTestCase
     protected function getDatabaseConnection()
     {
         if (null === $this->database) {
-            $this->database = DatabaseFactory::createDatabaseInstance();
+            $this->database = new Database();
         }
 
         return $this->database;

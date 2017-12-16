@@ -41,14 +41,27 @@ abstract class AbstractBootstrap
      *
      * @return void
      */
-    abstract protected function includeAndStartCoreBootstrap();
+    protected function includeAndStartCoreBootstrap()
+    {
+        $classLoaderFilepath = $this->getClassLoaderFilepath();
+
+        $classLoader = require $classLoaderFilepath;
+
+        $this->bootstrap->initializeClassLoader($classLoader)
+            ->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_CLI)
+            ->baseSetup();
+    }
 
     /**
      * Initializes core cache handling
      *
      * @return void
      */
-    abstract protected function initializeCachingHandling();
+    protected function initializeCachingHandling()
+    {
+        $this->bootstrap->disableCoreCache()
+            ->initializeCachingFramework();
+    }
 
     /**
      * Bootstraps the system for functional tests

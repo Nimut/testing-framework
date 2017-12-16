@@ -1,5 +1,5 @@
 <?php
-namespace Nimut\TestingFramework\Bootstrap;
+namespace Nimut\TestingFramework\v76\Bootstrap;
 
 /*
  * This file is part of the NIMUT testing-framework project.
@@ -12,10 +12,12 @@ namespace Nimut\TestingFramework\Bootstrap;
  * LICENSE file that was distributed with this source code.
  */
 
+use Nimut\TestingFramework\Bootstrap\AbstractBootstrap;
+
 /**
- * Unit Test Bootstrap for TYPO3 ^7.6
+ * Unit Test Bootstrap for TYPO3 8.7 and below
  */
-class OldBootstrap extends AbstractBootstrap
+class Bootstrap extends AbstractBootstrap
 {
     /**
      * Includes the Core Bootstrap class and calls its first few functions

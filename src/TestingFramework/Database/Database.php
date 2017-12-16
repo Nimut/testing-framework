@@ -14,7 +14,9 @@ namespace Nimut\TestingFramework\Database;
 
 use Doctrine\DBAL\Driver\Statement;
 use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class Database implements DatabaseInterface
 {
@@ -26,9 +28,10 @@ class Database implements DatabaseInterface
     /**
      * @param Connection $connection
      */
-    public function __construct(Connection $connection)
+    public function __construct(Connection $connection = null)
     {
-        $this->connection = $connection;
+        $this->connection = $connection ?? GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ConnectionPool')
+                ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
     }
 
     /**
