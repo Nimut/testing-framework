@@ -25,7 +25,7 @@ class Renderer implements SingletonInterface
     /**
      * @var array
      */
-    protected $sections = array();
+    protected $sections = [];
 
     /**
      * @param string $content
@@ -49,11 +49,11 @@ class Renderer implements SingletonInterface
             $parser = $this->createParser();
             $parser->parse($structure);
 
-            $section = array(
+            $section = [
                 'structure' => $structure,
                 'structurePaths' => $parser->getPaths(),
                 'records' => $parser->getRecords(),
-            );
+            ];
 
             $this->addSection($section, $asPrefix . $identifier);
         }

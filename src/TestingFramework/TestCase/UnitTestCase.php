@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Base test case for unit tests
- *
  */
 abstract class UnitTestCase extends AbstractTestCase
 {
@@ -30,7 +29,7 @@ abstract class UnitTestCase extends AbstractTestCase
      *
      * @var array
      */
-    protected $testFilesToDelete = array();
+    protected $testFilesToDelete = [];
 
     /**
      * Unset all additional properties of test classes to help PHP
@@ -83,6 +82,6 @@ abstract class UnitTestCase extends AbstractTestCase
                 throw new \RuntimeException('tearDown() cleanup: File, link or directory does not exist', 1410633510);
             }
         }
-        $this->testFilesToDelete = array();
+        $this->testFilesToDelete = [];
     }
 }

@@ -86,7 +86,7 @@ class Database implements DatabaseInterface
      */
     public function updateArray($table, array $whereArray, array $updateArray)
     {
-        $whereClause = array();
+        $whereClause = [];
         foreach ($whereArray as $key => $value) {
             if ((int)$value !== $value) {
                 $value = $this->databaseConnection->fullQuoteStr($value, $table);
@@ -104,7 +104,7 @@ class Database implements DatabaseInterface
      */
     public function delete($table, array $whereArray)
     {
-        $whereClause = array();
+        $whereClause = [];
         foreach ($whereArray as $key => $value) {
             if ((int)$value !== $value) {
                 $value = $this->databaseConnection->fullQuoteStr($value, $table);

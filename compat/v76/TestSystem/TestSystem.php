@@ -47,7 +47,7 @@ class TestSystem extends AbstractTestSystem
         $difference = $schemaMigrationService->getDatabaseExtra($fieldDefinitionsFile, $fieldDefinitionsDatabase);
         $updateStatements = $schemaMigrationService->getUpdateSuggestions($difference);
 
-        $result = array();
+        $result = [];
         $updateResult = $schemaMigrationService->performUpdateQueries($updateStatements['add'], $updateStatements['add']);
         if (is_array($updateResult)) {
             $failedStatements = array_intersect_key($updateStatements['add'], $updateResult);
@@ -92,7 +92,7 @@ class TestSystem extends AbstractTestSystem
      */
     protected function getDatabaseConfiguration()
     {
-        $originalConfigurationArray = array();
+        $originalConfigurationArray = [];
 
         $databaseName = trim(getenv('typo3DatabaseName'));
         $databaseHost = trim(getenv('typo3DatabaseHost'));
@@ -102,9 +102,9 @@ class TestSystem extends AbstractTestSystem
         $databaseSocket = trim(getenv('typo3DatabaseSocket'));
         if ($databaseName || $databaseHost || $databaseUsername || $databasePassword || $databasePort || $databaseSocket) {
             // Try to get database credentials from environment variables first
-            $originalConfigurationArray = array(
-                'DB' => array(),
-            );
+            $originalConfigurationArray = [
+                'DB' => [],
+            ];
             if ($databaseName) {
                 $originalConfigurationArray['DB']['database'] = $databaseName;
             }

@@ -136,7 +136,8 @@ abstract class AbstractBootstrap
         }
 
         if (!file_exists(ORIGINAL_ROOT . 'typo3/index.php')) {
-            $this->exitWithMessage('Unable to determine path to entry script.'
+            $this->exitWithMessage(
+                'Unable to determine path to entry script.'
                 . ' Please check your path or set an environment variable \'TYPO3_PATH_ROOT\' to your root path.'
             );
         }
@@ -306,7 +307,8 @@ abstract class AbstractBootstrap
             } elseif (file_exists($this->getWebRoot() . '../vendor/autoload.php')) {
                 $classLoaderFilepath = $this->getWebRoot() . '../vendor/autoload.php';
             } else {
-                $this->exitWithMessage('ClassLoader can\'t be loaded.'
+                $this->exitWithMessage(
+                    'ClassLoader can\'t be loaded.'
                     . ' Tried to find "' . $classLoaderFilepath . '".'
                     . ' Please check your path or set an environment variable \'TYPO3_PATH_ROOT\' to your root path.'
                 );

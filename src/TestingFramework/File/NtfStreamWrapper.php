@@ -185,7 +185,6 @@ class NtfStreamWrapper
 
     /**
      * Closes a resource
-     *
      */
     public function stream_close()
     {
@@ -397,11 +396,11 @@ class NtfStreamWrapper
      */
     protected function resolvePath($path)
     {
-        $newPath = array();
+        $newPath = [];
 
         $path = trim($path);
         $path = substr($path, strlen(self::$scheme . '://'));
-        $path = strtr($path, array('\\' => '/', '//' => '/'));
+        $path = strtr($path, ['\\' => '/', '//' => '/']);
 
         foreach (explode('/', $path) as $part) {
             if ($part !== '.') {

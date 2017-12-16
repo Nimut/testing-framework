@@ -19,9 +19,9 @@ class FunctionalTest extends FunctionalTestCase
     /**
      * @var array
      */
-    protected $testExtensionsToLoad = array(
+    protected $testExtensionsToLoad = [
         'typo3conf/ext/testbase',
-    );
+    ];
 
     /**
      * @test
@@ -52,7 +52,7 @@ class FunctionalTest extends FunctionalTestCase
     {
         $this->importDataSet('ntf://Database/pages.xml');
         $this->importDataSet('ntf://Database/tt_content.xml');
-        $this->setUpFrontendRootPage(1, array('ntf://TypoScript/JsonRenderer.ts'));
+        $this->setUpFrontendRootPage(1, ['ntf://TypoScript/JsonRenderer.ts']);
 
         $response = $this->getFrontendResponse(1);
 
