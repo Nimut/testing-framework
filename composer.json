@@ -41,8 +41,7 @@
         "typo3/cms-frontend": ">=7.6 <9.1 || dev-master",
         "typo3/cms-install": ">=7.6 <9.1 || dev-master",
         "phpunit/phpunit": "^6.0",
-        "mikey179/vfsStream": "^1.6",
-        "nimut/typo3-complete": "^7.6"
+        "mikey179/vfsStream": "^1.6"
     },
     "require-dev": {
         "nimut/testing-framework-testbase": "@dev",
