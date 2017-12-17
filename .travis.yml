@@ -1,27 +1,5 @@
 language: php
 
-matrix:
-  fast_finish: true
-  include:
-    - php: 7.2
-      env: TYPO3="dev-master"
-    - php: 7.2
-      env: TYPO3=^9.0
-    - php: 7.2
-      env: TYPO3=^8.7
-    - php: 7.2
-      env: TYPO3=^7.6
-    - php: 7.1
-      env: TYPO3=^8.7
-    - php: 7.1
-      env: TYPO3=^7.6
-    - php: 7.0
-      env: TYPO3=^8.7
-    - php: 7.0
-      env: TYPO3=^7.6
-  allow_failures:
-    - env: TYPO3="dev-master"
-
 addons:
   apt:
     packages:
@@ -36,7 +14,7 @@ sudo: false
 before_install:
   - if php -i | grep -q xdebug; then phpenv config-rm xdebug.ini; fi
 
-before_script:
+install:
   - composer require nimut/typo3-complete="$TYPO3"
   - git checkout composer.json
   - export TYPO3_PATH_WEB=$PWD/.Build/Web
@@ -78,3 +56,30 @@ script:
     echo;
     echo;
     find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;;
+
+jobs:
+  fast_finish: true
+  allow_failures:
+    - env: TYPO3=dev-master
+  include:
+    - stage: test
+      php: 7.2
+      env: TYPO3=dev-master
+    - stage: test
+      php: 7.2
+      env: TYPO3=^9.0
+    - stage: test
+      php: 7.2
+      env: TYPO3=^8.7
+    - stage: test
+      php: 7.1
+      env: TYPO3=^8.7
+    - stage: test
+      php: 7.1
+      env: TYPO3=^7.6
+    - stage: test
+      php: 7.0
+      env: TYPO3=^8.7
+    - stage: test
+      php: 7.0
+      env: TYPO3=^7.6
