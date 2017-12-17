@@ -4,12 +4,21 @@ addons:
   apt:
     packages:
       - parallel
+  sonarcloud:
+    organization: "ichhabrecht-github"
+    branches:
+      - master
+      - pre-merge
 
 cache:
   directories:
     - $HOME/.composer/cache
+    - $HOME/.sonar/cache
 
-sudo: false
+jdk:
+  - oraclejdk8
+
+sudo: required
 
 before_install:
   - if php -i | grep -q xdebug; then phpenv config-rm xdebug.ini; fi
@@ -83,3 +92,12 @@ jobs:
     - stage: test
       php: 7.0
       env: TYPO3=^7.6
+
+    - stage: sonarqube scanner
+      if: type = push AND branch IN (master, pre-merge)
+      php: 7.0
+      before_install: skip
+      install: skip
+      before_script:
+      script:
+        - sonar-scanner
