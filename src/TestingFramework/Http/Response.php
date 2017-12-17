@@ -98,10 +98,10 @@ class Response
         $sectionIdentifiers = func_get_args();
 
         if (empty($sectionIdentifiers)) {
-            $sectionIdentifiers = array('Default');
+            $sectionIdentifiers = ['Default'];
         }
 
-        $sections = array();
+        $sections = [];
         foreach ($sectionIdentifiers as $sectionIdentifier) {
             $sections[] = $this->getResponseContent()->getSection($sectionIdentifier);
         }

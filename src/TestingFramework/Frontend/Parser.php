@@ -24,12 +24,12 @@ class Parser implements SingletonInterface
     /**
      * @var array
      */
-    protected $paths = array();
+    protected $paths = [];
 
     /**
      * @var array
      */
-    protected $records = array();
+    protected $records = [];
 
     /**
      * @return array
@@ -51,7 +51,7 @@ class Parser implements SingletonInterface
      * @param array $structure
      * @param array $path
      */
-    public function parse(array $structure, array $path = array())
+    public function parse(array $structure, array $path = [])
     {
         $this->process($structure);
     }
@@ -60,7 +60,7 @@ class Parser implements SingletonInterface
      * @param array $iterator
      * @param array $path
      */
-    protected function process(array $iterator, array $path = array())
+    protected function process(array $iterator, array $path = [])
     {
         foreach ($iterator as $identifier => $properties) {
             $this->addRecord($identifier, $properties);
@@ -69,7 +69,7 @@ class Parser implements SingletonInterface
                 if (!is_array($propertyValue)) {
                     continue;
                 }
-                $nestedPath = array_merge($path, array($identifier, $propertyName));
+                $nestedPath = array_merge($path, [$identifier, $propertyName]);
                 $this->process($propertyValue, $nestedPath);
             }
         }
@@ -101,7 +101,7 @@ class Parser implements SingletonInterface
     protected function addPath($identifier, array $path)
     {
         if (!isset($this->paths[$identifier])) {
-            $this->paths[$identifier] = array();
+            $this->paths[$identifier] = [];
         }
 
         $this->paths[$identifier][] = $path;

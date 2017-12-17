@@ -19,16 +19,16 @@ class TestSystemTest extends FunctionalTestCase
     /**
      * @var array
      */
-    protected $testExtensionsToLoad = array(
+    protected $testExtensionsToLoad = [
         'typo3conf/ext/testbase',
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $pathsToLinkInTestInstance = array(
+    protected $pathsToLinkInTestInstance = [
         'typo3conf/ext/testbase/Tests/Functional/Fixtures/Database/tx_testbase_foo.sql' => 'typo3conf/ext/testbase/ext_tables.sql',
-    );
+    ];
 
     /**
      * Prevent initial setUp

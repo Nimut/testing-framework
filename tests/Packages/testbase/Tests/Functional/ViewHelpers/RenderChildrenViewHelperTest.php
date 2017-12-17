@@ -19,16 +19,16 @@ class RenderChildrenViewHelperTest extends FunctionalTestCase
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = array(
+    protected $coreExtensionsToLoad = [
         'fluid',
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $testExtensionsToLoad = array(
+    protected $testExtensionsToLoad = [
         'typo3conf/ext/testbase',
-    );
+    ];
 
     /**
      * @test
@@ -37,7 +37,7 @@ class RenderChildrenViewHelperTest extends FunctionalTestCase
     {
         $this->importDataSet('ntf://Database/pages.xml');
 
-        $this->setUpFrontendRootPage(1, array('EXT:testbase/Tests/Functional/Fixtures/TypoScript/Page.ts'));
+        $this->setUpFrontendRootPage(1, ['EXT:testbase/Tests/Functional/Fixtures/TypoScript/Page.ts']);
 
         $response = $this->getFrontendResponse(1);
 

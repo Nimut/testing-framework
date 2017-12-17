@@ -24,7 +24,6 @@ use PHPUnit\Framework\TestCase;
  *
  * Don't inherit this test case but rather choose a more specialized base test case,
  * such as UnitTestCase or FunctionalTestCase
- *
  */
 abstract class AbstractTestCase extends TestCase
 {
@@ -43,8 +42,13 @@ abstract class AbstractTestCase extends TestCase
      * @return MockObject|AccessibleMockObjectInterface
      */
     protected function getAccessibleMock(
-        $originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '',
-        $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true
+        $originalClassName,
+        $methods = [],
+        array $arguments = [],
+        $mockClassName = '',
+        $callOriginalConstructor = true,
+        $callOriginalClone = true,
+        $callAutoload = true
     ) {
         if ($originalClassName === '') {
             throw new \InvalidArgumentException('$originalClassName must not be empty.', 1334701880);
@@ -85,11 +89,15 @@ abstract class AbstractTestCase extends TestCase
      * @throws \InvalidArgumentException
      * @throws Exception
      * @return MockObject|AccessibleMockObjectInterface
-     *
      */
     protected function getAccessibleMockForAbstractClass(
-        $originalClassName, array $arguments = array(), $mockClassName = '',
-        $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = array()
+        $originalClassName,
+        array $arguments = [],
+        $mockClassName = '',
+        $callOriginalConstructor = true,
+        $callOriginalClone = true,
+        $callAutoload = true,
+        $mockedMethods = []
     ) {
         if ($originalClassName === '') {
             throw new \InvalidArgumentException('$originalClassName must not be empty.', 1384268260);

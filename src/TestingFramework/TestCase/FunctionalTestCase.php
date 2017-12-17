@@ -49,7 +49,7 @@ abstract class FunctionalTestCase extends AbstractTestCase
      * @see FunctionalTestCaseUtility $defaultActivatedCoreExtensions
      * @var array
      */
-    protected $coreExtensionsToLoad = array();
+    protected $coreExtensionsToLoad = [];
 
     /**
      * Array of test/fixture extensions paths that should be loaded for a test.
@@ -71,7 +71,7 @@ abstract class FunctionalTestCase extends AbstractTestCase
      *
      * @var array
      */
-    protected $testExtensionsToLoad = array();
+    protected $testExtensionsToLoad = [];
 
     /**
      * Array of test/fixture folder or file paths that should be linked for a test.
@@ -101,7 +101,7 @@ abstract class FunctionalTestCase extends AbstractTestCase
      *
      * @var array
      */
-    protected $pathsToLinkInTestInstance = array();
+    protected $pathsToLinkInTestInstance = [];
 
     /**
      * This configuration array is merged with TYPO3_CONF_VARS
@@ -109,7 +109,7 @@ abstract class FunctionalTestCase extends AbstractTestCase
      *
      * @var array
      */
-    protected $configurationToUseInTestInstance = array();
+    protected $configurationToUseInTestInstance = [];
 
     /**
      * Array of folders that should be created inside the test instance document root.
@@ -136,7 +136,7 @@ abstract class FunctionalTestCase extends AbstractTestCase
      *
      * @var array
      */
-    protected $additionalFoldersToCreate = array();
+    protected $additionalFoldersToCreate = [];
 
     /**
      * The fixture which is used when initializing a backend user
@@ -310,11 +310,11 @@ abstract class FunctionalTestCase extends AbstractTestCase
         $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
         $xml = simplexml_load_string($fileContent);
         libxml_disable_entity_loader($previousValueOfEntityLoader);
-        $foreignKeys = array();
+        $foreignKeys = [];
 
         /** @var $table \SimpleXMLElement */
         foreach ($xml->children() as $table) {
-            $insertArray = array();
+            $insertArray = [];
 
             /** @var $column \SimpleXMLElement */
             foreach ($table->children() as $column) {
@@ -363,7 +363,7 @@ abstract class FunctionalTestCase extends AbstractTestCase
      * @param int $pageId
      * @param array $typoScriptFiles
      */
-    protected function setUpFrontendRootPage($pageId, array $typoScriptFiles = array())
+    protected function setUpFrontendRootPage($pageId, array $typoScriptFiles = [])
     {
         $pageId = (int)$pageId;
         $page = $this->getDatabaseConnection()->selectSingleRow('*', 'pages', 'uid=' . $pageId);
@@ -372,19 +372,19 @@ abstract class FunctionalTestCase extends AbstractTestCase
             $this->fail('Cannot set up frontend root page "' . $pageId . '"');
         }
 
-        $pagesFields = array(
+        $pagesFields = [
             'is_siteroot' => 1,
-        );
+        ];
 
-        $this->getDatabaseConnection()->updateArray('pages', array('uid' => $pageId), $pagesFields);
+        $this->getDatabaseConnection()->updateArray('pages', ['uid' => $pageId], $pagesFields);
 
-        $templateFields = array(
+        $templateFields = [
             'pid' => $pageId,
             'title' => '',
             'config' => '',
             'clear' => 3,
             'root' => 1,
-        );
+        ];
 
         foreach ($typoScriptFiles as $typoScriptFile) {
             if (!file_exists($typoScriptFile)) {
@@ -395,7 +395,7 @@ abstract class FunctionalTestCase extends AbstractTestCase
             }
         }
 
-        $this->getDatabaseConnection()->delete('sys_template', array('pid' => $pageId));
+        $this->getDatabaseConnection()->delete('sys_template', ['pid' => $pageId]);
         $this->getDatabaseConnection()->insertArray('sys_template', $templateFields);
     }
 
@@ -425,18 +425,18 @@ abstract class FunctionalTestCase extends AbstractTestCase
             $additionalParameter .= '&workspaceId=' . (int)$workspaceId;
         }
 
-        $arguments = array(
+        $arguments = [
             'documentRoot' => $this->getInstancePath(),
             'requestUrl' => 'http://localhost/?id=' . $pageId . '&L=' . $languageId . $additionalParameter,
-        );
+        ];
 
         $template = new \Text_Template('ntf://Frontend/Request.tpl');
         $template->setVar(
-            array(
+            [
                 'arguments' => var_export($arguments, true),
                 'originalRoot' => ORIGINAL_ROOT,
                 'ntfRoot' => __DIR__ . '/../../../',
-            )
+            ]
         );
 
         $php = DefaultPhpProcess::factory();

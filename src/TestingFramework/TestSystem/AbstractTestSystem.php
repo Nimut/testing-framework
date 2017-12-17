@@ -33,29 +33,29 @@ abstract class AbstractTestSystem
      *
      * @var array
      */
-    protected $defaultActivatedCoreExtensions = array(
+    protected $defaultActivatedCoreExtensions = [
         'core',
         'backend',
         'frontend',
         'lang',
         'extbase',
         'install',
-    );
+    ];
 
     /**
      * Configuration to set as default
      *
      * @var array
      */
-    protected $defaultConfiguration = array(
-        'SYS' => array(
-            'caching' => array(
-                'cacheConfigurations' => array(
-                    'extbase_object' => array(
+    protected $defaultConfiguration = [
+        'SYS' => [
+            'caching' => [
+                'cacheConfigurations' => [
+                    'extbase_object' => [
                         'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\NullBackend',
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
             'displayErrors' => '1',
             'debugExceptionHandler' => '',
             'encryptionKey' => 'i-am-not-a-secure-encryption-key',
@@ -63,22 +63,22 @@ abstract class AbstractTestSystem
             'isInitialInstallationInProgress' => false,
             'setDBinit' => 'SET SESSION sql_mode = \'STRICT_ALL_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_VALUE_ON_ZERO,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,ONLY_FULL_GROUP_BY\';',
             'trustedHostsPattern' => '.*',
-        ),
-    );
+        ],
+    ];
 
     /**
      * Folders that are always created
      *
      * @var array
      */
-    protected $defaultFoldersToCreate = array(
+    protected $defaultFoldersToCreate = [
         '',
         '/fileadmin',
         '/typo3conf/ext',
         '/typo3temp/var/tests',
         '/typo3temp/var/transient',
         '/uploads',
-    );
+    ];
 
     /**
      * @var string Identifier calculated from test case class
@@ -280,7 +280,7 @@ abstract class AbstractTestSystem
      * @throws Exception
      * @return void
      */
-    protected function setUpSystemDirectories(array $additionalFoldersToCreate = array())
+    protected function setUpSystemDirectories(array $additionalFoldersToCreate = [])
     {
         $foldersToCreate = array_merge($this->defaultFoldersToCreate, $additionalFoldersToCreate);
         foreach ($foldersToCreate as $folder) {
@@ -311,10 +311,10 @@ abstract class AbstractTestSystem
      */
     protected function setUpSystemCoreLinks()
     {
-        $linksToSet = array(
+        $linksToSet = [
             ORIGINAL_ROOT . 'typo3' => $this->systemPath . 'typo3',
             ORIGINAL_ROOT . 'index.php' => $this->systemPath . 'index.php',
-        );
+        ];
         foreach ($linksToSet as $from => $to) {
             if (!symlink($from, $to)) {
                 throw new Exception(
@@ -430,18 +430,18 @@ abstract class AbstractTestSystem
      */
     protected function setUpPackageStates(array $coreExtensionsToLoad, array $testExtensionPaths)
     {
-        $packageStates = array(
-            'packages' => array(),
+        $packageStates = [
+            'packages' => [],
             'version' => $this->getPackageStatesVersion(),
-        );
+        ];
 
         // Register default list of extensions and set active
         foreach ($this->defaultActivatedCoreExtensions as $extensionName) {
-            $packageStates['packages'][$extensionName] = array(
+            $packageStates['packages'][$extensionName] = [
                 'state' => 'active',
                 'packagePath' => 'typo3/sysext/' . $extensionName . '/',
                 'classesPath' => 'Classes/',
-            );
+            ];
         }
 
         // Register additional core extensions and set active
@@ -452,11 +452,11 @@ abstract class AbstractTestSystem
                     1390913893
                 );
             }
-            $packageStates['packages'][$extensionName] = array(
+            $packageStates['packages'][$extensionName] = [
                 'state' => 'active',
                 'packagePath' => 'typo3/sysext/' . $extensionName . '/',
                 'classesPath' => 'Classes/',
-            );
+            ];
         }
 
         // Activate test extensions that have been symlinked before
@@ -468,11 +468,11 @@ abstract class AbstractTestSystem
                     1390913894
                 );
             }
-            $packageStates['packages'][$extensionName] = array(
+            $packageStates['packages'][$extensionName] = [
                 'state' => 'active',
                 'packagePath' => 'typo3conf/ext/' . $extensionName . '/',
                 'classesPath' => 'Classes/',
-            );
+            ];
         }
 
         $content = '<?php' . chr(10) . 'return '
@@ -531,7 +531,7 @@ abstract class AbstractTestSystem
 
         $updateResult = $schemaMigrationService->install($createTableStatements);
         $failedStatements = array_filter($updateResult);
-        $result = array();
+        $result = [];
         foreach ($failedStatements as $query => $error) {
             $result[] = 'Query "' . $query . '" returned "' . $error . '"';
         }
@@ -551,7 +551,7 @@ abstract class AbstractTestSystem
      */
     protected function getDatabaseConfiguration()
     {
-        $originalConfigurationArray = array();
+        $originalConfigurationArray = [];
 
         $databaseName = trim(getenv('typo3DatabaseName'));
         $databaseHost = trim(getenv('typo3DatabaseHost'));
@@ -563,16 +563,16 @@ abstract class AbstractTestSystem
         $databaseDriver = trim(getenv('typo3DatabaseDriver'));
         if ($databaseName || $databaseHost || $databaseUsername || $databasePassword || $databasePort || $databaseSocket) {
             // Try to get database credentials from environment variables first
-            $originalConfigurationArray = array(
-                'DB' => array(
-                    'Connections' => array(
-                        'Default' => array(
+            $originalConfigurationArray = [
+                'DB' => [
+                    'Connections' => [
+                        'Default' => [
                             'driver' => 'mysqli',
                             'initCommands' => $this->defaultConfiguration['SYS']['setDBinit'],
-                        ),
-                    ),
-                ),
-            );
+                        ],
+                    ],
+                ],
+            ];
             if ($databaseName) {
                 $originalConfigurationArray['DB']['Connections']['Default']['dbname'] = $databaseName;
             }
