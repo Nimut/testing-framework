@@ -36,6 +36,13 @@ install:
 script:
   - >
     echo;
+    echo "Validating the composer.json";
+    echo;
+    echo;
+    composer validate --no-check-all --no-check-lock --strict;
+
+  - >
+    echo;
     echo "Running unit tests";
     echo;
     echo;
