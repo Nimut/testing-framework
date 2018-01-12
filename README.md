@@ -5,7 +5,7 @@
 [![StyleCI](https://styleci.io/repos/81999184/shield?branch=master)](https://styleci.io/repos/81999184)
 
 The aim of the testing framework is to provide a good way to write and run unit and functional tests for multiple versions
-of the TYPO3 CMS. Currently **TYPO3 CMS 6.2 up to master (8.6)** are tested and supported.
+of the TYPO3 CMS. Currently **TYPO3 CMS 7.6 up to master (9.0)** are tested and supported.
 
 ## Installation
 
@@ -84,7 +84,7 @@ Following database functions are built in the nimut/testing-framework database i
 If you need own database requests you can get the proper database instance of the current TYPO3 version by using
 `$this->getDatabaseConnection()->getDatabaseInstance()`. You have to check weather this instance is a
 `\TYPO3\CMS\Core\Database\Query\QueryBuilder` (TYPO3 CMS 8 and above) or an instance of 
-`\TYPO3\CMS\Core\Database\DatabaseConnection` (TYPO3 CMS 7 and 6.2). 
+`\TYPO3\CMS\Core\Database\DatabaseConnection` (TYPO3 CMS 7).
 
 #### Database fixtures
 
