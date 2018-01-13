@@ -1,7 +1,7 @@
 # Testing Framework for TYPO3 CMS Extensions
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/nimut/testing-framework.svg)](https://packagist.org/packages/nimut/testing-framework)
-[![Build Status](https://img.shields.io/travis/Nimut/TYPO3-testing-framework/master.svg)](https://travis-ci.org/Nimut/TYPO3-testing-framework)
+[![Build Status](https://img.shields.io/travis/Nimut/testing-framework/master.svg)](https://travis-ci.org/Nimut/testing-framework)
 [![StyleCI](https://styleci.io/repos/81999184/shield?branch=master)](https://styleci.io/repos/81999184)
 
 The aim of the testing framework is to provide a good way to write and run unit and functional tests for multiple versions
