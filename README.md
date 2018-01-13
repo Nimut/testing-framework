@@ -72,14 +72,14 @@ In your FunctionalTestCase call `$this->getDatabaseConnection()` to get an insta
 
 Following database functions are built in the nimut/testing-framework database interface:
 
-- select
-- selectSingleRow
-- selectCount
-- insertArray
-- lastInsertId
-- updateArray
-- delete
-- getDatabaseInstance
+- `select`
+- `selectSingleRow`
+- `selectCount`
+- `insertArray`
+- `lastInsertId`
+- `updateArray`
+- `delete`
+- `getDatabaseInstance`
 
 If you need own database requests you can get the proper database instance of the current TYPO3 version by using
 `$this->getDatabaseConnection()->getDatabaseInstance()`. You have to check weather this instance is a
@@ -90,11 +90,11 @@ If you need own database requests you can get the proper database instance of th
 
 The nimut/testing-framework ships database fixtures for several TYPO3 CMS core database tables:
 
-- pages
-- pages_language_overlay
-- sys_file_storage
-- sys_language
-- tt_content
+- `pages`
+- `pages_language_overlay`
+- `sys_file_storage`
+- `sys_language`
+- `tt_content`
 
 To use the database fixtures you can trigger an import in your test file
 
