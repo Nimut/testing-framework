@@ -123,6 +123,7 @@ abstract class AbstractTestSystem
         $this->bootstrap->populateLocalConfiguration();
 
         $this->bootstrap->loadTypo3LoadedExtAndExtLocalconf(true)
+            ->initializeBackendRouter()
             ->setFinalCachingFrameworkCacheConfiguration()
             ->unsetReservedGlobalVariables();
     }

@@ -153,6 +153,7 @@ class TestSystem extends AbstractTestSystem
             ->baseSetup()
             ->loadConfigurationAndInitialize(true)
             ->loadTypo3LoadedExtAndExtLocalconf(true)
+            ->initializeBackendRouter()
             ->setFinalCachingFrameworkCacheConfiguration()
             ->defineLoggingAndExceptionConstants()
             ->unsetReservedGlobalVariables();
