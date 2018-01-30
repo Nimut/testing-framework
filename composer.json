@@ -7,9 +7,7 @@
         "testing"
     ],
     "homepage": "https://github.com/Nimut/TYPO3-testing-framework",
-    "license": [
-        "GPL-2.0-or-later"
-    ],
+    "license": "GPL-2.0-or-later",
     "authors": [
         {
             "name": "Nicole Cordes",
@@ -35,11 +33,11 @@
     ],
     "require": {
         "php": "< 7.3",
-        "typo3/cms-core": ">=7.6 <9.1 || dev-master",
-        "typo3/cms-extbase": ">=7.6 <9.1 || dev-master",
-        "typo3/cms-fluid": ">=7.6 <9.1 || dev-master",
-        "typo3/cms-frontend": ">=7.6 <9.1 || dev-master",
-        "typo3/cms-install": ">=7.6 <9.1 || dev-master",
+        "typo3/cms-core": ">=7.6 <9.2 || dev-master",
+        "typo3/cms-extbase": ">=7.6 <9.2 || dev-master",
+        "typo3/cms-fluid": ">=7.6 <9.2 || dev-master",
+        "typo3/cms-frontend": ">=7.6 <9.2 || dev-master",
+        "typo3/cms-install": ">=7.6 <9.2 || dev-master",
         "phpunit/phpunit": "^6.0",
         "mikey179/vfsStream": "^1.6"
     },
