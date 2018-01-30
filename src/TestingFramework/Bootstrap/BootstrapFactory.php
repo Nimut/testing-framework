@@ -22,6 +22,12 @@ final class BootstrapFactory
     public static function createBootstrapInstance()
     {
         if (class_exists('TYPO3\\CMS\\Install\\Service\\ExtensionConfigurationService')) {
+            if (method_exists(
+                'TYPO3\\CMS\\Install\\Service\\ExtensionConfigurationService',
+                'synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions'
+            )) {
+                self::initializeCompatibilityLayer('v90');
+            }
             return new Bootstrap();
         }
 

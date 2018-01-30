@@ -19,7 +19,6 @@ use Nimut\TestingFramework\File\NtfStreamWrapper;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Service\ExtensionConfigurationService;
 
 abstract class AbstractTestSystem
 {
@@ -117,10 +116,6 @@ abstract class AbstractTestSystem
             ->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_CLI)
             ->baseSetup()
             ->loadConfigurationAndInitialize(true);
-
-        $extensionConfigurationService = new ExtensionConfigurationService();
-        $extensionConfigurationService->synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions();
-        $this->bootstrap->populateLocalConfiguration();
 
         $this->bootstrap->loadTypo3LoadedExtAndExtLocalconf(true)
             ->initializeBackendRouter()

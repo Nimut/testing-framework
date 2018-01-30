@@ -24,11 +24,7 @@
     "repositories": [
         {
             "type": "path",
-            "url": "compat/Packages/class-alias"
-        },
-        {
-            "type": "path",
-            "url": "tests/Packages/testbase"
+            "url": "tests/Packages/*"
         }
     ],
     "require": {
