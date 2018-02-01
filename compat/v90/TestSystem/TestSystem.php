@@ -12,7 +12,10 @@ namespace Nimut\TestingFramework\v90\TestSystem;
  * LICENSE file that was distributed with this source code.
  */
 
-abstract class AbstractTestSystem extends \Nimut\TestingFramework\TestSystem\AbstractTestSystem
+use Nimut\TestingFramework\TestSystem\AbstractTestSystem;
+use TYPO3\CMS\Install\Service\ExtensionConfigurationService;
+
+class TestSystem extends AbstractTestSystem
 {
     /**
      * Includes the Core Bootstrap class and calls its first few functions

@@ -48,7 +48,8 @@
         "psr-4": {
             "Nimut\\TestingFramework\\": "src/TestingFramework/",
             "Nimut\\TestingFramework\\v76\\": "compat/v76/",
-            "Nimut\\TestingFramework\\v87\\": "compat/v87/"
+            "Nimut\\TestingFramework\\v87\\": "compat/v87/",
+            "Nimut\\TestingFramework\\v90\\": "compat/v90/"
         }
     },
     "config": {
