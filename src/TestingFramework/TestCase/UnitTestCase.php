@@ -45,22 +45,6 @@ abstract class UnitTestCase extends AbstractTestCase
      */
     protected function tearDown()
     {
-        // Unset properties of test classes to safe memory
-        $reflection = new \ReflectionObject($this);
-        foreach ($reflection->getProperties() as $property) {
-            $declaringClass = $property->getDeclaringClass()->getName();
-            if (
-                !$property->isStatic()
-                && $declaringClass !== 'Nimut\\TestingFramework\\TestCase\\AbstractTestCase'
-                && $declaringClass !== get_class($this)
-                && strpos($property->getDeclaringClass()->getName(), 'PHPUnit_') !== 0
-            ) {
-                $propertyName = $property->getName();
-                unset($this->$propertyName);
-            }
-        }
-        unset($reflection);
-
         // Delete registered test files and directories
         foreach ((array)$this->testFilesToDelete as $absoluteFileName) {
             $absoluteFileName = GeneralUtility::fixWindowsFilePath(PathUtility::getCanonicalPath($absoluteFileName));
@@ -82,6 +66,21 @@ abstract class UnitTestCase extends AbstractTestCase
                 throw new \RuntimeException('tearDown() cleanup: File, link or directory does not exist', 1410633510);
             }
         }
-        $this->testFilesToDelete = [];
+
+        // Unset properties of test classes to safe memory
+        $reflection = new \ReflectionObject($this);
+        foreach ($reflection->getProperties() as $property) {
+            $declaringClass = $property->getDeclaringClass()->getName();
+            if (
+                !$property->isStatic()
+                && $declaringClass !== 'Nimut\\TestingFramework\\TestCase\\AbstractTestCase'
+                && $declaringClass !== get_class($this)
+                && strpos($property->getDeclaringClass()->getName(), 'PHPUnit_') !== 0
+            ) {
+                $propertyName = $property->getName();
+                unset($this->$propertyName);
+            }
+        }
+        unset($reflection);
     }
 }
