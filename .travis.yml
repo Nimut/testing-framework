@@ -97,16 +97,15 @@ jobs:
       if: type = push AND branch IN (master, pre-merge)
       php: 7.2
       before_install: skip
-      install: skip
-      before_script:
-      script:
+      install:
         - mkdir -p .Log/coverage/ .Log/log/
         - export TYPO3_PATH_WEB=$PWD/.Build/Web
         - export typo3DatabaseName=typo3
         - export typo3DatabaseHost=localhost
         - export typo3DatabaseUsername=root
         - export typo3DatabasePassword=
-
+      before_script:
+      script:
         - >
           for TYPO3 in "^7.6" "^8.7" "~9.0.2" "~9.1.0"; do
             echo;
@@ -137,9 +136,6 @@ jobs:
             rm -Rf .Build/Web/typo3temp/*;
             .Build/bin/phpunit -c res/Configuration/FunctionalTests.xml --group destructive --log-junit .Log/log/functional-destructive$VERSION.xml --coverage-php .Log/coverage/functional-destructive$VERSION.cov --whitelist ./ .Build/Web/typo3conf/ext/testbase/Tests/Functional/;
           done
-
-        - >
-          ls -Rla .Log;
 
         - >
           echo;
