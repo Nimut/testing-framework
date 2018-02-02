@@ -96,10 +96,8 @@ jobs:
     - stage: sonarqube scanner
       if: type = push AND branch IN (master, pre-merge)
       php: 7.2
-      env: TYPO3=^9.0
       before_install: skip
       install:
-        - composer require nimut/typo3-complete="$TYPO3"
         - mkdir -p .Log/coverage/ .Log/log/
         - export TYPO3_PATH_WEB=$PWD/.Build/Web
         - export typo3DatabaseName=typo3
@@ -109,26 +107,35 @@ jobs:
       before_script:
       script:
         - >
-          echo;
-          echo "Running unit tests";
-          echo;
-          echo;
-          .Build/bin/phpunit -c res/Configuration/UnitTests.xml --log-junit .Log/log/unit.xml --coverage-php .Log/coverage/unit.cov --whitelist src .Build/Web/typo3conf/ext/testbase/Tests/Unit/;
+          for TYPO3 in "^7.6" "^8.7" "~9.0.2" "~9.1.0"; do
+            echo;
+            echo "Running TYPO3 version $TYPO3";
+            echo;
+            echo;
+            git clean -Xdf;
+            composer require nimut/typo3-complete="$TYPO3";
+            git checkout composer.json;
+            VERSION=${TYPO3//[!0-9]/};
 
-        - >
-          echo;
-          echo "Running functional tests";
-          echo;
-          echo;
-          .Build/bin/phpunit -c res/Configuration/FunctionalTests.xml --exclude-group destructive --log-junit .Log/log/functional.xml --coverage-php .Log/coverage/functional.cov --whitelist src .Build/Web/typo3conf/ext/testbase/Tests/Functional/;
+            echo;
+            echo "Running unit tests";
+            echo;
+            echo;
+            .Build/bin/phpunit -c res/Configuration/UnitTests.xml --log-junit .Log/log/unit$VERSION.xml --coverage-php .Log/coverage/unit$VERSION.cov --whitelist ./ .Build/Web/typo3conf/ext/testbase/Tests/Unit/;
 
-        - >
-          echo;
-          echo "Running destructive functional tests";
-          echo;
-          echo;
-          rm -Rf .Build/Web/typo3temp/*;
-          .Build/bin/phpunit -c res/Configuration/FunctionalTests.xml --group destructive --log-junit .Log/log/functional-destructive.xml --coverage-php .Log/coverage/functional-destructive.cov --whitelist src .Build/Web/typo3conf/ext/testbase/Tests/Functional/;
+            echo;
+            echo "Running functional tests";
+            echo;
+            echo;
+            .Build/bin/phpunit -c res/Configuration/FunctionalTests.xml --exclude-group destructive --log-junit .Log/log/functional$VERSION.xml --coverage-php .Log/coverage/functional$VERSION.cov --whitelist ./ .Build/Web/typo3conf/ext/testbase/Tests/Functional/;
+
+            echo;
+            echo "Running destructive functional tests";
+            echo;
+            echo;
+            rm -Rf .Build/Web/typo3temp/*;
+            .Build/bin/phpunit -c res/Configuration/FunctionalTests.xml --group destructive --log-junit .Log/log/functional-destructive$VERSION.xml --coverage-php .Log/coverage/functional-destructive$VERSION.cov --whitelist ./ .Build/Web/typo3conf/ext/testbase/Tests/Functional/;
+          done
 
         - >
           echo;
