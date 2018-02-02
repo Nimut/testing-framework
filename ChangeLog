@@ -1,3 +1,10 @@
+2018-02-02         [RELEASE] Release of testing-framework 3.0.2 (Nicole Cordes)
+2018-02-01 62f1ff8 [TASK] SonarQube: Exclude tests/Package directory for coverage report (Nicole Cordes)
+2018-02-01 409e6b7 [FEATURE] SonarQube: Execute tests with all TYPO3 versions (Nicole Cordes)
+2018-02-01 dfe1776 [BUGFIX] Move v90 AbstractTestSystem to TestSystem (Nicole Cordes)
+2018-02-01 4e15b46 [BUGFIX] Add missing psr-4 autoload information (Nicole Cordes)
+2018-02-01 698a0d9 [BUGFIX] Remove files before unsetting properties (Nicole Cordes)
+
 2018-01-30         [RELEASE] Release of testing-framework 3.0.1 (Nicole Cordes)
 2018-01-30 34b70e6 [BUGFIX] Re-add TYPO3 9.0 support (Nicole Cordes)
 2018-01-30 3836623 [TASK] Raise TYPO3 dependencies to include 9.1 (Nicole Cordes)
