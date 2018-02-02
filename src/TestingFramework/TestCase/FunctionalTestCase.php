@@ -112,6 +112,13 @@ abstract class FunctionalTestCase extends AbstractTestCase
     protected $configurationToUseInTestInstance = [];
 
     /**
+     * If true, deprecation errors are not handled.
+     *
+     * @var bool
+     */
+    protected $disableDeprecations = false;
+
+    /**
      * Array of folders that should be created inside the test instance document root.
      *
      * This property will stay empty in this abstract, so it is possible
@@ -192,6 +199,12 @@ abstract class FunctionalTestCase extends AbstractTestCase
             $this->configurationToUseInTestInstance,
             $this->additionalFoldersToCreate
         );
+        if ($this->disableDeprecations) {
+            $currentErrorReporting = error_reporting();
+            if (E_USER_DEPRECATED & $currentErrorReporting) {
+                error_reporting($currentErrorReporting & ~E_USER_DEPRECATED);
+            }
+        }
     }
 
     /**
