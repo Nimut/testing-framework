@@ -13,6 +13,8 @@ namespace Nimut\TestingFramework\v90\TestSystem;
  */
 
 use Nimut\TestingFramework\TestSystem\AbstractTestSystem;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\ExtensionConfigurationService;
 
 class TestSystem extends AbstractTestSystem
@@ -41,5 +43,27 @@ class TestSystem extends AbstractTestSystem
             ->initializeBackendRouter()
             ->setFinalCachingFrameworkCacheConfiguration()
             ->unsetReservedGlobalVariables();
+    }
+
+    /**
+     * Loads TCA and ext_tables.php files from extensions
+     *
+     * @return void
+     */
+    protected function loadExtensionConfiguration()
+    {
+        $this->prepareDatabaseConnection();
+        $this->bootstrap->loadBaseTca(true)->loadExtTables(true);
+    }
+
+    /**
+     * Initializes default database connection
+     *
+     * @see https://forge.typo3.org/issues/83770
+     * @return void
+     */
+    protected function prepareDatabaseConnection()
+    {
+        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_log');
     }
 }
