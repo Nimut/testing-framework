@@ -401,8 +401,8 @@ abstract class AbstractTestSystem
             $this->defaultConfiguration,
             $configurationToMerge
         );
-        $this->mergeRecursiveWithOverrule($finalConfigurationArray, $configurationToMerge);
         $finalConfigurationArray['DB'] = $this->setDatabaseName($originalConfigurationArray['DB']);
+        $this->mergeRecursiveWithOverrule($finalConfigurationArray, $configurationToMerge);
 
         $content = '<?php' . chr(10) . 'return '
             . var_export($finalConfigurationArray, true)
