@@ -1,3 +1,9 @@
+2018-02-28         [RELEASE] Release of nimut/testing-framework 2.0.3 (Nicole Cordes)
+2018-02-28 82a1807 [TASK] Remove superfluous dev-master tests from Travis CI configuration (Nicole Cordes)
+2018-02-23 00b620b [BUGFIX] Allow to override database setting for function test system (Nicole Cordes)
+2018-02-01 a54dfe4 [BUGFIX] Remove files before unsetting properties (Nicole Cordes)
+2018-01-23 cda2749 [TASK] Update composer.json license definition (Nicole Cordes)
+
 2017-12-14         [RELEASE] Release of nimut/testing-framework 2.0.2 (Nicole Cordes)
 2017-12-14 9f11259 [BUGFIX] Apply SYS/setDBinit to default database configuration in TestSystem (Nicole Cordes)
 2017-12-14 1d11ca6 [BUGFIX] Add missing dependency typo3/cms-frontend (Nicole Cordes)
