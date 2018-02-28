@@ -12,6 +12,30 @@ namespace Nimut\TestingFramework\TestSystem;
  * LICENSE file that was distributed with this source code.
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 class TestSystem extends AbstractTestSystem
 {
+    /**
+     * Loads TCA and ext_tables.php files from extensions
+     *
+     * @return void
+     */
+    protected function loadExtensionConfiguration()
+    {
+        $this->prepareDatabaseConnection();
+        $this->bootstrap->loadBaseTca(true)->loadExtTables(true);
+    }
+
+    /**
+     * Initializes default database connection
+     *
+     * @see https://forge.typo3.org/issues/83770
+     * @return void
+     */
+    protected function prepareDatabaseConnection()
+    {
+        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_log');
+    }
 }

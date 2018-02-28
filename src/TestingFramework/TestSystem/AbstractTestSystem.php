@@ -242,7 +242,7 @@ abstract class AbstractTestSystem
     }
 
     /**
-     * Loads extension configuration from ext_localconf.php and ext_tables.php files
+     * Loads TCA and ext_tables.php files from extensions
      *
      * @return void
      */
