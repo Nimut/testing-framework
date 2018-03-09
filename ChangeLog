@@ -1,3 +1,6 @@
+2018-03-09         [RELEASE] Release of nimut/testing-framework 3.0.4 (Nicole Cordes)
+2018-03-09 a94e1b1 [BUGFIX] Enforce database name to be lowerstring (Nicole Cordes)
+
 2018-02-28         [RELEASE] Release of nimut/testing-framework 3.0.3 (Nicole Cordes)
 2018-02-28 13c2563 [BUGFIX] Remove superfluous database field from be_users fixture file (Nicole Cordes)
 2018-02-23 6ea971b [BUGFIX] Allow to override database setting for function test system (Nicole Cordes)
