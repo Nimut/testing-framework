@@ -658,7 +658,7 @@ abstract class AbstractTestSystem
             );
         }
 
-        $databaseConfiguration['Connections']['Default']['dbname'] = $databaseName;
+        $databaseConfiguration['Connections']['Default']['dbname'] = strtolower($databaseName);
 
         return $databaseConfiguration;
     }
