@@ -39,10 +39,8 @@ class FunctionalTest extends FunctionalTestCase
     public function loadPagesDatabaseFixtures()
     {
         $this->importDataSet('ntf://Database/pages.xml');
-        $this->importDataSet('ntf://Database/pages_language_overlay.xml');
 
         $this->assertSame(7, $this->getDatabaseConnection()->selectCount('*', 'pages'));
-        $this->assertSame(2, $this->getDatabaseConnection()->selectCount('*', 'pages_language_overlay'));
     }
 
     /**
