@@ -216,7 +216,7 @@ class TestSystem extends AbstractTestSystem
             );
         }
 
-        $databaseConfiguration['database'] = $databaseName;
+        $databaseConfiguration['database'] = strtolower($databaseName);
 
         return $databaseConfiguration;
     }
