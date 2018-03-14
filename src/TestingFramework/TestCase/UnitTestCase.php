@@ -75,7 +75,7 @@ abstract class UnitTestCase extends AbstractTestCase
                 !$property->isStatic()
                 && $declaringClass !== 'Nimut\\TestingFramework\\TestCase\\AbstractTestCase'
                 && $declaringClass !== get_class($this)
-                && strpos($property->getDeclaringClass()->getName(), 'PHPUnit_') !== 0
+                && strpos($property->getDeclaringClass()->getName(), 'PHPUnit') !== 0
             ) {
                 $propertyName = $property->getName();
                 unset($this->$propertyName);
