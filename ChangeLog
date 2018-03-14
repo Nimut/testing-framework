@@ -1,3 +1,7 @@
+2018-03-14         [RELEASE] Release of nimut/testing-framework 3.0.5 (Nicole Cordes)
+2018-03-14 5d6473f [BUGFIX] Prevent unsetting PHPUnit properties (Nicole Cordes)
+2018-03-09 489c645 [BUGFIX] Remove importing fixtures for pages_language_overlay (Nicole Cordes)
+
 2018-03-09         [RELEASE] Release of nimut/testing-framework 3.0.4 (Nicole Cordes)
 2018-03-09 a94e1b1 [BUGFIX] Enforce database name to be lowerstring (Nicole Cordes)
 
