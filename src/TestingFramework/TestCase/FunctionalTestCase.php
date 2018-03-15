@@ -160,6 +160,13 @@ abstract class FunctionalTestCase extends AbstractTestCase
     private $testSystem = null;
 
     /**
+     * Run tests in a separate PHP process each
+     *
+     * @var bool
+     */
+    protected $runTestInSeparateProcess = true;
+
+    /**
      * Avoid serialization of some properties containing objects
      *
      * @return array
