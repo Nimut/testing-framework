@@ -38,6 +38,7 @@ abstract class AbstractTestSystem
         'frontend',
         'lang',
         'extbase',
+        'fluid',
         'install',
     ];
 
