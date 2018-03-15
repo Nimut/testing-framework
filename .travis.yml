@@ -152,4 +152,6 @@ jobs:
           echo "Running SonarQube Scanner";
           echo;
           echo;
-          sonar-scanner;
+          if [ -n "$SONAR_TOKEN" ]; then
+            sonar-scanner;
+          fi
