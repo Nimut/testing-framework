@@ -46,6 +46,9 @@
     "suggest": {
         "friendsofphp/php-cs-fixer": "Tool to automatically fix PHP coding standards issues"
     },
+    "conflict": {
+        "symfony/finder": "2.7.44 || 2.8.37 || 3.4.7 || 4.0.7"
+    },
     "autoload": {
         "psr-4": {
             "Nimut\\TestingFramework\\": "src/TestingFramework/",
@@ -64,6 +67,7 @@
         },
         "typo3/cms": {
             "cms-package-dir": "{$vendor-dir}/typo3/cms",
+            "app-dir": ".Build",
             "web-dir": ".Build/Web"
         }
     },
