@@ -1,3 +1,10 @@
+2018-04-05         [RELEASE] Release of nimut/testing-framework 3.0.6 (Nicole Cordes)
+2018-04-05 657589b [BUGFIX] Set conflict to broken symfony/finder versions (Nicole Cordes)
+2018-04-05 768f1c0 [TASK] Add app-dir to composer.json (Nicole Cordes)
+2018-03-15 ce6a159 [BUGFIX] Add missing dependencies for functional tests (Nicole Cordes)
+2018-03-15 331e2a0 [BUGFIX] Don't run SonarQube Scanner without SONAR_TOKEN (Nicole Cordes)
+2018-03-15 937f137 [TASK] Run tests extending FunctionalTestCase in separate processes (Nicole Cordes)
+
 2018-03-14         [RELEASE] Release of nimut/testing-framework 3.0.5 (Nicole Cordes)
 2018-03-14 5d6473f [BUGFIX] Prevent unsetting PHPUnit properties (Nicole Cordes)
 2018-03-09 489c645 [BUGFIX] Remove importing fixtures for pages_language_overlay (Nicole Cordes)
