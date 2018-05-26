@@ -28,7 +28,7 @@
         }
     ],
     "require": {
-        "php": "< 7.3",
+        "php": "^5.5 || ~7.0 || ~7.1 || ~7.2",
         "typo3/cms-backend": ">=7.6 <9.3 || dev-master",
         "typo3/cms-core": ">=7.6 <9.3 || dev-master",
         "typo3/cms-extbase": ">=7.6 <9.3 || dev-master",
