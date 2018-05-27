@@ -67,7 +67,7 @@ abstract class UnitTestCase extends AbstractTestCase
             }
         }
 
-        // Unset properties of test classes to safe memory
+        // Unset properties of test classes to save memory
         $reflection = new \ReflectionObject($this);
         foreach ($reflection->getProperties() as $property) {
             $declaringClass = $property->getDeclaringClass()->getName();

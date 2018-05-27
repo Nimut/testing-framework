@@ -146,7 +146,7 @@ abstract class FunctionalTestCase extends AbstractTestCase
     protected $backendUserFixture = 'ntf://Database/be_users.xml';
 
     /**
-     * Private utility class used for database abstraction. Do NOT use it in test cases"
+     * Private utility class used for database abstraction. Do NOT use it in test cases!
      *
      * @var DatabaseInterface
      */
