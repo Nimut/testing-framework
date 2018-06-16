@@ -24,7 +24,11 @@ before_install:
   - if php -i | grep -q xdebug; then phpenv config-rm xdebug.ini; fi
 
 install:
-  - if [ "$TYPO3" == "dev-master" ]; then composer config minimum-stability dev; fi
+  - >
+    if [ "$TYPO3" == "dev-master" ]; then
+      composer config minimum-stability dev;
+      composer config prefer-stable true;
+    fi
   - composer require nimut/typo3-complete="$TYPO3"
   - git checkout composer.json
   - export TYPO3_PATH_WEB=$PWD/.Build/Web

@@ -23,7 +23,7 @@ class DeprecationControllerTypo3ExceptionTest extends FunctionalTestCase
      */
     protected $configurationToUseInTestInstance = [
         'SYS' => [
-            'exceptionalErrors' => E_ALL & ~(E_STRICT | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR | E_WARNING | E_USER_ERROR | E_USER_NOTICE | E_USER_WARNING),
+            'exceptionalErrors' => E_ALL & ~(E_STRICT | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR | E_DEPRECATED | E_USER_DEPRECATED | E_WARNING | E_USER_ERROR | E_USER_NOTICE),
         ],
     ];
 
@@ -47,7 +47,7 @@ class DeprecationControllerTypo3ExceptionTest extends FunctionalTestCase
     public function someDeprecatedMethodThrowsDeprecationMessage()
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessageRegExp('/^(PHP :|TYPO3 Deprecation Notice:)/');
+        $this->expectExceptionMessageRegExp('/^(PHP :|PHP User Warning:)/');
 
         parent::setUp();
 
