@@ -21,7 +21,7 @@ class DeprecationController
     {
         trigger_error(
             'This is some deprecated method that will never be removed.',
-            E_USER_DEPRECATED
+            E_USER_WARNING
         );
 
         return true;
