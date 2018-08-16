@@ -80,7 +80,7 @@ jobs:
       env: TYPO3=~9.3.1
     - stage: test
       php: 7.2
-      env: TYPO3=~9.2.0
+      env: TYPO3=~9.2.1
     - stage: test
       php: 7.2
       env: TYPO3=~9.1.1
