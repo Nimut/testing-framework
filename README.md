@@ -183,7 +183,7 @@ $this->setUpFrontendRootPage(
     1,
     array(
         'ntf://TypoScript/JsonRenderer.ts',
-        'EXT:example_extension/Tests/Functional/Fixtures/TypoScript/Config.js
+        'EXT:example_extension/Tests/Functional/Fixtures/TypoScript/Config.ts'
     )
 );
 ```
