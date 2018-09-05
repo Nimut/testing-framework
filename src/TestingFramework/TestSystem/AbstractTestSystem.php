@@ -243,7 +243,8 @@ abstract class AbstractTestSystem
      */
     protected function loadExtensionConfiguration()
     {
-        $this->bootstrap->loadBaseTca(true)->loadExtTables(true);
+        // Bootstrap::init() already initialized extension configuration
+        // This function is needed for backwards compatibility only
     }
 
     /**

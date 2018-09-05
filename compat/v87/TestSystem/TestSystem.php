@@ -52,6 +52,16 @@ class TestSystem extends AbstractTestSystem
     }
 
     /**
+     * Loads TCA and ext_tables.php files from extensions
+     *
+     * @return void
+     */
+    protected function loadExtensionConfiguration()
+    {
+        $this->bootstrap->loadBaseTca(true)->loadExtTables(true);
+    }
+
+    /**
      * Populate $GLOBALS['TYPO3_DB'] and create test database
      *
      * @throws Exception
