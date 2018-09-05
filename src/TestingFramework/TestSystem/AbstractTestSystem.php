@@ -116,7 +116,7 @@ abstract class AbstractTestSystem
         $this->bootstrap->initializeClassLoader($classLoader)
             ->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_CLI)
             ->baseSetup()
-            ->loadConfigurationAndInitialize(true);
+            ->loadConfigurationAndInitialize(true, \TYPO3\CMS\Core\Package\PackageManager::class, true);
 
         $this->bootstrap->loadTypo3LoadedExtAndExtLocalconf(true)
             ->initializeBackendRouter()
