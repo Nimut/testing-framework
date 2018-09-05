@@ -12,6 +12,29 @@ namespace Nimut\TestingFramework\TestSystem;
  * LICENSE file that was distributed with this source code.
  */
 
+use Nimut\TestingFramework\Exception\Exception;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+
 class TestSystem extends AbstractTestSystem
 {
+    /**
+     * Populate $GLOBALS['TYPO3_DB'] and create test database
+     *
+     * @throws Exception
+     * @return void
+     */
+    protected function setUpTestDatabase()
+    {
+        // The TYPO3 core misses to reset its internal connection state
+        // This means we need to reset all connections to ensure database connection can be initialized
+        $closure = \Closure::bind(function () {
+            foreach (ConnectionPool::$connections as $connection) {
+                $connection->close();
+            }
+            ConnectionPool::$connections = [];
+        }, null, ConnectionPool::class);
+        $closure();
+
+        parent::setUpTestDatabase();
+    }
 }
