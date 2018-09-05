@@ -17,6 +17,7 @@ use Doctrine\DBAL\DriverManager;
 use Nimut\TestingFramework\Exception\Exception;
 use Nimut\TestingFramework\File\NtfStreamWrapper;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -110,18 +111,11 @@ abstract class AbstractTestSystem
     protected function includeAndStartCoreBootstrap()
     {
         $classLoaderFilepath = $this->getClassLoaderFilepath();
-
         $classLoader = require $classLoaderFilepath;
 
-        $this->bootstrap->initializeClassLoader($classLoader)
-            ->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_CLI)
-            ->baseSetup()
-            ->loadConfigurationAndInitialize(true);
-
-        $this->bootstrap->loadTypo3LoadedExtAndExtLocalconf(true)
-            ->initializeBackendRouter()
-            ->setFinalCachingFrameworkCacheConfiguration()
-            ->unsetReservedGlobalVariables();
+        SystemEnvironmentBuilder::run(0, SystemEnvironmentBuilder::REQUESTTYPE_BE | SystemEnvironmentBuilder::REQUESTTYPE_CLI);
+        Bootstrap::init($classLoader);
+        ob_end_clean();
     }
 
     /**

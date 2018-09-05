@@ -27,6 +27,11 @@ final class BootstrapFactory
                 'synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions'
             )) {
                 self::initializeCompatibilityLayer('v90');
+            } elseif (!method_exists(
+                'TYPO3\\CMS\\Core\\Core\\Bootstrap',
+                'init'
+            )) {
+                self::initializeCompatibilityLayer('v91');
             }
             return new Bootstrap();
         }
