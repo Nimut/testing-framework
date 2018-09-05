@@ -1,5 +1,5 @@
 <?php
-namespace Nimut\TestingFramework\v76\Bootstrap;
+namespace Nimut\TestingFramework\v90\Bootstrap;
 
 /*
  * This file is part of the NIMUT testing-framework project.
@@ -13,9 +13,11 @@ namespace Nimut\TestingFramework\v76\Bootstrap;
  */
 
 use Nimut\TestingFramework\Bootstrap\AbstractBootstrap;
+use TYPO3\CMS\Core\Core\Bootstrap as CoreBootstrap;
+use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 
 /**
- * Unit Test Bootstrap for TYPO3 8.7 and below
+ * Unit Test Bootstrap for TYPO3 >= 8.0
  */
 class Bootstrap extends AbstractBootstrap
 {
@@ -49,18 +51,19 @@ class Bootstrap extends AbstractBootstrap
         $classLoader = require $classLoaderFilepath;
 
         $this->bootstrap->initializeClassLoader($classLoader)
+            ->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_CLI)
             ->baseSetup();
     }
 
     /**
-     * Initializes core cache handling
+     * Defines the constant ORIGINAL_ROOT for the path to the original TYPO3 document root
      *
      * @return void
      */
-    protected function initializeCachingHandling()
+    protected function defineOriginalRootPath()
     {
-        $this->bootstrap->disableCoreCache()
-            ->initializeCachingFramework();
+        parent::defineOriginalRootPath();
+        $this->defineBaseConstants();
     }
 
     /**
@@ -71,6 +74,22 @@ class Bootstrap extends AbstractBootstrap
     protected function initializePackageManager()
     {
         parent::initializePackageManager();
-        $this->bootstrap->ensureClassLoadingInformationExists();
+
+        if (!CoreBootstrap::usesComposerClassLoading()) {
+            // Dump autoload info if in non composer mode
+            ClassLoadingInformation::dumpClassLoadingInformation();
+            ClassLoadingInformation::registerClassLoadingInformation();
+        }
+    }
+
+    /**
+     * Defines some constants and sets the environment variable TYPO3_CONTEXT
+     *
+     * @return void
+     */
+    protected function setTypo3Context()
+    {
+        parent::setTypo3Context();
+        $this->defineBaseConstants();
     }
 }
