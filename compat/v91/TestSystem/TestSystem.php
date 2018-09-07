@@ -1,5 +1,5 @@
 <?php
-namespace Nimut\TestingFramework\v87\TestSystem;
+namespace Nimut\TestingFramework\v91\TestSystem;
 
 /*
  * This file is part of the NIMUT testing-framework project.
@@ -12,8 +12,9 @@ namespace Nimut\TestingFramework\v87\TestSystem;
  * LICENSE file that was distributed with this source code.
  */
 
-use Nimut\TestingFramework\Exception\Exception;
 use Nimut\TestingFramework\TestSystem\AbstractTestSystem;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class TestSystem extends AbstractTestSystem
 {
@@ -31,24 +32,12 @@ class TestSystem extends AbstractTestSystem
         $this->bootstrap->initializeClassLoader($classLoader)
             ->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_CLI)
             ->baseSetup()
-            ->loadConfigurationAndInitialize(true)
-            ->loadTypo3LoadedExtAndExtLocalconf(true)
+            ->loadConfigurationAndInitialize(true);
+
+        $this->bootstrap->loadTypo3LoadedExtAndExtLocalconf(true)
             ->initializeBackendRouter()
             ->setFinalCachingFrameworkCacheConfiguration()
-            ->unsetReservedGlobalVariables()
-            ->defineLoggingAndExceptionConstants();
-    }
-
-    /**
-     * Populate $GLOBALS['TYPO3_DB'] reusing an existing database with all tables truncated
-     *
-     * @return void
-     */
-    protected function initializeTestDatabase()
-    {
-        $this->bootstrap->initializeTypo3DbGlobal();
-
-        parent::initializeTestDatabase();
+            ->unsetReservedGlobalVariables();
     }
 
     /**
@@ -58,19 +47,18 @@ class TestSystem extends AbstractTestSystem
      */
     protected function loadExtensionConfiguration()
     {
+        $this->prepareDatabaseConnection();
         $this->bootstrap->loadBaseTca(true)->loadExtTables(true);
     }
 
     /**
-     * Populate $GLOBALS['TYPO3_DB'] and create test database
+     * Initializes default database connection
      *
-     * @throws Exception
+     * @see https://forge.typo3.org/issues/83770
      * @return void
      */
-    protected function setUpTestDatabase()
+    protected function prepareDatabaseConnection()
     {
-        $this->bootstrap->initializeTypo3DbGlobal();
-
-        parent::setUpTestDatabase();
+        GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_log');
     }
 }

@@ -29,12 +29,12 @@
     ],
     "require": {
         "php": ">= 5.5, < 7.3",
-        "typo3/cms-backend": ">=7.6 <9.4 || dev-master",
-        "typo3/cms-core": ">=7.6 <9.4 || dev-master",
-        "typo3/cms-extbase": ">=7.6 <9.4 || dev-master",
-        "typo3/cms-fluid": ">=7.6 <9.4 || dev-master",
-        "typo3/cms-frontend": ">=7.6 <9.4 || dev-master",
-        "typo3/cms-install": ">=7.6 <9.4 || dev-master",
+        "typo3/cms-backend": ">=7.6 <9.5 || dev-master",
+        "typo3/cms-core": ">=7.6 <9.5 || dev-master",
+        "typo3/cms-extbase": ">=7.6 <9.5 || dev-master",
+        "typo3/cms-fluid": ">=7.6 <9.5 || dev-master",
+        "typo3/cms-frontend": ">=7.6 <9.5 || dev-master",
+        "typo3/cms-install": ">=7.6 <9.5 || dev-master",
         "phpunit/phpunit": "^6.0",
         "mikey179/vfsStream": "^1.6"
     },
@@ -53,7 +53,8 @@
             "Nimut\\TestingFramework\\": "src/TestingFramework/",
             "Nimut\\TestingFramework\\v76\\": "compat/v76/",
             "Nimut\\TestingFramework\\v87\\": "compat/v87/",
-            "Nimut\\TestingFramework\\v90\\": "compat/v90/"
+            "Nimut\\TestingFramework\\v90\\": "compat/v90/",
+            "Nimut\\TestingFramework\\v91\\": "compat/v91/"
         }
     },
     "config": {

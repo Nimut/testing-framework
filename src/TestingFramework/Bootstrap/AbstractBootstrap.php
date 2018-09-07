@@ -17,6 +17,7 @@ namespace Nimut\TestingFramework\Bootstrap;
 use Nimut\TestingFramework\File\NtfStreamWrapper;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\Bootstrap as CoreBootstrap;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 
 abstract class AbstractBootstrap
 {
@@ -44,12 +45,11 @@ abstract class AbstractBootstrap
     protected function includeAndStartCoreBootstrap()
     {
         $classLoaderFilepath = $this->getClassLoaderFilepath();
-
         $classLoader = require $classLoaderFilepath;
 
-        $this->bootstrap->initializeClassLoader($classLoader)
-            ->setRequestType(TYPO3_REQUESTTYPE_BE | TYPO3_REQUESTTYPE_CLI)
-            ->baseSetup();
+        SystemEnvironmentBuilder::run(0, SystemEnvironmentBuilder::REQUESTTYPE_BE | SystemEnvironmentBuilder::REQUESTTYPE_CLI);
+        CoreBootstrap::init($classLoader);
+        ob_end_clean();
     }
 
     /**
@@ -88,8 +88,6 @@ abstract class AbstractBootstrap
         $this->setTypo3Context();
         $this->includeAndStartCoreBootstrap();
         $this->initializeConfiguration();
-        $this->initializeCachingHandling();
-        $this->initializePackageManager();
         $this->registerNtfStreamWrapper();
     }
 
