@@ -201,8 +201,10 @@ abstract class AbstractTestSystem
         define('TYPO3_DLOG', false);
 
         // Ensure TYPO3_PATH_ROOT is pointing to the document root of the test environment
+        // Ensure TYPO3_PATH_APP is reset to store caches in test environment folder
         // It will be evaluated in the TYPO3 bootstrap and a previously set value may interfere here
         putenv('TYPO3_PATH_ROOT=' . rtrim($this->systemPath, '/'));
+        putenv('TYPO3_PATH_APP');
         $_SERVER['PWD'] = $this->systemPath;
         $_SERVER['argv'][0] = 'index.php';
     }

@@ -31,7 +31,7 @@ install:
     fi
   - composer require nimut/typo3-complete="$TYPO3"
   - git checkout composer.json
-  - export TYPO3_PATH_WEB=$PWD/.Build/Web
+  - export TYPO3_PATH_ROOT=$PWD/.Build/Web
   - export typo3DatabaseName=typo3
   - export typo3DatabaseHost=localhost
   - export typo3DatabaseUsername=root
@@ -112,7 +112,7 @@ jobs:
       before_install: skip
       install:
         - mkdir -p .Log/coverage/ .Log/log/
-        - export TYPO3_PATH_WEB=$PWD/.Build/Web
+        - export TYPO3_PATH_ROOT=$PWD/.Build/Web
         - export typo3DatabaseName=typo3
         - export typo3DatabaseHost=localhost
         - export typo3DatabaseUsername=root
