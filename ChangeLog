@@ -1,3 +1,12 @@
+2018-09-10         [RELEASE] Release of nimut/testing-framework 4.1.0 (Nicole Cordes)
+2018-09-05 5666525 [BUGFIX] Correctly initialize UnitTest Bootstrap in TYPO3 >= 9.2 (Nicole Cordes)
+2018-09-05 fbbacff [BUGFIX] Reset database connection to delete internal state (Nicole Cordes)
+2018-09-05 33f1fc3 [BUGFIX] Correctly load extension configuration in TYPO3 >= 9.2 (Nicole Cordes)
+2018-09-05 427e7b6 [BUGFIX] Correctly initialize Bootstrap in TYPO3 >= 9.2 (Nicole Cordes)
+2018-09-05 72da3ce [TASK] Raise TYPO3 dependencies to include 9.4 (Nicole Cordes)
+2018-08-14 c79af6d [BUGFIX] Use updated package of nimut/typo3-complete (Nicole Cordes)
+2018-07-17 ec08709 Update README.md (Matthias Vogel)
+
 2018-06-22         [RELEASE] Release of nimut/testing-framework 4.0.0 (Nicole Cordes)
 2018-06-22 d891b25 [TASK] Raise branch alias to 4.x-dev (Nicole Cordes)
 2018-06-16 aa375a1 [BUGFIX] Prefer stable package versions (Nicole Cordes)
