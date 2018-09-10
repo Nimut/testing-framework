@@ -13,30 +13,13 @@ namespace Nimut\TestingFramework\v76\Bootstrap;
  */
 
 use Nimut\TestingFramework\Bootstrap\AbstractBootstrap;
+use TYPO3\CMS\Core\Package\UnitTestPackageManager;
 
 /**
- * Unit Test Bootstrap for TYPO3 8.7 and below
+ * Unit Test Bootstrap for TYPO3 7.6
  */
 class Bootstrap extends AbstractBootstrap
 {
-    /**
-     * Bootstraps the system for unit tests
-     *
-     * @return void
-     */
-    public function bootstrapUnitTestSystem()
-    {
-        $this->enableDisplayErrors();
-        $this->createNecessaryDirectoriesInDocumentRoot();
-        $this->defineSitePath();
-        $this->setTypo3Context();
-        $this->includeAndStartCoreBootstrap();
-        $this->initializeConfiguration();
-        $this->initializeCachingHandling();
-        $this->initializePackageManager();
-        $this->registerNtfStreamWrapper();
-    }
-
     /**
      * Includes the Core Bootstrap class and calls its first few functions
      *
@@ -70,7 +53,17 @@ class Bootstrap extends AbstractBootstrap
      */
     protected function initializePackageManager()
     {
-        parent::initializePackageManager();
+        $this->initializeCachingHandling();
+        $this->bootstrap->initializePackageManagement(UnitTestPackageManager::class);
+    }
+
+    /**
+     * Dump autoload info if in non composer mode
+     *
+     * @return void
+     */
+    protected function dumpAutoloadFiles()
+    {
         $this->bootstrap->ensureClassLoadingInformationExists();
     }
 }

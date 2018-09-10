@@ -12,11 +12,8 @@ namespace Nimut\TestingFramework\Bootstrap;
  * LICENSE file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Core\Core\Bootstrap as CoreBootstrap;
-use TYPO3\CMS\Core\Core\ClassLoadingInformation;
-
 /**
- * Unit Test Bootstrap for TYPO3 >= 8.0
+ * Unit Test Bootstrap for TYPO3 >= 9.2
  */
 class Bootstrap extends AbstractBootstrap
 {
@@ -29,22 +26,6 @@ class Bootstrap extends AbstractBootstrap
     {
         parent::defineOriginalRootPath();
         $this->defineBaseConstants();
-    }
-
-    /**
-     * Initializes a package manager for tests that activates all packages by default
-     *
-     * @return void
-     */
-    protected function initializePackageManager()
-    {
-        parent::initializePackageManager();
-
-        if (!CoreBootstrap::usesComposerClassLoading()) {
-            // Dump autoload info if in non composer mode
-            ClassLoadingInformation::dumpClassLoadingInformation();
-            ClassLoadingInformation::registerClassLoadingInformation();
-        }
     }
 
     /**

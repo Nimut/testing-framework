@@ -15,30 +15,13 @@ namespace Nimut\TestingFramework\v91\Bootstrap;
 use Nimut\TestingFramework\Bootstrap\AbstractBootstrap;
 use TYPO3\CMS\Core\Core\Bootstrap as CoreBootstrap;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
+use TYPO3\CMS\Core\Package\UnitTestPackageManager;
 
 /**
- * Unit Test Bootstrap for TYPO3 >= 8.0
+ * Unit Test Bootstrap for TYPO3 9.1
  */
 class Bootstrap extends AbstractBootstrap
 {
-    /**
-     * Bootstraps the system for unit tests
-     *
-     * @return void
-     */
-    public function bootstrapUnitTestSystem()
-    {
-        $this->enableDisplayErrors();
-        $this->createNecessaryDirectoriesInDocumentRoot();
-        $this->defineSitePath();
-        $this->setTypo3Context();
-        $this->includeAndStartCoreBootstrap();
-        $this->initializeConfiguration();
-        $this->initializeCachingHandling();
-        $this->initializePackageManager();
-        $this->registerNtfStreamWrapper();
-    }
-
     /**
      * Includes the Core Bootstrap class and calls its first few functions
      *
@@ -73,10 +56,18 @@ class Bootstrap extends AbstractBootstrap
      */
     protected function initializePackageManager()
     {
-        parent::initializePackageManager();
+        $this->initializeCachingHandling();
+        $this->bootstrap->initializePackageManagement(UnitTestPackageManager::class);
+    }
 
+    /**
+     * Dump autoload info if in non composer mode
+     *
+     * @return void
+     */
+    protected function dumpAutoloadFiles()
+    {
         if (!CoreBootstrap::usesComposerClassLoading()) {
-            // Dump autoload info if in non composer mode
             ClassLoadingInformation::dumpClassLoadingInformation();
             ClassLoadingInformation::registerClassLoadingInformation();
         }

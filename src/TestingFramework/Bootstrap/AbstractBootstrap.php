@@ -15,9 +15,17 @@ namespace Nimut\TestingFramework\Bootstrap;
  */
 
 use Nimut\TestingFramework\File\NtfStreamWrapper;
+use TYPO3\CMS\Core\Cache\Backend\NullBackend;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Core\Bootstrap as CoreBootstrap;
+use TYPO3\CMS\Core\Core\ClassLoadingInformation;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Package\UnitTestPackageManager;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 abstract class AbstractBootstrap
 {
@@ -48,8 +56,8 @@ abstract class AbstractBootstrap
         $classLoader = require $classLoaderFilepath;
 
         SystemEnvironmentBuilder::run(0, SystemEnvironmentBuilder::REQUESTTYPE_BE | SystemEnvironmentBuilder::REQUESTTYPE_CLI);
-        CoreBootstrap::init($classLoader);
-        ob_end_clean();
+        CoreBootstrap::initializeClassLoader($classLoader);
+        CoreBootstrap::baseSetup();
     }
 
     /**
@@ -88,6 +96,8 @@ abstract class AbstractBootstrap
         $this->setTypo3Context();
         $this->includeAndStartCoreBootstrap();
         $this->initializeConfiguration();
+        $this->initializePackageManager();
+        $this->dumpAutoloadFiles();
         $this->registerNtfStreamWrapper();
     }
 
@@ -249,7 +259,24 @@ abstract class AbstractBootstrap
      */
     protected function initializePackageManager()
     {
-        $this->bootstrap->initializePackageManagement('TYPO3\\CMS\\Core\\Package\\UnitTestPackageManager');
+        $cache = new PhpFrontend('cache_core', new NullBackend('production', []));
+        $packageManager = CoreBootstrap::createPackageManager(UnitTestPackageManager::class, $cache);
+
+        GeneralUtility::setSingletonInstance(PackageManager::class, $packageManager);
+        ExtensionManagementUtility::setPackageManager($packageManager);
+    }
+
+    /**
+     * Dump autoload info if in non composer mode
+     *
+     * @return void
+     */
+    protected function dumpAutoloadFiles()
+    {
+        if (!Environment::isComposerMode()) {
+            ClassLoadingInformation::dumpClassLoadingInformation();
+            ClassLoadingInformation::registerClassLoadingInformation();
+        }
     }
 
     /**
