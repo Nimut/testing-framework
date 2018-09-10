@@ -1,3 +1,8 @@
+2018-09-11         [RELEASE] Release of nimut/testing-framework 4.1.1 (Nicole Cordes)
+2018-09-11 7e9d5da [BUGFIX] Initialize UnitTest Bootstrap with minimum requirements (Nicole Cordes)
+2018-09-10 7b572c1 [BUGFIX] Ensure TYPO3_PATH_APP is reset to store local caches (Nicole Cordes)
+2018-09-10 fe9957c [BUGFIX] Ensure ext_tables.php files are loaded (Nicole Cordes)
+
 2018-09-10         [RELEASE] Release of nimut/testing-framework 4.1.0 (Nicole Cordes)
 2018-09-05 5666525 [BUGFIX] Correctly initialize UnitTest Bootstrap in TYPO3 >= 9.2 (Nicole Cordes)
 2018-09-05 fbbacff [BUGFIX] Reset database connection to delete internal state (Nicole Cordes)
