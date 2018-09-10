@@ -243,8 +243,7 @@ abstract class AbstractTestSystem
      */
     protected function loadExtensionConfiguration()
     {
-        // Bootstrap::init() already initialized extension configuration
-        // This function is needed for backwards compatibility only
+        Bootstrap::loadExtTables(true);
     }
 
     /**
