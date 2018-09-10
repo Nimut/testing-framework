@@ -26,6 +26,17 @@ class FunctionalTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function extTablesIsLoaded()
+    {
+        $this->assertContains(
+            'lib.testbase = TEXT',
+            $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup']
+        );
+    }
+
+    /**
+     * @test
+     */
     public function adminUserIsLoggedIn()
     {
         $backendUser = $this->setUpBackendUserFromFixture(1);
