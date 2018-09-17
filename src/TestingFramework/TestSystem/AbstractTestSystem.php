@@ -115,6 +115,7 @@ abstract class AbstractTestSystem
 
         SystemEnvironmentBuilder::run(0, SystemEnvironmentBuilder::REQUESTTYPE_BE | SystemEnvironmentBuilder::REQUESTTYPE_CLI);
         Bootstrap::init($classLoader);
+        Bootstrap::initializeBackendRouter();
         ob_end_clean();
     }
 
