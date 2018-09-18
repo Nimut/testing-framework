@@ -245,6 +245,7 @@ abstract class AbstractTestSystem
      */
     protected function loadExtensionConfiguration()
     {
+        Bootstrap::initializeBackendRouter();
         Bootstrap::loadExtTables(true);
     }
 
