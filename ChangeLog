@@ -1,3 +1,8 @@
+2018-09-18         [RELEASE] Release of nimut/testing-framework 4.1.2 (Nicole Cordes)
+2018-09-18 bb768c6 [FEATURE] Add functional test for backend routes (Nicole Cordes)
+2018-09-18 a2ae145 [TASK] Initialize backend routes with extension config (Mathias Brodala)
+2018-09-17 40ac176 [BUGFIX] Initialize backend routes for TYPO3 >= 9.2 (Mathias Brodala)
+
 2018-09-11         [RELEASE] Release of nimut/testing-framework 4.1.1 (Nicole Cordes)
 2018-09-11 7e9d5da [BUGFIX] Initialize UnitTest Bootstrap with minimum requirements (Nicole Cordes)
 2018-09-10 7b572c1 [BUGFIX] Ensure TYPO3_PATH_APP is reset to store local caches (Nicole Cordes)
