@@ -13,6 +13,8 @@ namespace Nimut\Testbase\Tests\Functional;
  */
 
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Http\Uri;
 
 class FunctionalTest extends FunctionalTestCase
 {
@@ -52,6 +54,18 @@ class FunctionalTest extends FunctionalTestCase
         $this->importDataSet('ntf://Database/pages.xml');
 
         $this->assertSame(7, $this->getDatabaseConnection()->selectCount('*', 'pages'));
+    }
+
+    /**
+     * @test
+     */
+    public function routesAreInitialized()
+    {
+        $uriBuilder = new UriBuilder();
+        $uri = $uriBuilder->buildUriFromRoute('login', [], UriBuilder::ABSOLUTE_PATH);
+
+        $this->assertInstanceOf(Uri::class, $uri);
+        $this->assertSame('/typo3/index.php?route=%2Flogin', (string)$uri);
     }
 
     /**
