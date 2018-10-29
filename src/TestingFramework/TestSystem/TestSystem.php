@@ -18,6 +18,21 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 class TestSystem extends AbstractTestSystem
 {
     /**
+     * Extensions that are always loaded
+     *
+     * @var array
+     */
+    protected $defaultActivatedCoreExtensions = [
+        'core',
+        'backend',
+        'frontend',
+        'extbase',
+        'fluid',
+        'install',
+        'recordlist',
+    ];
+
+    /**
      * Populate $GLOBALS['TYPO3_DB'] and create test database
      *
      * @throws Exception
