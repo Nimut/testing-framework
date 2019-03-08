@@ -82,6 +82,9 @@ jobs:
       php: 7.2
       env: TYPO3=^8.7
     - stage: test
+      php: 7.2
+      env: TYPO3=^7.6
+    - stage: test
       php: 7.1
       env: TYPO3=^8.7
     - stage: test
