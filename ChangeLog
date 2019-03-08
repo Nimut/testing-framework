@@ -1,3 +1,10 @@
+2019-03-08         [RELEASE] Release of nimut/testing-framework 4.1.5 (Nicole Cordes)
+2019-03-08 fc2e2dd [BUGFIX] Use lowercased package name for mikey179/vfsstream (Nicole Cordes)
+2019-03-08 f85e26e [TASK] Raise phpunit/phpunit compatibility to ^7.0 (Nicole Cordes)
+2019-03-08 862394a [BUGFIX] Exclude TRAVIS_CMD in xdebug grep (Nicole Cordes)
+2019-03-08 6d1d173 [TASK] Raise PHP compatibility to 7.3 (Nicole Cordes)
+2019-03-08 63f78db [BUGFIX] Add missing build job for PHP 7.2 / TYPO3 7.6 (Nicole Cordes)
+
 2018-11-01         [RELEASE] Release of nimut/testing-framework 4.1.4 (Nicole Cordes)
 2018-10-29 fa6c602 [BUGFIX] Set correct default core extension dependencies (Nicole Cordes)
 2018-10-03 20be88d [TASK] Remove support for non LTS versions (Nicole Cordes)
