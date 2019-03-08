@@ -28,7 +28,7 @@
         }
     ],
     "require": {
-        "php": ">= 5.5, < 7.3",
+        "php": ">= 5.5, < 7.4",
         "typo3/cms-backend": "^7.6 || ^8.7 || ^9.5 || dev-master",
         "typo3/cms-core": "^7.6 || ^8.7 || ^9.5 || dev-master",
         "typo3/cms-extbase": "^7.6 || ^8.7 || ^9.5 || dev-master",
@@ -41,7 +41,7 @@
     },
     "require-dev": {
         "nimut/testing-framework-testbase": "@dev",
-        "nimut/phpunit-merger": "^0.1"
+        "nimut/phpunit-merger": "^0.2"
     },
     "suggest": {
         "friendsofphp/php-cs-fixer": "Tool to automatically fix PHP coding standards issues"
