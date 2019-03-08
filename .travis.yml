@@ -21,7 +21,7 @@ jdk:
 sudo: required
 
 before_install:
-  - if php -i | grep -q xdebug; then phpenv config-rm xdebug.ini; fi
+  - if php -i | grep -v TRAVIS_CMD | grep -q xdebug; then phpenv config-rm xdebug.ini; fi
 
 install:
   - >
@@ -73,6 +73,15 @@ jobs:
     - env: TYPO3=dev-master
   include:
     - stage: test
+      php: 7.3
+      env: TYPO3=dev-master
+    - stage: test
+      php: 7.3
+      env: TYPO3=^9.5
+    - stage: test
+      php: 7.3
+      env: TYPO3=^8.7
+    - stage: test
       php: 7.2
       env: TYPO3=dev-master
     - stage: test
@@ -81,6 +90,9 @@ jobs:
     - stage: test
       php: 7.2
       env: TYPO3=^8.7
+    - stage: test
+      php: 7.2
+      env: TYPO3=^7.6
     - stage: test
       php: 7.1
       env: TYPO3=^8.7
