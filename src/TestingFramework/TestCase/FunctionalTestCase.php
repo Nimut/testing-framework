@@ -209,7 +209,7 @@ abstract class FunctionalTestCase extends AbstractTestCase
         parent::tearDown();
 
         foreach ($this->pathsToLinkInTestInstance as $destination) {
-            @unlink($destination);
+            GeneralUtility::rmdir($this->testSystem->getSystemPath() . ltrim($destination, '/'));
         }
     }
 
