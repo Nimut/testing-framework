@@ -46,7 +46,7 @@ protected $viewHelper;
 protected function setUp()
 {
     parent::setUp();
-    $this->viewHelper = $this->getMock(RenderChildrenViewHelper::class, ['renderChildren']);
+    $this->viewHelper = $this->getMockBuilder(RenderChildrenViewHelper::class)->setMethods(['renderChildren'])->getMock();
     $this->injectDependenciesIntoViewHelper($this->viewHelper);
     $this->viewHelper->initializeArguments();
 }
