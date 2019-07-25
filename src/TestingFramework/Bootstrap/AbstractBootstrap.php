@@ -43,7 +43,15 @@ abstract class AbstractBootstrap
     public function __construct(CoreBootstrap $bootstrap = null)
     {
         putenv('TYPO3_CONTEXT=Testing');
+    }
 
+    /**
+     * Includes the Core Bootstrap class and calls its first few functions
+     *
+     * @return void
+     */
+    protected function includeAndStartCoreBootstrap()
+    {
         $classLoaderFilepath = $this->getClassLoaderFilepath();
         $classLoader = require $classLoaderFilepath;
 
@@ -58,15 +66,6 @@ abstract class AbstractBootstrap
             $this->bootstrap = (null !== $bootstrap) ? $bootstrap : CoreBootstrap::init($classLoader);
         }
 
-    }
-
-    /**
-     * Includes the Core Bootstrap class and calls its first few functions
-     *
-     * @return void
-     */
-    protected function includeAndStartCoreBootstrap()
-    {
         CoreBootstrap::baseSetup();
     }
 
