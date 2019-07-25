@@ -63,7 +63,7 @@ abstract class AbstractBootstrap
             CoreBootstrap::initializeClassLoader($classLoader);
         } else {
             // use new bootstrap introduced with TYPO3 V9
-            CoreBootstrap::init($classLoader);
+            $this->bootstrap = (null !== $bootstrap) ? $bootstrap : CoreBootstrap::init($classLoader);
         }
 
         CoreBootstrap::baseSetup();
