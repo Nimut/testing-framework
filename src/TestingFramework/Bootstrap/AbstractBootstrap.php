@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Package\UnitTestPackageManager;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 abstract class AbstractBootstrap
 {
@@ -42,7 +43,6 @@ abstract class AbstractBootstrap
     public function __construct(CoreBootstrap $bootstrap = null)
     {
         putenv('TYPO3_CONTEXT=Testing');
-        $this->bootstrap = (null !== $bootstrap) ? $bootstrap : CoreBootstrap::getInstance();
     }
 
     /**
@@ -56,7 +56,16 @@ abstract class AbstractBootstrap
         $classLoader = require $classLoaderFilepath;
 
         SystemEnvironmentBuilder::run(0, SystemEnvironmentBuilder::REQUESTTYPE_BE | SystemEnvironmentBuilder::REQUESTTYPE_CLI);
-        CoreBootstrap::initializeClassLoader($classLoader);
+
+        if (VersionNumberUtility::convertVersionNumberToInteger(VersionNumberUtility::getNumericTypo3Version()) < 9000000) {
+            // use old bootstrapping that was depreated with TYPO3 V9 and up
+            $this->bootstrap = (null !== $bootstrap) ? $bootstrap : CoreBootstrap::getInstance();
+            CoreBootstrap::initializeClassLoader($classLoader);
+        } else {
+            // use new bootstrap introduced with TYPO3 V9
+            CoreBootstrap::init($classLoader);
+        }
+
         CoreBootstrap::baseSetup();
     }
 
