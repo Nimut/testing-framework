@@ -98,7 +98,6 @@ abstract class AbstractTestSystem
     public function __construct($identifier, Bootstrap $bootstrap = null)
     {
         putenv('TYPO3_CONTEXT=Testing');
-        $this->bootstrap = $bootstrap === null ? Bootstrap::getInstance() : $bootstrap;
         $this->identifier = substr(sha1($identifier), 0, 7);
         $this->systemPath = ORIGINAL_ROOT . 'typo3temp/var/tests/functional-' . $this->identifier . '/';
     }
