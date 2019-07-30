@@ -25,12 +25,17 @@ final class BootstrapFactory
     {
         if (!class_exists('TYPO3\\CMS\\Install\\Service\\ExtensionConfigurationService')) {
             if (interface_exists('TYPO3Fluid\\Fluid\\View\\ViewInterface')) {
+                error_log("Loading V87 compat layer");
                 self::initializeCompatibilityLayer('v87');
             } else {
+                error_log("Loading V76 compat layer");
                 self::initializeCompatibilityLayer('v76');
             }
         } else if(!class_exists('TYPO3\\CMS\\Core\\EventDispatcher\\EventDispatcher')) {
+            error_log( "Loading V95 compat layer");
             self::initializeCompatibilityLayer('v95');
+        } else {
+            error_log("Loading NO compat layer");
         }
 
         return new Bootstrap();
