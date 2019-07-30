@@ -107,10 +107,7 @@ abstract class AbstractTestSystem
      *
      * @return void
      */
-    protected function includeAndStartCoreBootstrap()
-    {
-        throw new \RuntimeException('pure abstract called ' . __METHOD__);
-    }
+    abstract protected function includeAndStartCoreBootstrap();
 
     /**
      * Setup creates a test system and database

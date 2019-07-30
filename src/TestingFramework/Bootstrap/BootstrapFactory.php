@@ -29,9 +29,6 @@ final class BootstrapFactory
             } else {
                 self::initializeCompatibilityLayer('v76');
             }
-        } else if(!class_exists('TYPO3\\CMS\\Core\\EventDispatcher\\EventDispatcher')) {
-            self::initializeCompatibilityLayer('v95');
-        } else {
         }
 
         return new Bootstrap();

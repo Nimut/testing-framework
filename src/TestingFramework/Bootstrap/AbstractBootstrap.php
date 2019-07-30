@@ -50,10 +50,7 @@ abstract class AbstractBootstrap
      *
      * @return void
      */
-    protected function includeAndStartCoreBootstrap()
-    {
-        throw new \RuntimeException('pure abstract called ' . __METHOD__);
-    }
+    abstract protected function includeAndStartCoreBootstrap();
 
     /**
      * Initializes core cache handling
