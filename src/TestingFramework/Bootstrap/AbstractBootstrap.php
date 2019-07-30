@@ -42,7 +42,7 @@ abstract class AbstractBootstrap
     public function __construct(CoreBootstrap $bootstrap = null)
     {
         putenv('TYPO3_CONTEXT=Testing');
-        $this->bootstrap = (null !== $bootstrap) ? $bootstrap : CoreBootstrap::getInstance();
+        $this->bootstrap = $bootstrap;
     }
 
     /**
@@ -52,12 +52,7 @@ abstract class AbstractBootstrap
      */
     protected function includeAndStartCoreBootstrap()
     {
-        $classLoaderFilepath = $this->getClassLoaderFilepath();
-        $classLoader = require $classLoaderFilepath;
-
-        SystemEnvironmentBuilder::run(0, SystemEnvironmentBuilder::REQUESTTYPE_BE | SystemEnvironmentBuilder::REQUESTTYPE_CLI);
-        CoreBootstrap::initializeClassLoader($classLoader);
-        CoreBootstrap::baseSetup();
+        throw new \RuntimeException('pure abstract called ' . __METHOD__);
     }
 
     /**

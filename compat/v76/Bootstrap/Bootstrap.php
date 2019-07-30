@@ -13,6 +13,7 @@ namespace Nimut\TestingFramework\v76\Bootstrap;
  */
 
 use Nimut\TestingFramework\Bootstrap\AbstractBootstrap;
+use TYPO3\CMS\Core\Core\Bootstrap as CoreBootstrap;
 use TYPO3\CMS\Core\Package\UnitTestPackageManager;
 
 /**
@@ -20,6 +21,18 @@ use TYPO3\CMS\Core\Package\UnitTestPackageManager;
  */
 class Bootstrap extends AbstractBootstrap
 {
+    /**
+     * Bootstrap constructor.
+     *
+     * @param CoreBootstrap $bootstrap
+     */
+    public function __construct(CoreBootstrap $bootstrap = null)
+    {
+        parent::__construct($bootstrap);
+        $this->bootstrap = (null !== $this->bootstrap) ? $this->bootstrap : CoreBootstrap::getInstance();
+    }
+
+
     /**
      * Includes the Core Bootstrap class and calls its first few functions
      *
