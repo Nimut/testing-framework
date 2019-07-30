@@ -1,5 +1,5 @@
 <?php
-namespace Nimut\TestingFramework\TestSystem;
+namespace Nimut\TestingFramework\v95\TestSystem;
 
 /*
  * This file is part of the NIMUT testing-framework project.
@@ -13,12 +13,22 @@ namespace Nimut\TestingFramework\TestSystem;
  */
 
 use Nimut\TestingFramework\Exception\Exception;
+use Nimut\TestingFramework\TestSystem\AbstractTestSystem;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 
 class TestSystem extends AbstractTestSystem
 {
+    /**
+     * @param string $identifier Name of test case class
+     * @param Bootstrap $bootstrap
+     */
+    public function __construct($identifier, Bootstrap $bootstrap = null)
+    {
+        parent::__construct($identifier, $bootstrap);
+        $this->bootstrap = $this->bootstrap === null ? Bootstrap::getInstance() : $this->bootstrap;
+    }
+
     /**
      * Includes the Core Bootstrap class and calls its first few functions
      *
@@ -34,39 +44,4 @@ class TestSystem extends AbstractTestSystem
         ob_end_clean();
     }
 
-    /**
-     * Extensions that are always loaded
-     *
-     * @var array
-     */
-    protected $defaultActivatedCoreExtensions = [
-        'core',
-        'backend',
-        'frontend',
-        'extbase',
-        'fluid',
-        'install',
-        'recordlist',
-    ];
-
-    /**
-     * Populate $GLOBALS['TYPO3_DB'] and create test database
-     *
-     * @throws Exception
-     * @return void
-     */
-    protected function setUpTestDatabase()
-    {
-        // The TYPO3 core misses to reset its internal connection state
-        // This means we need to reset all connections to ensure database connection can be initialized
-        $closure = \Closure::bind(function () {
-            foreach (ConnectionPool::$connections as $connection) {
-                $connection->close();
-            }
-            ConnectionPool::$connections = [];
-        }, null, ConnectionPool::class);
-        $closure();
-
-        parent::setUpTestDatabase();
-    }
 }

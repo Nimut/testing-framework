@@ -14,6 +14,7 @@ namespace Nimut\TestingFramework\v76\TestSystem;
 
 use Nimut\TestingFramework\Exception\Exception;
 use Nimut\TestingFramework\TestSystem\AbstractTestSystem;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -22,6 +23,16 @@ use TYPO3\CMS\Install\Service\SqlSchemaMigrationService;
 
 class TestSystem extends AbstractTestSystem
 {
+    /**
+     * @param string $identifier Name of test case class
+     * @param Bootstrap $bootstrap
+     */
+    public function __construct($identifier, Bootstrap $bootstrap = null)
+    {
+        parent::__construct($identifier, $bootstrap);
+        $this->bootstrap = $this->bootstrap === null ? Bootstrap::getInstance() : $this->bootstrap;
+    }
+
     /**
      * Create tables and import static rows.
      * For functional and acceptance tests.

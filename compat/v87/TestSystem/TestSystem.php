@@ -14,9 +14,20 @@ namespace Nimut\TestingFramework\v87\TestSystem;
 
 use Nimut\TestingFramework\Exception\Exception;
 use Nimut\TestingFramework\TestSystem\AbstractTestSystem;
+use TYPO3\CMS\Core\Core\Bootstrap;
 
 class TestSystem extends AbstractTestSystem
 {
+    /**
+     * @param string $identifier Name of test case class
+     * @param Bootstrap $bootstrap
+     */
+    public function __construct($identifier, Bootstrap $bootstrap = null)
+    {
+        parent::__construct($identifier, $bootstrap);
+        $this->bootstrap = $this->bootstrap === null ? Bootstrap::getInstance() : $this->bootstrap;
+    }
+
     /**
      * Includes the Core Bootstrap class and calls its first few functions
      *

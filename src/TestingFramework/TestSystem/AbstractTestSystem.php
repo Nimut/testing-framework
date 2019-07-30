@@ -110,12 +110,7 @@ abstract class AbstractTestSystem
      */
     protected function includeAndStartCoreBootstrap()
     {
-        $classLoaderFilepath = $this->getClassLoaderFilepath();
-        $classLoader = require $classLoaderFilepath;
-
-        SystemEnvironmentBuilder::run(0, SystemEnvironmentBuilder::REQUESTTYPE_BE | SystemEnvironmentBuilder::REQUESTTYPE_CLI);
-        Bootstrap::init($classLoader);
-        ob_end_clean();
+        throw new \RuntimeException('pure abstract called ' . __METHOD__);
     }
 
     /**
