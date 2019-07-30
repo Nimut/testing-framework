@@ -76,8 +76,23 @@ jobs:
     - env: TYPO3=dev-master
   include:
     - stage: test
+      php: 7.3
+      env: TYPO3=dev-master
+    - stage: test
+      php: 7.3
+      env: TYPO3=^10.0
+    - stage: test
+      php: 7.3
+      env: TYPO3=^9.5
+    - stage: test
+      php: 7.3
+      env: TYPO3=^8.7
+    - stage: test
       php: 7.2
       env: TYPO3=dev-master
+    - stage: test
+      php: 7.2
+      env: TYPO3=^10.0
     - stage: test
       php: 7.2
       env: TYPO3=^9.5
@@ -86,6 +101,18 @@ jobs:
       env: TYPO3=^8.7
     - stage: test
       php: 7.2
+      env: TYPO3=^7.6
+    - stage: test
+      php: 7.1
+      env: TYPO3=^8.7
+    - stage: test
+      php: 7.1
+      env: TYPO3=^7.6
+    - stage: test
+      php: 7.0
+      env: TYPO3=^8.7
+    - stage: test
+      php: 7.0
       env: TYPO3=^7.6
 
     - stage: sonarqube scanner
@@ -102,7 +129,7 @@ jobs:
       before_script:
       script:
         - >
-          for TYPO3 in "^7.6" "^8.7" "^9.5"; do
+          for TYPO3 in "^7.6" "^8.7" "^9.5" "^10.0"; do
             echo;
             echo "Running TYPO3 version $TYPO3";
             echo;
