@@ -29,14 +29,8 @@ final class BootstrapFactory
             } else {
                 self::initializeCompatibilityLayer('v76');
             }
-        } else {
-            if (
-                VersionNumberUtility::convertVersionNumberToInteger(VersionNumberUtility::getCurrentTypo3Version())
-                    <
-                VersionNumberUtility::convertVersionNumberToInteger('10.0.0')
-            ) {
-                self::initializeCompatibilityLayer('v95');
-            }
+        } else if(!class_exists('TYPO3\\CMS\\Core\\EventDispatcher\\EventDispatcher')) {
+            self::initializeCompatibilityLayer('v95');
         }
 
         return new Bootstrap();
