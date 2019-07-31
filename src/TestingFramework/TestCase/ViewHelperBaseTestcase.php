@@ -29,6 +29,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Arguments;
 use TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder;
 use TYPO3\CMS\Fluid\Core\ViewHelper\TemplateVariableContainer;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
+use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperInterface;
 
 /**
@@ -107,7 +108,10 @@ abstract class ViewHelperBaseTestcase extends UnitTestCase
         $this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request->reveal()));
         $this->arguments = [];
 
-        if (class_exists('TYPO3\\CMS\\Fluid\\Core\\Variables\\CmsVariableProvider')) {
+        if (class_exists('TYPO3Fluid\\Fluid\\Core\\Variables\\StandardVariableProvider')) {
+            $this->templateVariableContainer = $this->getMockBuilder(StandardVariableProvider::class)->getMock();
+            $this->tagBuilder = $this->getMockBuilder(\TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder::class)->getMock();
+        } else if (class_exists('TYPO3\\CMS\\Fluid\\Core\\Variables\\CmsVariableProvider')) {
             $this->templateVariableContainer = $this->getMockBuilder(CmsVariableProvider::class)->getMock();
             $this->tagBuilder = new TagBuilder();
         } else {
