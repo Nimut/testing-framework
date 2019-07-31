@@ -18,17 +18,9 @@
         }
     ],
     "require": {
-        "typo3/cms-core": "^7.6 || ^8.7 || ^9.5 || ^10.0 || dev-master",
-        "typo3/cms-fluid": "^7.6 || ^8.7 || ^9.5 || ^10.0 || dev-master"
+        "typo3/cms-core": "^7.6 || ^8.7 || ^9.5 || dev-master",
+        "typo3/cms-fluid": "^7.6 || ^8.7 || ^9.5 || dev-master"
     },
-    "extra": {
-        "typo3/class-alias-loader": {
-            "class-alias-maps": [
-                "Migrations/Code/ClassAliasMap.php"
-            ]
-        }
-    },
-
     "autoload": {
         "psr-4": {
             "Nimut\\Testbase\\": "Classes/",
