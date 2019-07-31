@@ -16,7 +16,7 @@ use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
-class RenderChildrenViewHelperTYPO3CMSFluid extends AbstractViewHelper implements CompilableInterface
+class RenderChildrenViewHelper extends AbstractViewHelper implements CompilableInterface
 {
     public function render()
     {
