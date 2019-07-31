@@ -12,15 +12,15 @@ namespace Nimut\Testbase\Tests\Unit\ViewHelpers;
  * LICENSE file that was distributed with this source code.
  */
 
-use Nimut\Testbase\ViewHelpers\RenderChildrenViewHelperTYPO3CMSFluid;
-use Nimut\Testbase\ViewHelpers\RenderChildrenViewHelperTYPO3Fluid;
+use Nimut\Testbase\ViewHelpers\RenderChildrenTYPO3CMSFluidViewHelper;
+use Nimut\Testbase\ViewHelpers\RenderChildrenViewHelper;
 use Nimut\TestingFramework\TestCase\ViewHelperBaseTestcase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class RenderChildrenViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
-     * @var RenderChildrenViewHelperTYPO3CMSFluid|MockObject
+     * @var RenderChildrenTYPO3CMSFluidViewHelper|MockObject
      */
     protected $viewHelper;
 
@@ -28,9 +28,9 @@ class RenderChildrenViewHelperTest extends ViewHelperBaseTestcase
     {
         parent::setUp();
         if (class_exists('TYPO3Fluid\\Fluid\\Core\\ViewHelper\\AbstractViewHelper')) {
-            $renderChildrenViewHelperClass = RenderChildrenViewHelperTYPO3Fluid::class;
+            $renderChildrenViewHelperClass = RenderChildrenViewHelper::class;
         } else {
-            $renderChildrenViewHelperClass = RenderChildrenViewHelperTYPO3CMSFluid::class;
+            $renderChildrenViewHelperClass = RenderChildrenTYPO3CMSFluidViewHelper::class;
         }
 
         $this->viewHelper = $this->getMockBuilder($renderChildrenViewHelperClass)

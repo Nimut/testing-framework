@@ -12,11 +12,11 @@ namespace Nimut\Testbase\ViewHelpers;
  * LICENSE file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
-class RenderChildrenViewHelperTYPO3CMSFluid extends AbstractViewHelper implements CompilableInterface
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+
+class RenderChildrenViewHelper extends AbstractViewHelper
 {
     public function render()
     {

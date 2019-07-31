@@ -37,7 +37,12 @@ class RenderChildrenViewHelperTest extends FunctionalTestCase
     {
         $this->importDataSet('ntf://Database/pages.xml');
 
-        $this->setUpFrontendRootPage(1, ['EXT:testbase/Tests/Functional/Fixtures/TypoScript/Page.ts']);
+        if (class_exists('TYPO3Fluid\\Fluid\\Core\\ViewHelper\\AbstractViewHelper')) {
+            $this->setUpFrontendRootPage(1, ['EXT:testbase/Tests/Functional/Fixtures/TypoScript/Page.ts']);
+        } else {
+            // load template with view helper for pre v9 fluid
+            $this->setUpFrontendRootPage(1, ['EXT:testbase/Tests/Functional/Fixtures/TypoScript/PageTYPO3CMSFluid.ts']);
+        }
 
         $response = $this->getFrontendResponse(1);
 
