@@ -111,7 +111,7 @@ abstract class ViewHelperBaseTestcase extends UnitTestCase
         if (class_exists('TYPO3Fluid\\Fluid\\Core\\Variables\\StandardVariableProvider')) {
             $this->templateVariableContainer = $this->getMockBuilder(StandardVariableProvider::class)->getMock();
             $this->tagBuilder = $this->getMockBuilder(\TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder::class)->getMock();
-        } else if (class_exists('TYPO3\\CMS\\Fluid\\Core\\Variables\\CmsVariableProvider')) {
+        } elseif (class_exists('TYPO3\\CMS\\Fluid\\Core\\Variables\\CmsVariableProvider')) {
             $this->templateVariableContainer = $this->getMockBuilder(CmsVariableProvider::class)->getMock();
             $this->tagBuilder = new TagBuilder();
         } else {

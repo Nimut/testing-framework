@@ -23,7 +23,6 @@ use Nimut\TestingFramework\TestSystem\AbstractTestSystem;
 use Nimut\TestingFramework\TestSystem\TestSystem;
 use PHPUnit\Util\PHP\DefaultPhpProcess;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -390,7 +389,7 @@ abstract class FunctionalTestCase extends AbstractTestCase
         $sitesDirectory = ORIGINAL_ROOT . '/../config/sites/' . $this->testSystem->getSystemIdentifier();
         mkdir($sitesDirectory, 0777, true);
 
-        file_put_contents( $sitesDirectory. '/config.yaml', "rootPageId: $pageId\nbase: /\nbaseVariants: { }\nlanguages: { }\nroutes: { }\nrouteEnhancers: { }");
+        file_put_contents($sitesDirectory . '/config.yaml', "rootPageId: $pageId\nbase: /\nbaseVariants: { }\nlanguages: { }\nroutes: { }\nrouteEnhancers: { }");
 
         $templateFields = [
             'pid' => $pageId,

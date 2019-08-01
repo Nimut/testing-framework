@@ -32,7 +32,6 @@ class Bootstrap extends AbstractBootstrap
         $this->bootstrap = (null !== $this->bootstrap) ? $this->bootstrap : CoreBootstrap::getInstance();
     }
 
-
     /**
      * Includes the Core Bootstrap class and calls its first few functions
      *
