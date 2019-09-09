@@ -1,3 +1,8 @@
+2019-09-09         [RELEASE] Release of nimut/testing-framework 4.1.6 (Nicole Cordes)
+2019-07-01 891e353 [TASK] Fix ViewHelper example in readme (Jan Kiesewetter)
+2019-05-30 4fb852d [TASK] Enable MySQL database for Travis CI tests (Nicole Cordes)
+2019-04-09 9b958ba [BUGFIX] Correctly remove pathsToLinkInTestInstance in tearDown (Nicole Cordes)
+
 2019-03-08         [RELEASE] Release of nimut/testing-framework 4.1.5 (Nicole Cordes)
 2019-03-08 fc2e2dd [BUGFIX] Use lowercased package name for mikey179/vfsstream (Nicole Cordes)
 2019-03-08 f85e26e [TASK] Raise phpunit/phpunit compatibility to ^7.0 (Nicole Cordes)
