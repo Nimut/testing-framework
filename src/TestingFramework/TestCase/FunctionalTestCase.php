@@ -22,7 +22,9 @@ use Nimut\TestingFramework\Http\Response;
 use Nimut\TestingFramework\TestSystem\AbstractTestSystem;
 use Nimut\TestingFramework\TestSystem\TestSystem;
 use PHPUnit\Util\PHP\DefaultPhpProcess;
+use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -369,8 +371,9 @@ abstract class FunctionalTestCase extends AbstractTestCase
     /**
      * @param int $pageId
      * @param array $typoScriptFiles
+     * @param bool $setupSite
      */
-    protected function setUpFrontendRootPage($pageId, array $typoScriptFiles = [])
+    protected function setUpFrontendRootPage($pageId, array $typoScriptFiles = [], bool $setupSite = true)
     {
         $pageId = (int)$pageId;
         $page = $this->getDatabaseConnection()->selectSingleRow('*', 'pages', 'uid=' . $pageId);
@@ -404,6 +407,62 @@ abstract class FunctionalTestCase extends AbstractTestCase
 
         $this->getDatabaseConnection()->delete('sys_template', ['pid' => $pageId]);
         $this->getDatabaseConnection()->insertArray('sys_template', $templateFields);
+
+        if ($setupSite) {
+            $this->setUpFrontendSite($pageId);
+        }
+    }
+
+    /**
+     * Create a simple site config for the tests that
+     * call a frontend page.
+     *
+     * @param int $pageId
+     * @param array $additionalLanguages
+     */
+    protected function setUpFrontendSite(int $pageId, array $additionalLanguages = [])
+    {
+        // Site configuration can only be appplied to TYPO3 >= v9
+        if (!class_exists(\TYPO3\CMS\Core\Site\SiteFinder::class)) {
+            return;
+        }
+
+        $languages = [
+            0 => [
+                'title' => 'English',
+                'enabled' => true,
+                'languageId' => 0,
+                'base' => '/',
+                'typo3Language' => 'default',
+                'locale' => 'en_US.UTF-8',
+                'iso-639-1' => 'en',
+                'navigationTitle' => '',
+                'hreflang' => '',
+                'direction' => '',
+                'flag' => 'us',
+            ],
+        ];
+        $languages = array_merge($languages, $additionalLanguages);
+        $configuration = [
+            'rootPageId' => $pageId,
+            'base' => '/',
+            'languages' => $languages,
+            'errorHandling' => [],
+            'routes' => [],
+        ];
+        $path = \TYPO3\CMS\Core\Core\Environment::getConfigPath() . '/sites/testing/';
+        GeneralUtility::mkdir_deep($path);
+        $yamlFileContents = Yaml::dump($configuration, 99, 2);
+        $fileName = $path . 'config.yaml';
+        GeneralUtility::writeFile($fileName, $yamlFileContents);
+
+        // Ensure that no other site configuration was cached before
+        // @todo better way to detect correct cache name?
+        $cacheName = class_exists('TYPO3\\CMS\\Core\\DependencyInjection\\ContainerBuilder') ? 'core' : 'cache_core';
+        $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache($cacheName);
+        if ($cache->has('site-configuration')) {
+            $cache->remove('site-configuration');
+        }
     }
 
     /**
