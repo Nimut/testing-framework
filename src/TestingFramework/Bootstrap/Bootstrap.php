@@ -38,4 +38,15 @@ class Bootstrap extends AbstractBootstrap
         parent::setTypo3Context();
         $this->defineBaseConstants();
     }
+
+    /**
+     * Initializes core cache handling
+     *
+     * @return void
+     */
+    protected function initializeCachingHandling()
+    {
+        $cacheManager = CoreBootstrap::createCacheManager(true);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
+    }
 }

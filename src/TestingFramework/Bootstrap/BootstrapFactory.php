@@ -21,8 +21,12 @@ final class BootstrapFactory
      */
     public static function createBootstrapInstance()
     {
-        if (!class_exists('TYPO3\\CMS\\Install\\Service\\ExtensionConfigurationService')) {
-            self::initializeCompatibilityLayer('v87');
+        if (!class_exists('TYPO3\\CMS\\Core\\DependencyInjection\\ContainerBuilder')) {
+            if (!class_exists('TYPO3\\CMS\\Install\\Service\\ExtensionConfigurationService')) {
+                self::initializeCompatibilityLayer('v87');
+            } else {
+                self::initializeCompatibilityLayer('v95');
+            }
         }
 
         return new Bootstrap();

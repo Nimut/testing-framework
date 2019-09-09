@@ -23,6 +23,38 @@ use TYPO3\CMS\Core\Package\UnitTestPackageManager;
 class Bootstrap extends AbstractBootstrap
 {
     /**
+     * @var string
+     */
+    protected $coreCacheName = 'cache_core';
+
+    /**
+     * @var CoreBootstrap
+     */
+    protected $bootstrap;
+
+    /**
+     * Bootstrap constructor.
+     *
+     * @param CoreBootstrap $bootstrap
+     */
+    public function __construct(CoreBootstrap $bootstrap = null)
+    {
+        parent::__construct();
+        $this->bootstrap = (null !== $bootstrap) ? $bootstrap : CoreBootstrap::getInstance();
+    }
+
+    /**
+     * Initializes core cache handling
+     *
+     * @return void
+     */
+    protected function initializeCachingHandling()
+    {
+        $this->bootstrap->disableCoreCache()
+            ->initializeCachingFramework();
+    }
+
+    /**
      * Includes the Core Bootstrap class and calls its first few functions
      *
      * @return void
