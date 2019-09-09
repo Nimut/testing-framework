@@ -5,7 +5,7 @@
 [![StyleCI](https://styleci.io/repos/81999184/shield?branch=master)](https://styleci.io/repos/81999184)
 
 The aim of the testing framework is to provide a good way to write and run unit and functional tests for multiple versions
-of the TYPO3 CMS. Currently **TYPO3 CMS 7.6 up to master (9.0)** are tested and supported.
+of the TYPO3 CMS. Currently **TYPO3 CMS 8.7 up to 9.5-dev** are tested and supported.
 
 ## Installation
 
