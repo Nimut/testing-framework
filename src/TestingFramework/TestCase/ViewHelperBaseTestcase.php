@@ -145,6 +145,7 @@ abstract class ViewHelperBaseTestcase extends UnitTestCase
         // AbstractViewHelper and contain no method injectReflectionService()
         if ($viewHelper instanceof AbstractViewHelper && method_exists($viewHelper, 'injectReflectionService')) {
             $reflectionServiceProphecy = $this->prophesize('TYPO3\\CMS\\Extbase\\Reflection\\ReflectionService');
+            $reflectionServiceProphecy->getMethodParameters(Argument::type('string'), Argument::type('string'))->willReturn([]);
             $viewHelper->injectReflectionService($reflectionServiceProphecy->reveal());
         }
         if ($viewHelper instanceof AbstractTagBasedViewHelper && $viewHelper instanceof AccessibleMockObjectInterface) {

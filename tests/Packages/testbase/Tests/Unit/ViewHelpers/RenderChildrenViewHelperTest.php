@@ -30,7 +30,6 @@ class RenderChildrenViewHelperTest extends ViewHelperBaseTestcase
             ->setMethods(['renderChildren'])
             ->getMock();
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
-        $this->viewHelper->initializeArguments();
     }
 
     /**
@@ -39,6 +38,21 @@ class RenderChildrenViewHelperTest extends ViewHelperBaseTestcase
     public function renderReturnsExpectedResult()
     {
         $this->viewHelper->expects($this->once())->method('renderChildren')->willReturn('foo');
+
+        $this->assertSame('foo', $this->viewHelper->render());
+    }
+
+    /**
+     * @test
+     */
+    public function setArgumentsUnderTestCanBeCalled()
+    {
+        $this->setArgumentsUnderTest(
+            $this->viewHelper,
+            [
+                'value' => 'foo',
+            ]
+        );
 
         $this->assertSame('foo', $this->viewHelper->render());
     }
