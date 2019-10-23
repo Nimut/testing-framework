@@ -29,6 +29,10 @@ final class BootstrapFactory
             self::initializeCompatibilityLayer('v87');
         } else {
             self::initializeCompatibilityLayer('v76');
+            class_alias(
+                'TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\AbstractViewHelper',
+                'TYPO3Fluid\\Fluid\\Core\\ViewHelper\\ViewHelperInterface'
+            );
         }
 
         return new Bootstrap();
