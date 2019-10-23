@@ -1,3 +1,6 @@
+2019-10-23         [RELEASE] Release of nimut/testing-framework 4.1.8 (Nicole Cordes)
+2019-10-23 d9b6616 [BUGFIX] Set ViewHelperInterface alias for v76 (Nicole Cordes)
+
 2019-10-23         [RELEASE] Release of nimut/testing-framework 4.1.7 (Nicole Cordes)
 2019-10-23 eaffae4 [FEATURE] Add test for setArgumentsUnderTest (Nicole Cordes)
 2019-10-23 fb5bba6 [BUGFIX] Correctly initialize ViewHelper ReflectionServiceMock (Nicole Cordes)
