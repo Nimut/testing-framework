@@ -11,6 +11,7 @@ namespace Nimut\TestingFramework\File;
  * For the full copyright and license information, please read
  * LICENSE file that was distributed with this source code.
  */
+
 use Nimut\TestingFramework\Exception\NtfStreamException;
 
 /**
