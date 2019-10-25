@@ -24,11 +24,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 abstract class AbstractTestSystem
 {
     /**
-     * @var Bootstrap
-     */
-    protected $bootstrap;
-
-    /**
      * Extensions that are always loaded
      *
      * @var array
@@ -93,12 +88,10 @@ abstract class AbstractTestSystem
 
     /**
      * @param string $identifier Name of test case class
-     * @param Bootstrap $bootstrap
      */
-    public function __construct($identifier, Bootstrap $bootstrap = null)
+    public function __construct($identifier)
     {
         putenv('TYPO3_CONTEXT=Testing');
-        $this->bootstrap = $bootstrap === null ? Bootstrap::getInstance() : $bootstrap;
         $this->identifier = substr(sha1($identifier), 0, 7);
         $this->systemPath = ORIGINAL_ROOT . 'typo3temp/var/tests/functional-' . $this->identifier . '/';
     }
@@ -200,11 +193,11 @@ abstract class AbstractTestSystem
         // Disable TYPO3_DLOG
         define('TYPO3_DLOG', false);
 
-        // Ensure TYPO3_PATH_ROOT is pointing to the document root of the test environment
-        // Ensure TYPO3_PATH_APP is reset to store caches in test environment folder
+        // Ensure TYPO3_PATH_ROOT and TYPO3_PATH_APP are pointing to the document root of the test environment
         // It will be evaluated in the TYPO3 bootstrap and a previously set value may interfere here
-        putenv('TYPO3_PATH_ROOT=' . rtrim($this->systemPath, '/'));
-        putenv('TYPO3_PATH_APP');
+        $rootPath = rtrim($this->systemPath, '/');
+        putenv('TYPO3_PATH_ROOT=' . $rootPath);
+        putenv('TYPO3_PATH_APP=' . $rootPath);
         $_SERVER['PWD'] = $this->systemPath;
         $_SERVER['argv'][0] = 'index.php';
     }
