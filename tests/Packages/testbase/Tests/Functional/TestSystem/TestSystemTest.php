@@ -13,6 +13,7 @@ namespace Nimut\Testbase\Tests\Functional\TestSystem;
  */
 
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class TestSystemTest extends FunctionalTestCase
 {
@@ -45,7 +46,7 @@ class TestSystemTest extends FunctionalTestCase
         parent::tearDown();
 
         foreach ($this->pathsToLinkInTestInstance as $destination) {
-            @unlink($this->getInstancePath() . $destination);
+            GeneralUtility::rmdir($this->getInstancePath() . ltrim($destination, '/'));
         }
     }
 
