@@ -202,18 +202,6 @@ abstract class FunctionalTestCase extends AbstractTestCase
     }
 
     /**
-     * Remove symlinks that were created during setUp
-     */
-    protected function tearDown()
-    {
-        parent::tearDown();
-
-        foreach ($this->pathsToLinkInTestInstance as $destination) {
-            GeneralUtility::rmdir($this->testSystem->getSystemPath() . ltrim($destination, '/'));
-        }
-    }
-
-    /**
      * Returns the system identifier
      *
      * @return string
