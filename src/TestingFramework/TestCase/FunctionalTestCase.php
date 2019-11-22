@@ -207,10 +207,6 @@ abstract class FunctionalTestCase extends AbstractTestCase
     protected function tearDown()
     {
         parent::tearDown();
-
-        foreach ($this->pathsToLinkInTestInstance as $destination) {
-            GeneralUtility::rmdir($this->testSystem->getSystemPath() . ltrim($destination, '/'));
-        }
     }
 
     /**
