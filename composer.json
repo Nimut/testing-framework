@@ -36,7 +36,7 @@
         "typo3/cms-frontend": "^8.7 || ^9.5 || ~10.2.0 || dev-master",
         "typo3/cms-install": "^8.7 || ^9.5 || ~10.2.0 || dev-master",
         "typo3/cms-recordlist": "^8.7 || ^9.5 || ~10.2.0 || dev-master",
-        "phpunit/phpunit": "^6.0 || ^7.0",
+        "phpunit/phpunit": "^6.0 || ^7.0 || ^8.0",
         "mikey179/vfsstream": "^1.6"
     },
     "require-dev": {
