@@ -1,4 +1,4 @@
-rootPageId: '%env(ROOTPAGEID)%'
+rootPageId: '{rootPageId}'
 base: /
 languages:
     -   title: English

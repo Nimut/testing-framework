@@ -418,8 +418,6 @@ abstract class AbstractFunctionalTestCase extends AbstractTestCase
      */
     protected function setUpSites($pageId, array $sites)
     {
-        putenv('ROOTPAGEID=' . $pageId);
-
         if (empty($sites[$pageId])) {
             $sites[$pageId] = 'ntf://Frontend/site.yaml';
         }
@@ -433,6 +431,7 @@ abstract class AbstractFunctionalTestCase extends AbstractTestCase
                     $file = GeneralUtility::getFileAbsFileName($file);
                 }
                 $fileContent = file_get_contents($file);
+                $fileContent = str_replace('\'{rootPageId}\'', $pageId, $fileContent);
                 GeneralUtility::writeFile($target, $fileContent);
             }
         }
