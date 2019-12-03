@@ -30,19 +30,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 abstract class AbstractBootstrap
 {
     /**
-     * @var CoreBootstrap
+     * @var string
      */
-    protected $bootstrap;
+    protected $coreCacheName = 'core';
 
-    /**
-     * AbstractBootstrap constructor.
-     *
-     * @param CoreBootstrap $bootstrap
-     */
-    public function __construct(CoreBootstrap $bootstrap = null)
+    public function __construct()
     {
         putenv('TYPO3_CONTEXT=Testing');
-        $this->bootstrap = (null !== $bootstrap) ? $bootstrap : CoreBootstrap::getInstance();
     }
 
     /**
@@ -58,17 +52,6 @@ abstract class AbstractBootstrap
         SystemEnvironmentBuilder::run(0, SystemEnvironmentBuilder::REQUESTTYPE_BE | SystemEnvironmentBuilder::REQUESTTYPE_CLI);
         CoreBootstrap::initializeClassLoader($classLoader);
         CoreBootstrap::baseSetup();
-    }
-
-    /**
-     * Initializes core cache handling
-     *
-     * @return void
-     */
-    protected function initializeCachingHandling()
-    {
-        $this->bootstrap->disableCoreCache()
-            ->initializeCachingFramework();
     }
 
     /**
@@ -259,7 +242,7 @@ abstract class AbstractBootstrap
      */
     protected function initializePackageManager()
     {
-        $cache = new PhpFrontend('cache_core', new NullBackend('production', []));
+        $cache = new PhpFrontend($this->coreCacheName, new NullBackend('production', []));
         $packageManager = CoreBootstrap::createPackageManager(UnitTestPackageManager::class, $cache);
 
         GeneralUtility::setSingletonInstance(PackageManager::class, $packageManager);

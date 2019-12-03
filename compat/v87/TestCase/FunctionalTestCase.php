@@ -1,5 +1,5 @@
 <?php
-namespace Nimut\TestingFramework\TestCase;
+namespace Nimut\TestingFramework\v87\TestCase;
 
 /*
  * This file is part of the NIMUT testing-framework project.
@@ -14,9 +14,20 @@ namespace Nimut\TestingFramework\TestCase;
  * LICENSE file that was distributed with this source code.
  */
 
-/**
- * Base test case class for functional tests
- */
+use Nimut\TestingFramework\TestCase\AbstractFunctionalTestCase;
+
 abstract class FunctionalTestCase extends AbstractFunctionalTestCase
 {
+    /**
+     * @param int $pageId
+     * @param array $typoScriptFiles
+     * @param array $sites
+     */
+    protected function setUpFrontendRootPage($pageId, array $typoScriptFiles = [], array $sites = [])
+    {
+        $pageId = (int)$pageId;
+
+        $this->setUpPageRecord($pageId);
+        $this->setUpTemplateRecord($pageId, $typoScriptFiles);
+    }
 }
