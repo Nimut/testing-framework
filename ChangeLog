@@ -1,3 +1,7 @@
+2019-12-03         [RELEASE] Release of nimut/testing-framework 4.1.9 (Nicole Cordes)
+2019-11-22 2b659f7 [BUGFIX] Correctly cleanup test fixture files (Nicole Cordes)
+2019-11-22 67cace7 [BUGFIX] Prevent deleting pathsToLinkInTestInstance after test (Nicole Cordes)
+
 2019-10-23         [RELEASE] Release of nimut/testing-framework 4.1.8 (Nicole Cordes)
 2019-10-23 d9b6616 [BUGFIX] Set ViewHelperInterface alias for v76 (Nicole Cordes)
 
