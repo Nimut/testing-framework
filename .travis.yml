@@ -80,6 +80,9 @@ jobs:
       env: TYPO3=dev-master
     - stage: test
       php: 7.3
+      env: TYPO3=~10.2.0
+    - stage: test
+      php: 7.3
       env: TYPO3=^9.5
     - stage: test
       php: 7.3
@@ -87,6 +90,9 @@ jobs:
     - stage: test
       php: 7.2
       env: TYPO3=dev-master
+    - stage: test
+      php: 7.2
+      env: TYPO3=~10.2.0
     - stage: test
       php: 7.2
       env: TYPO3=^9.5
@@ -114,7 +120,7 @@ jobs:
       before_script:
       script:
         - >
-          for TYPO3 in "^8.7" "^9.5"; do
+          for TYPO3 in "^8.7" "^9.5" "~10.2.0"; do
             echo;
             echo "Running TYPO3 version $TYPO3";
             echo;
