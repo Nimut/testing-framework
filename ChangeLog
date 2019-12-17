@@ -1,3 +1,6 @@
+2019-12-18         [RELEASE] Release of nimut/testing-framework 4.1.10 (Nicole Cordes)
+2019-12-17 cf9c439 [TASK] Raise PHP compatibility to 7.4 (Nicole Cordes)
+
 2019-12-03         [RELEASE] Release of nimut/testing-framework 4.1.9 (Nicole Cordes)
 2019-11-22 2b659f7 [BUGFIX] Correctly cleanup test fixture files (Nicole Cordes)
 2019-11-22 67cace7 [BUGFIX] Prevent deleting pathsToLinkInTestInstance after test (Nicole Cordes)
