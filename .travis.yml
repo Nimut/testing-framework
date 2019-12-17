@@ -28,9 +28,16 @@ before_install:
 
 install:
   - >
-    if [ "$TYPO3" == "dev-master" ]; then
+    if [[ "$TYPO3" = *"dev"* ]]; then
       composer config minimum-stability dev;
       composer config prefer-stable true;
+      composer require typo3/cms-backend:"@dev" --no-update;
+      composer require typo3/cms-core:"@dev" --no-update;
+      composer require typo3/cms-extbase:"@dev" --no-update;
+      composer require typo3/cms-fluid:"@dev" --no-update;
+      composer require typo3/cms-frontend:"@dev" --no-update;
+      composer require typo3/cms-install:"@dev" --no-update;
+      composer require typo3/cms-recordlist:"@dev" --no-update;
     fi
   - composer require nimut/typo3-complete="$TYPO3"
   - git checkout composer.json
@@ -74,8 +81,28 @@ jobs:
   fast_finish: true
   allow_failures:
     - env: TYPO3=dev-master
+    - env: TYPO3=9.5.x-dev
+    - env: TYPO3=8.7.x-dev
   include:
     - stage: test
+      php: 7.4
+      env: TYPO3=dev-master
+    - stage: test
+      php: 7.4
+      env: TYPO3=~10.2.0
+    - stage: test
+      php: 7.4
+      env: TYPO3=^9.5
+    - stage: test
+      php: 7.4
+      env: TYPO3=9.5.x-dev
+    - stage: test
+      php: 7.4
+      env: TYPO3=^8.7
+    - stage: test
+      php: 7.4
+      env: TYPO3=8.7.x-dev
+    - stage: test
       php: 7.3
       env: TYPO3=dev-master
     - stage: test
@@ -86,7 +113,13 @@ jobs:
       env: TYPO3=^9.5
     - stage: test
       php: 7.3
+      env: TYPO3=9.5.x-dev
+    - stage: test
+      php: 7.3
       env: TYPO3=^8.7
+    - stage: test
+      php: 7.3
+      env: TYPO3=8.7.x-dev
     - stage: test
       php: 7.2
       env: TYPO3=dev-master
@@ -98,13 +131,25 @@ jobs:
       env: TYPO3=^9.5
     - stage: test
       php: 7.2
+      env: TYPO3=9.5.x-dev
+    - stage: test
+      php: 7.2
       env: TYPO3=^8.7
+    - stage: test
+      php: 7.2
+      env: TYPO3=8.7.x-dev
     - stage: test
       php: 7.1
       env: TYPO3=^8.7
     - stage: test
+      php: 7.1
+      env: TYPO3=8.7.x-dev
+    - stage: test
       php: 7.0
       env: TYPO3=^8.7
+    - stage: test
+      php: 7.0
+      env: TYPO3=8.7.x-dev
 
     - stage: sonarqube scanner
       if: type = push AND branch IN (master, pre-merge)
