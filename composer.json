@@ -28,20 +28,20 @@
         }
     ],
     "require": {
-        "php": ">= 5.5, < 7.4",
-        "typo3/cms-backend": "^7.6 || ^8.7 || ^9.5 || dev-master",
-        "typo3/cms-core": "^7.6 || ^8.7 || ^9.5 || dev-master",
-        "typo3/cms-extbase": "^7.6 || ^8.7 || ^9.5 || dev-master",
-        "typo3/cms-fluid": "^7.6 || ^8.7 || ^9.5 || dev-master",
-        "typo3/cms-frontend": "^7.6 || ^8.7 || ^9.5 || dev-master",
-        "typo3/cms-install": "^7.6 || ^8.7 || ^9.5 || dev-master",
-        "typo3/cms-recordlist": "^7.6 || ^8.7 || ^9.5 || dev-master",
+        "php": ">= 5.5, < 7.5",
+        "typo3/cms-backend": "^7.6 || ^8.7 || ^9.5",
+        "typo3/cms-core": "^7.6 || ^8.7 || ^9.5",
+        "typo3/cms-extbase": "^7.6 || ^8.7 || ^9.5",
+        "typo3/cms-fluid": "^7.6 || ^8.7 || ^9.5",
+        "typo3/cms-frontend": "^7.6 || ^8.7 || ^9.5",
+        "typo3/cms-install": "^7.6 || ^8.7 || ^9.5",
+        "typo3/cms-recordlist": "^7.6 || ^8.7 || ^9.5",
         "phpunit/phpunit": "^6.0 || ^7.0",
         "mikey179/vfsstream": "^1.6"
     },
     "require-dev": {
         "nimut/testing-framework-testbase": "@dev",
-        "nimut/phpunit-merger": "^0.2"
+        "nimut/phpunit-merger": "^0.3"
     },
     "suggest": {
         "friendsofphp/php-cs-fixer": "Tool to automatically fix PHP coding standards issues"
