@@ -15,9 +15,14 @@ return PhpCsFixer\Config::create()
         ],
         'binary_operator_spaces' => true,
         'blank_line_before_return' => true,
+        'cast_spaces' => [
+            'space' => 'none',
+        ],
         'concat_space' => [
             'spacing' => 'one',
         ],
+        'declare_equal_normalize' => ['space' => 'single'],
+        'declare_strict_types' => true,
         'function_typehint_space' => true,
         'hash_to_slash_comment' => true,
         'linebreak_after_opening_tag' => true,
@@ -25,10 +30,10 @@ return PhpCsFixer\Config::create()
         'method_separation' => true,
         'native_function_casing' => true,
         'new_with_braces' => true,
+        'no_alias_functions' => true,
         'no_blank_lines_after_class_opening' => true,
         'no_blank_lines_after_phpdoc' => true,
         'no_blank_lines_before_namespace' => true,
-        'no_alias_functions' => true,
         'no_empty_comment' => true,
         'no_empty_phpdoc' => true,
         'no_empty_statement' => true,
@@ -62,7 +67,9 @@ return PhpCsFixer\Config::create()
         'no_useless_return' => true,
         'no_whitespace_before_comma_in_array' => true,
         'no_whitespace_in_blank_line' => true,
+        'non_printable_character' => true,
         'normalize_index_brace' => true,
+        'object_operator_without_whitespace' => true,
         'ordered_imports' => true,
         'phpdoc_add_missing_param_annotation' => true,
         'phpdoc_annotation_without_dot' => true,
@@ -74,7 +81,9 @@ return PhpCsFixer\Config::create()
         'phpdoc_single_line_var_spacing' => true,
         'phpdoc_trim' => true,
         'phpdoc_types' => true,
+        'self_accessor' => true,
         'phpdoc_var_without_name' => true,
+        'return_type_declaration' => ['space_before' => 'none'],
         'short_scalar_cast' => true,
         'single_quote' => true,
         'standardize_not_equals' => true,
@@ -86,5 +95,9 @@ return PhpCsFixer\Config::create()
         PhpCsFixer\Finder::create()
             ->in(__DIR__)
             ->exclude('.Build')
+            ->exclude('doc')
+            ->exclude('Resources')
             ->notName('ext_emconf.php')
+            ->notName('ext_localconf.php')
+            ->notName('ext_tables.php')
     );
