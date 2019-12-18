@@ -1,5 +1,5 @@
-.Build/
-.idea/
-.php_cs
-.php_cs.cache
-composer.lock
+/.Build/
+/.idea/
+/.php_cs
+/.php_cs.cache
+/composer.lock
