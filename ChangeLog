@@ -1,3 +1,7 @@
+2019-12-19         [RELEASE] Release of nimut/testing-framework 4.1.11 (Nicole Cordes)
+2019-12-18 69d9a0a [BUGFIX] Ensure database fixtures can be imported (Nicole Cordes)
+2019-12-18 daa3c8e [TASK] Update supporting files to EXT:my_skeleton 0.3.0 (Nicole Cordes)
+
 2019-12-18         [RELEASE] Release of nimut/testing-framework 4.1.10 (Nicole Cordes)
 2019-12-17 cf9c439 [TASK] Raise PHP compatibility to 7.4 (Nicole Cordes)
 
