@@ -170,13 +170,6 @@ jobs:
                 - if php -i | grep -v TRAVIS_CMD | grep -q xdebug; then phpenv config-rm xdebug.ini; fi
                 - composer config minimum-stability dev
                 - composer config prefer-stable true
-                - composer require --no-progress --no-suggest --no-update typo3/cms-backend:"@dev"
-                - composer require --no-progress --no-suggest --no-update typo3/cms-core:"@dev"
-                - composer require --no-progress --no-suggest --no-update typo3/cms-extbase:"@dev"
-                - composer require --no-progress --no-suggest --no-update typo3/cms-fluid:"@dev"
-                - composer require --no-progress --no-suggest --no-update typo3/cms-frontend:"@dev"
-                - composer require --no-progress --no-suggest --no-update typo3/cms-install:"@dev"
-                - composer require --no-progress --no-suggest --no-update typo3/cms-recordlist:"@dev"
             php: 7.4
             env: TYPO3=dev-master
         -   <<: *dev-tests
@@ -212,7 +205,6 @@ jobs:
             stage: 🏃 prefer-lowest tests
             if: type = cron
             install:
-                - composer require --no-progress --no-suggest --no-update typo3/cms-composer-installers:"^1.5 || ^2.0"
                 - composer require --no-progress --no-suggest --prefer-lowest nimut/typo3-complete:"$TYPO3"
                 - git checkout composer.json
             php: 7.4
@@ -227,8 +219,14 @@ jobs:
             php: 7.4
             env: TYPO3=9.5.x-dev
         -   <<: *lowest-tests
+            php: 7.4
+            env: TYPO3=^8.7
+        -   <<: *lowest-tests
+            php: 7.4
+            env: TYPO3=8.7.x-dev
+        -   <<: *lowest-tests
             php: 7.3
-            env: TYPO3=de-master
+            env: TYPO3=dev-master
         -   <<: *lowest-tests
             php: 7.3
             env: TYPO3=~10.2.0
