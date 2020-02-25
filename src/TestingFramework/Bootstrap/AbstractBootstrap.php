@@ -92,6 +92,7 @@ abstract class AbstractBootstrap
     protected function enableDisplayErrors()
     {
         @ini_set('display_errors', 1);
+        @error_reporting(E_ALL & ~(E_STRICT | E_NOTICE | E_DEPRECATED));
     }
 
     /**
