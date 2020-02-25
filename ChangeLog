@@ -1,3 +1,7 @@
+2020-02-25         [RELEASE] Release of nimut/testing-framework 5.0.1 (Nicole Cordes)
+2020-02-25 e04c93b [BUGFIX] Ensure old error_reporting (Nicole Cordes)
+2019-12-28 3cc80ab [BUGFIX] Require minimum dependency versions for "prefer-lowest" tests (Nicole Cordes)
+
 2019-12-19         [RELEASE] Release of nimut/testing-framework 5.0.0 (Nicole Cordes)
 2019-12-18 f350f11 [BUGFIX] Ensure database fixtures can be imported (Nicole Cordes)
 2019-12-18 055c662 [TASK] Update supporting files to EXT:my_skeleton 0.3.0 (Nicole Cordes)
