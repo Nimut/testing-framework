@@ -1,3 +1,7 @@
+2020-04-22         [RELEASE] Release of nimut/testing-framework 5.0.3 (Nicole Cordes)
+2020-04-22 59eb923 [TASK] Update version constraints (Nicole Cordes)
+2020-04-22 3fcd69b [TASK] Raise TYPO3 dependencies to require 10.4.0 (Helmut Hummel)
+
 2020-03-06         [RELEASE] Release of nimut/testing-framework 5.0.2 (Nicole Cordes)
 2020-03-06 7f8c7c8 [TASK] Raise TYPO3 dependencies to include 10.3.0 (Nicole Cordes)
 
