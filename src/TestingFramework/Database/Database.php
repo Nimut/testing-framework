@@ -30,7 +30,7 @@ class Database implements DatabaseInterface
      */
     public function __construct(Connection $connection = null)
     {
-        $this->connection = $connection ?? GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ConnectionPool')
+        $this->connection = $connection ?? GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
     }
 

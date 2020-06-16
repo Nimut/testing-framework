@@ -21,10 +21,6 @@ final class BootstrapFactory
      */
     public static function createBootstrapInstance()
     {
-        if (!class_exists('TYPO3\\CMS\\Install\\Service\\ExtensionConfigurationService')) {
-            self::initializeCompatibilityLayer('v87');
-        }
-
         return new Bootstrap();
     }
 
