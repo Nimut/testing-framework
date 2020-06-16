@@ -484,7 +484,13 @@ abstract class AbstractTestSystem
         unset($connectionParameters['dbname']);
         $schemaManager = DriverManager::getConnection($connectionParameters)->getSchemaManager();
 
-        if (in_array($databaseName, $schemaManager->listDatabases(), true)) {
+        if ($schemaManager->getDatabasePlatform()->getName() === 'sqlite') {
+            // This is the "path" option in sqlite: one file = one db
+            $databaseName = $connectionParameters['path'];
+            $schemaManager->dropDatabase($databaseName);
+        } elseif (in_array($databaseName, $schemaManager->listDatabases(), true)) {
+            // Suppress listDatabases() call on sqlite which is not implemented there, but
+            // check db existence on all other platforms before drop call
             $schemaManager->dropDatabase($databaseName);
         }
 
@@ -548,7 +554,7 @@ abstract class AbstractTestSystem
         $databasePort = trim(getenv('typo3DatabasePort'));
         $databaseSocket = trim(getenv('typo3DatabaseSocket'));
         $databaseDriver = trim(getenv('typo3DatabaseDriver'));
-        if ($databaseName || $databaseHost || $databaseUsername || $databasePassword || $databasePort || $databaseSocket) {
+        if ($databaseName || $databaseHost || $databaseUsername || $databasePassword || $databasePort || $databaseSocket || $databaseDriver) {
             // Try to get database credentials from environment variables first
             $originalConfigurationArray = [
                 'DB' => [
@@ -580,6 +586,10 @@ abstract class AbstractTestSystem
             }
             if ($databaseDriver) {
                 $originalConfigurationArray['DB']['Connections']['Default']['driver'] = $databaseDriver;
+                if ($databaseDriver === 'pdo_sqlite') {
+                    $originalConfigurationArray['DB']['Connections']['Default']['path'] = $this->systemPath . 'test.sqlite';
+                    $originalConfigurationArray['DB']['Connections']['Default']['initCommands'] = '';
+                }
             }
         }
 
