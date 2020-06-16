@@ -1,3 +1,6 @@
+2020-06-16         [RELEASE] Release of nimut/testing-framework 5.0.4 (Nicole Cordes)
+2020-06-15 53feb18 [FEATURE] Add support for SQLite database (Nicole Cordes)
+
 2020-04-22         [RELEASE] Release of nimut/testing-framework 5.0.3 (Nicole Cordes)
 2020-04-22 59eb923 [TASK] Update version constraints (Nicole Cordes)
 2020-04-22 3fcd69b [TASK] Raise TYPO3 dependencies to require 10.4.0 (Helmut Hummel)
