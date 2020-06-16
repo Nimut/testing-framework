@@ -84,7 +84,7 @@ abstract class ViewHelperBaseTestcase extends UnitTestCase
     /**
      * @return void
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->viewHelperVariableContainer = $this->prophesize(ViewHelperVariableContainer::class);
         $this->uriBuilder = $this->getMockBuilder(UriBuilder::class)->getMock();

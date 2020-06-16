@@ -34,14 +34,14 @@ class TestSystemTest extends FunctionalTestCase
     /**
      * Prevent initial setUp
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         if (!defined('ORIGINAL_ROOT')) {
             $this->markTestSkipped('Functional tests must be called through phpunit on CLI');
         }
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 
@@ -58,7 +58,7 @@ class TestSystemTest extends FunctionalTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1505058450);
-        $this->expectExceptionMessageRegExp('/Invalid default value for \'testdate\'/');
+        $this->expectExceptionMessageMatches('/Invalid default value for \'testdate\'/');
 
         parent::setUp();
     }
