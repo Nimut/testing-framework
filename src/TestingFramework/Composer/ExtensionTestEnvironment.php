@@ -13,6 +13,9 @@ namespace Nimut\TestingFramework\Composer;
  */
 
 use Composer\Script\Event;
+use Composer\Util\Filesystem;
+use TYPO3\CMS\Composer\Plugin\Config;
+use TYPO3\CMS\Composer\Plugin\Util\ExtensionKeyResolver;
 
 /**
  * If a TYPO3 extension should be tested, the extension needs to be embedded in
@@ -44,41 +47,29 @@ use Composer\Script\Event;
  *     }
  *   }
  */
-final class ExtensionTestEnvironment
+class ExtensionTestEnvironment
 {
     /**
-     * Link directory that contains the composer.json file as
-     * ./<root-dir>/typo3conf/ext/<extension-key>.
-     *
-     * @param Event $event
+     * Link base directory as ./<root-dir>/typo3conf/ext/<extension-key>
      */
     public static function prepare(Event $event)
     {
-        $composerConfigExtraSection = $event->getComposer()->getPackage()->getExtra();
-        if (empty($composerConfigExtraSection['typo3/cms']['extension-key'])
-            || empty($composerConfigExtraSection['typo3/cms']['web-dir'])
-        ) {
-            throw new \RuntimeException(
-                'This script needs properties in composer.json:'
-                    . '"extra" "typo3/cms" "extension-key"'
-                    . ' and "extra" "typo3/cms" "web-dir"',
-                1540644486
-            );
-        }
-        $extensionKey = $composerConfigExtraSection['typo3/cms']['extension-key'];
-        $webDir = $composerConfigExtraSection['typo3/cms']['web-dir'];
-        $typo3confExt = __DIR__ . '/../../../../../../' . $webDir . '/typo3conf/ext';
-        if (!is_dir($typo3confExt) &&
-            !mkdir($typo3confExt, 0775, true) &&
-            !is_dir($typo3confExt)
-        ) {
-            throw new \RuntimeException(
-                sprintf('Directory "%s" could not be created', $typo3confExt),
-                1540650485
-            );
-        }
-        if (!is_link($typo3confExt . '/' . $extensionKey)) {
-            symlink(dirname(__DIR__, 6) . '/', $typo3confExt . '/' . $extensionKey);
+        $composer = $event->getComposer();
+        $io = $event->getIO();
+
+        $config = Config::load($composer, $io);
+        $rootPackage = $composer->getPackage();
+
+        $rootDir = $config->get('root-dir');
+        $extensionKey = ExtensionKeyResolver::resolve($rootPackage);
+
+        $typo3ExtDir = $rootDir . '/typo3conf/ext';
+        $extDir = $typo3ExtDir . '/' . $extensionKey;
+        $fileSystem = new Filesystem();
+        $fileSystem->ensureDirectoryExists($typo3ExtDir);
+
+        if (!file_exists($extDir)) {
+            symlink($config->getBaseDir(), $extDir);
         }
     }
 }
