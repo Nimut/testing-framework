@@ -16,31 +16,31 @@ use Composer\Script\Event;
 
 /**
  * If a TYPO3 extension should be tested, the extension needs to be embedded in
- * a TYPO3 instance. The composer.json file of the extension then acts as a
- * root composer.json file that creates a TYPO3 project around the extension code
- * in a build folder like "./.Build". The to-test extension then needs to reside
- * in ./.Build/Web/typo3conf/ext. This composer script takes care of this operation
- * and links the current root directory as "./<web-dir>/typo3conf/ext/<extension-key>".
+ * a TYPO3 instance. The composer.json file of the extension creates a
+ * TYPO3 project around the extension code in a build folder like "./.Build".
+ * The to-test extension then needs to reside in ./.Build/public/typo3conf/ext.
+ * This composer script takes care of this operation and links the current
+ * root directory as "./<root-dir>/typo3conf/ext/<extension-key>".
  *
  * This class is added as composer "script" in TYPO3 extensions:
  *
  *   "scripts": {
  *     "post-autoload-dump": [
- *       "@prepare-extension-test-environment"
+ *       "@prepare-extension-test-structure"
  *     ],
  *     "prepare-extension-test-structure": [
- *       "Nimut\TestingFramework\Composer\ExtensionTestEnvironment::prepare"
+ *       "Nimut\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
  *     ]
  *   },
  *
  * It additionally needs the "extension key" (that will become the directory name in
  * typo3conf/ext) and the name of the target directory in the extra section. Example for
- * a extension "my_cool_extension":
+ * a extension "my_extension":
  *
  *   "extra": {
  *     "typo3/cms": {
- *       "web-dir": ".Build/Web",
- *       "extension-key": "my_cool_extension"
+ *       "web-dir": ".Build/public",
+ *       "extension-key": "my_extension"
  *     }
  *   }
  */
@@ -48,7 +48,7 @@ final class ExtensionTestEnvironment
 {
     /**
      * Link directory that contains the composer.json file as
-     * ./<web-dir>/typo3conf/ext/<extension-key>.
+     * ./<root-dir>/typo3conf/ext/<extension-key>.
      *
      * @param Event $event
      */
