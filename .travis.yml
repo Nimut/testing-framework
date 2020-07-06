@@ -105,6 +105,26 @@ jobs:
             php: 7.0
             env: TYPO3=^7.6
 
+        - &prepare
+            stage: ✔ extension preparation
+            before_script:
+                - if php -i | grep -v TRAVIS_CMD | grep -q xdebug; then phpenv config-rm xdebug.ini; fi
+                - mkdir -p tests/Packages/testbase/Tests/Packages/testing-framework
+                - rsync -a --delete --exclude ".*" --exclude "tests" . tests/Packages/testbase/Tests/Packages/testing-framework
+            script:
+                - cd tests/Packages/testbase/
+                - composer install
+                - grep "Testbase extension for nimut/testing-framework" .Build/public/typo3conf/ext/testbase/composer.json
+            php: 7.4
+        -   <<: *prepare
+            php: 7.3
+        -   <<: *prepare
+            php: 7.2
+        -   <<: *prepare
+            php: 7.1
+        -   <<: *prepare
+            php: 7.0
+
         -   stage: ✔ with sonarqube scanner
             if: type = push AND branch IN (4.x) AND env(SONAR_TOKEN) IS present AND fork = false
             git:

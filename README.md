@@ -63,6 +63,21 @@ $ vendor/bin/phpunit -c vendor/nimut/testing-framework/res/Configuration/Functio
     typo3conf/ext/example_extension/Tests/Functional
 ```
 
+### Extension preparation
+
+You can add a script section to your `composer.json` file to symlink your extension to the proper root-dir/web-dir.
+
+```json
+"scripts": {
+    "post-autoload-dump": [
+        "@prepare-extension-test-structure"
+    ],
+    "prepare-extension-test-structure": [
+        "Nimut\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
+    ]
+}
+```
+
 ### Database abstraction
 
 To be able to test against TYPO3 CMS 8 and later, nimut/testing-framework provides an own database abstraction layer.

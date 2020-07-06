@@ -17,9 +17,18 @@
             "homepage": "http://helhum.io"
         }
     ],
+    "repositories": [
+        {
+            "type": "path",
+            "url": "Tests/Packages/*"
+        }
+    ],
     "require": {
         "typo3/cms-core": "^7.6 || ^8.7 || ^9.5 || dev-master",
         "typo3/cms-fluid": "^7.6 || ^8.7 || ^9.5 || dev-master"
+    },
+    "require-dev": {
+        "nimut/testing-framework": "@dev"
     },
     "autoload": {
         "psr-4": {
@@ -27,7 +36,24 @@
             "Nimut\\Testbase\\Tests\\": "Tests/"
         }
     },
-    "replace": {
-        "testbase": "self.version"
+    "config": {
+        "vendor-dir": ".Build/vendor",
+        "bin-dir": ".Build/bin"
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "testbase",
+            "cms-package-dir": "{$vendor-dir}/typo3/cms",
+            "app-dir": ".Build",
+            "web-dir": ".Build/public"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@prepare-extension-test-structure"
+        ],
+        "prepare-extension-test-structure": [
+            "Nimut\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
+        ]
     }
 }
