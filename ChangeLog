@@ -1,3 +1,11 @@
+2020-07-07         [RELEASE] Release of nimut/testing-framework 5.1.0 (Nicole Cordes)
+2020-07-03 4377e15 [TASK] Add preparation info to README.md (Nicole Cordes)
+2020-06-30 0eddc5b [TASK] Add extension preparation tests to Travis CI (Nicole Cordes)
+2020-06-30 f6a4b1c [BUGFIX] Use TYPO3 CMS Installers for configuration resolving (Nicole Cordes)
+2020-06-30 9161a5b [TASK] Clean up class description (Nicole Cordes)
+2020-06-30 330e4de [TASK] Require Composer as dev-dependency (Nicole Cordes)
+2020-06-30 8cf36e1 [FEATURE] Copy ExtensionTestEnvironment from TYPO3 testing framework (Simon Schaufelberger)
+
 2020-06-16         [RELEASE] Release of nimut/testing-framework 5.0.4 (Nicole Cordes)
 2020-06-15 53feb18 [FEATURE] Add support for SQLite database (Nicole Cordes)
 
