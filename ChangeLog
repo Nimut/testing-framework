@@ -1,3 +1,7 @@
+2020-07-07         [RELEASE] Release of nimut/testing-framework 4.2.0 (Nicole Cordes)
+2020-07-06 f177437 Merge pull request #134 from simonschaufi/ExtensionTestEnvironment (Nicole Cordes)
+2019-12-28 56aba1c [BUGFIX] Require minimum dependency versions for "prefer-lowest" tests (Nicole Cordes)
+
 2019-12-19         [RELEASE] Release of nimut/testing-framework 4.1.11 (Nicole Cordes)
 2019-12-18 69d9a0a [BUGFIX] Ensure database fixtures can be imported (Nicole Cordes)
 2019-12-18 daa3c8e [TASK] Update supporting files to EXT:my_skeleton 0.3.0 (Nicole Cordes)
