@@ -73,7 +73,7 @@ class Database implements DatabaseInterface
      */
     public function selectCount($fields, $table, $where = '1=1')
     {
-        return $this->getDatabaseInstance()
+        return (int)$this->getDatabaseInstance()
             ->count($fields)
             ->from($table)
             ->where($where)
