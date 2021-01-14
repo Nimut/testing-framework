@@ -268,6 +268,7 @@ abstract class AbstractFunctionalTestCase extends AbstractTestCase
         $backendUser->id = $sessionId;
         $backendUser->sendNoCacheHeaders = false;
         $backendUser->dontSetCookie = true;
+        $backendUser->lockIP = 0;
         $backendUser->createUserSession($userRow);
 
         $GLOBALS['BE_USER'] = $backendUser;
