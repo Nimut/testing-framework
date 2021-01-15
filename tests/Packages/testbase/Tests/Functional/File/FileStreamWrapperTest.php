@@ -1,4 +1,5 @@
 <?php
+
 namespace Nimut\Testbase\Tests\Functional\File;
 
 /*

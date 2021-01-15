@@ -1,4 +1,5 @@
 <?php
+
 namespace Nimut\TestingFramework\v87\TestCase;
 
 /*
