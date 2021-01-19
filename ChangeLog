@@ -1,3 +1,10 @@
+2021-01-19         [RELEASE] Release of nimut/testing-framework 5.2.0 (Nicole Cordes)
+2021-01-15 b249af9 [TASK] Raise TYPO3 dependencies to include 11.0.0 (Nicole Cordes)
+2021-01-15 3d0573b [TASK] Update rules for PHP-CS-Fixer and StyleCI (Nicole Cordes)
+2021-01-14 4274dbc [BUGFIX] Slightly adjust FunctionalTest::routesAreInitialized expectation (Nicole Cordes)
+2021-01-14 55b024c [BUGFIX] Remove dropped fields from be_users fixture (Nicole Cordes)
+2021-01-14 d641b4f [BUGFIX] Enforce int return type for Database::selectCount (Nicole Cordes)
+
 2020-07-07         [RELEASE] Release of nimut/testing-framework 5.1.0 (Nicole Cordes)
 2020-07-03 4377e15 [TASK] Add preparation info to README.md (Nicole Cordes)
 2020-06-30 0eddc5b [TASK] Add extension preparation tests to Travis CI (Nicole Cordes)
