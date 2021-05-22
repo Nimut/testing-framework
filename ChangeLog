@@ -1,3 +1,7 @@
+2021-05-22         [RELEASE] Release of nimut/testing-framework 5.2.1 (Nicole Cordes)
+2021-05-22 810b032 [BUGFIX] Update Travis CI configuration for SonarQube Scanner (Nicole Cordes)
+2021-05-22 1df92c4 [BUGFIX] Add conflict to current doctrine/dbal 2.13.x versions (Nicole Cordes)
+
 2021-01-19         [RELEASE] Release of nimut/testing-framework 5.2.0 (Nicole Cordes)
 2021-01-15 b249af9 [TASK] Raise TYPO3 dependencies to include 11.0.0 (Nicole Cordes)
 2021-01-15 3d0573b [TASK] Update rules for PHP-CS-Fixer and StyleCI (Nicole Cordes)
