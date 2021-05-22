@@ -45,6 +45,7 @@
         "nimut/phpunit-merger": "^0.3"
     },
     "conflict": {
+        "doctrine/dbal": "2.13.0 || 2.13.1",
         "symfony/finder": "2.7.44 || 2.8.37 || 3.4.7 || 4.0.7",
         "typo3/cms-composer-installers": "<1.5",
         "typo3/phar-stream-wrapper": "<3.1.3"
