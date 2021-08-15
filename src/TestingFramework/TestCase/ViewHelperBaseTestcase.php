@@ -22,7 +22,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService;
-use TYPO3\CMS\Extbase\Mvc\Web\Request;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
@@ -100,9 +100,18 @@ abstract class ViewHelperBaseTestcase extends UnitTestCase
         $this->uriBuilder->expects($this->any())->method('setTargetPageUid')->will($this->returnValue($this->uriBuilder));
         $this->uriBuilder->expects($this->any())->method('setTargetPageType')->will($this->returnValue($this->uriBuilder));
         $this->uriBuilder->expects($this->any())->method('setNoCache')->will($this->returnValue($this->uriBuilder));
-        $this->uriBuilder->expects($this->any())->method('setUseCacheHash')->will($this->returnValue($this->uriBuilder));
+        // This can be removed once TYPO3 >= 11 is required.
+        if (method_exists(UriBuilder::class, 'setUseCacheHash')) {
+            $this->uriBuilder->expects($this->any())->method('setUseCacheHash')->will($this->returnValue($this->uriBuilder));
+        }
         $this->uriBuilder->expects($this->any())->method('setAddQueryStringMethod')->will($this->returnValue($this->uriBuilder));
-        $this->request = $this->prophesize(Request::class);
+        // Once TYPO3 >= 10 is required, we can always use the superclass \TYPO3\CMS\Extbase\Mvc\Request.
+        if (class_exists(\TYPO3\CMS\Extbase\Mvc\Web\Request::class)) {
+            $requestClass = \TYPO3\CMS\Extbase\Mvc\Web\Request::class;
+        } else {
+            $requestClass = Request::class;
+        }
+        $this->request = $this->prophesize($requestClass);
         $this->controllerContext = $this->getMockBuilder(ControllerContext::class)->getMock();
         $this->controllerContext->expects($this->any())->method('getUriBuilder')->will($this->returnValue($this->uriBuilder));
         $this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request->reveal()));
