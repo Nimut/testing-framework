@@ -24,8 +24,8 @@
         }
     ],
     "require": {
-        "typo3/cms-core": "^8.7.30 || ^9.5.13 || ^10.4 || ~11.0 || dev-master",
-        "typo3/cms-fluid": "^8.7.30 || ^9.5.13 || ^10.4 || ~11.0 || dev-master"
+        "typo3/cms-core": "^9.5.13 || ^10.4 || ~11.0 || dev-master",
+        "typo3/cms-fluid": "^9.5.13 || ^10.4 || ~11.0 || dev-master"
     },
     "require-dev": {
         "nimut/testing-framework": "@dev"

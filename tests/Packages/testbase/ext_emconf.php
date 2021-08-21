@@ -18,7 +18,7 @@ $EM_CONF[$_EXTKEY] = array (
   'author_email' => 'cordes@cps-it.de, info@helhum.io',
   'author_company' => '',
   'state' => 'stable',
-  'version' => '0.5.1',
+  'version' => '0.6.0',
   'uploadfolder' => 0,
   'createDirs' => '',
   'clearCacheOnLoad' => 0,
@@ -26,7 +26,7 @@ $EM_CONF[$_EXTKEY] = array (
   array (
     'depends' =>
     array (
-      'typo3' => '8.7.0-11.0.99',
+      'typo3' => '9.5.0-11.0.99',
     ),
     'conflicts' =>
     array (

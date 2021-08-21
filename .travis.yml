@@ -29,8 +29,6 @@ jobs:
             env: TYPO3=10.4.x-dev
         -   if: type != cron
             env: TYPO3=9.5.x-dev
-        -   if: type != cron
-            env: TYPO3=8.7.x-dev
     include:
         - &tests
             stage: 🏃 tests
@@ -89,23 +87,11 @@ jobs:
             php: 7.3
             env: TYPO3=^9.5
         -   <<: *tests
-            php: 7.3
-            env: TYPO3=^8.7
-        -   <<: *tests
             php: 7.2
             env: TYPO3=^10.4
         -   <<: *tests
             php: 7.2
             env: TYPO3=^9.5
-        -   <<: *tests
-            php: 7.2
-            env: TYPO3=^8.7
-        -   <<: *tests
-            php: 7.1
-            env: TYPO3=^8.7
-        -   <<: *tests
-            php: 7.0
-            env: TYPO3=^8.7
 
         - &prepare
             stage: ✔ extension preparation
@@ -122,10 +108,6 @@ jobs:
             php: 7.3
         -   <<: *prepare
             php: 7.2
-        -   <<: *prepare
-            php: 7.1
-        -   <<: *prepare
-            php: 7.0
 
         -   stage: ✔ with sonarqube scanner
             if: type = push AND branch IN (master, pre-merge) AND env(SONAR_TOKEN) IS present AND fork = false
@@ -213,23 +195,11 @@ jobs:
             php: 7.3
             env: TYPO3=9.5.x-dev
         -   <<: *dev-tests
-            php: 7.3
-            env: TYPO3=8.7.x-dev
-        -   <<: *dev-tests
             php: 7.2
             env: TYPO3=10.4.x-dev
         -   <<: *dev-tests
             php: 7.2
             env: TYPO3=9.5.x-dev
-        -   <<: *dev-tests
-            php: 7.2
-            env: TYPO3=8.7.x-dev
-        -   <<: *dev-tests
-            php: 7.1
-            env: TYPO3=8.7.x-dev
-        -   <<: *dev-tests
-            php: 7.0
-            env: TYPO3=8.7.x-dev
 
         - &lowest-tests
             <<: *dev-tests
@@ -253,12 +223,6 @@ jobs:
             php: 7.4
             env: TYPO3=9.5.x-dev
         -   <<: *lowest-tests
-            php: 7.4
-            env: TYPO3=^8.7
-        -   <<: *lowest-tests
-            php: 7.4
-            env: TYPO3=8.7.x-dev
-        -   <<: *lowest-tests
             php: 7.3
             env: TYPO3=^10.4
         -   <<: *lowest-tests
@@ -271,12 +235,6 @@ jobs:
             php: 7.3
             env: TYPO3=9.5.x-dev
         -   <<: *lowest-tests
-            php: 7.3
-            env: TYPO3=^8.7
-        -   <<: *lowest-tests
-            php: 7.3
-            env: TYPO3=8.7.x-dev
-        -   <<: *lowest-tests
             php: 7.2
             env: TYPO3=^10.4
         -   <<: *lowest-tests
@@ -288,21 +246,3 @@ jobs:
         -   <<: *lowest-tests
             php: 7.2
             env: TYPO3=9.5.x-dev
-        -   <<: *lowest-tests
-            php: 7.2
-            env: TYPO3=^8.7
-        -   <<: *lowest-tests
-            php: 7.2
-            env: TYPO3=8.7.x-dev
-        -   <<: *lowest-tests
-            php: 7.1
-            env: TYPO3=^8.7
-        -   <<: *lowest-tests
-            php: 7.1
-            env: TYPO3=8.7.x-dev
-        -   <<: *lowest-tests
-            php: 7.0
-            env: TYPO3=^8.7
-        -   <<: *lowest-tests
-            php: 7.0
-            env: TYPO3=8.7.x-dev
