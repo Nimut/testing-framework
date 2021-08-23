@@ -24,7 +24,7 @@ class RenderChildrenViewHelperTest extends ViewHelperBaseTestcase
      */
     protected $viewHelper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->viewHelper = $this->getMockBuilder(RenderChildrenViewHelper::class)

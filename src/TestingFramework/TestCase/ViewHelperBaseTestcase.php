@@ -22,7 +22,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService;
-use TYPO3\CMS\Extbase\Mvc\Web\Request;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
@@ -85,7 +85,7 @@ abstract class ViewHelperBaseTestcase extends UnitTestCase
     /**
      * @return void
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->viewHelperVariableContainer = $this->prophesize(ViewHelperVariableContainer::class);
         $this->uriBuilder = $this->getMockBuilder(UriBuilder::class)->getMock();
@@ -100,7 +100,6 @@ abstract class ViewHelperBaseTestcase extends UnitTestCase
         $this->uriBuilder->expects($this->any())->method('setTargetPageUid')->will($this->returnValue($this->uriBuilder));
         $this->uriBuilder->expects($this->any())->method('setTargetPageType')->will($this->returnValue($this->uriBuilder));
         $this->uriBuilder->expects($this->any())->method('setNoCache')->will($this->returnValue($this->uriBuilder));
-        $this->uriBuilder->expects($this->any())->method('setUseCacheHash')->will($this->returnValue($this->uriBuilder));
         $this->uriBuilder->expects($this->any())->method('setAddQueryStringMethod')->will($this->returnValue($this->uriBuilder));
         $this->request = $this->prophesize(Request::class);
         $this->controllerContext = $this->getMockBuilder(ControllerContext::class)->getMock();

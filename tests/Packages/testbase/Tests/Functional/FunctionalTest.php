@@ -33,7 +33,7 @@ class FunctionalTest extends FunctionalTestCase
      */
     public function extTablesIsLoaded()
     {
-        $this->assertContains(
+        $this->assertStringContainsString(
             'lib.testbase = TEXT',
             $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup']
         );
