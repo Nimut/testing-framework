@@ -22,6 +22,38 @@ final class BootstrapFactory
      */
     public static function createBootstrapInstance()
     {
+        if (class_exists('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request')) {
+            self::initializeCompatibilityLayer('v10');
+        }
+
         return new Bootstrap();
+    }
+
+    private static function initializeCompatibilityLayer($version)
+    {
+        spl_autoload_register(
+            function ($className) use ($version) {
+                if (strpos($className, 'Nimut\\TestingFramework\\') !== 0) {
+                    return;
+                }
+
+                $compatibilityClassName = str_replace('Nimut\\TestingFramework\\', 'Nimut\\TestingFramework\\' . $version . '\\', $className);
+
+                $classLoaderFilepath = __DIR__ . '/../../../../../autoload.php';
+                if (file_exists($classLoaderFilepath)) {
+                    $classLoader = require $classLoaderFilepath;
+                } elseif (file_exists(__DIR__ . '/../../../.Build/vendor/autoload.php')) {
+                    $classLoader = require __DIR__ . '/../../../.Build/vendor/autoload.php';
+                } else {
+                    throw  new \RuntimeException('ClassLoader can\'t be loaded.', 1513379551);
+                }
+                if ($file = $classLoader->findFile($compatibilityClassName)) {
+                    require $file;
+                    class_alias($compatibilityClassName, $className);
+                }
+            },
+            true,
+            true
+        );
     }
 }
