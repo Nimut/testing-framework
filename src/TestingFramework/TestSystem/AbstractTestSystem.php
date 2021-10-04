@@ -72,6 +72,7 @@ abstract class AbstractTestSystem
         '',
         '/fileadmin',
         '/typo3conf/ext',
+        '/typo3temp/var/build',
         '/typo3temp/var/tests',
         '/typo3temp/var/transient',
         '/uploads',
@@ -434,7 +435,7 @@ abstract class AbstractTestSystem
 
         // Register additional core extensions and set active
         foreach ($coreExtensionsToLoad as $extensionName) {
-            if (isset($packageSates['packages'][$extensionName])) {
+            if (isset($packageStates['packages'][$extensionName])) {
                 throw new Exception(
                     $extensionName . ' is already registered as default core extension to load, no need to load it explicitly',
                     1390913893
@@ -450,7 +451,7 @@ abstract class AbstractTestSystem
         // Activate test extensions that have been symlinked before
         foreach ($testExtensionPaths as $extensionPath) {
             $extensionName = basename($extensionPath);
-            if (isset($packageSates['packages'][$extensionName])) {
+            if (isset($packageStates['packages'][$extensionName])) {
                 throw new Exception(
                     $extensionName . ' is already registered as extension to load, no need to load it explicitly',
                     1390913894
@@ -463,13 +464,7 @@ abstract class AbstractTestSystem
             ];
         }
 
-        $content = '<?php' . chr(10) . 'return '
-            . var_export($packageStates, true)
-            . ';' . chr(10) . '?>';
-
-        if (!$this->writeFile($this->systemPath . 'typo3conf/PackageStates.php', $content)) {
-            throw new Exception('Can not write PackageStates', 1381612729);
-        }
+        (new PackageArtifactBuilder($this->systemPath))->writePackageArtifact($packageStates);
     }
 
     /**
