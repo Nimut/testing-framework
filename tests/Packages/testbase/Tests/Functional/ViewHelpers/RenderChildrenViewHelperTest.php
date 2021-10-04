@@ -20,13 +20,6 @@ class RenderChildrenViewHelperTest extends FunctionalTestCase
     /**
      * @var array
      */
-    protected $coreExtensionsToLoad = [
-        'fluid',
-    ];
-
-    /**
-     * @var array
-     */
     protected $testExtensionsToLoad = [
         'typo3conf/ext/testbase',
     ];
