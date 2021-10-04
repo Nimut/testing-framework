@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Core\Bootstrap as CoreBootstrap;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Package\UnitTestPackageManager;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -245,6 +246,10 @@ abstract class AbstractBootstrap
     protected function initializePackageManager()
     {
         $cache = new PhpFrontend($this->coreCacheName, new NullBackend('production', []));
+        $typo3Version = new Typo3Version();
+        if ($typo3Version->getMajorVersion() >= 11) {
+            $cache = CoreBootstrap::createPackageCache($cache);
+        }
         $packageManager = CoreBootstrap::createPackageManager(UnitTestPackageManager::class, $cache);
 
         GeneralUtility::setSingletonInstance(PackageManager::class, $packageManager);
