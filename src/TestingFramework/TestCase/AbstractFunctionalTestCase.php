@@ -24,9 +24,12 @@ use Nimut\TestingFramework\TestSystem\AbstractTestSystem;
 use Nimut\TestingFramework\TestSystem\TestSystem;
 use PHPUnit\Util\PHP\DefaultPhpProcess;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -262,25 +265,28 @@ abstract class AbstractFunctionalTestCase extends AbstractTestCase
         $database = $this->getDatabaseConnection();
         $userRow = $database->selectSingleRow('*', 'be_users', 'uid = ' . (int)$userUid);
 
-        /** @var $backendUser BackendUserAuthentication */
-        $backendUser = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
-        $sessionId = $backendUser->createSessionId();
-        $_COOKIE['be_typo_user'] = $sessionId;
-        $backendUser->id = $sessionId;
-        $backendUser->sendNoCacheHeaders = false;
-        $backendUser->dontSetCookie = true;
-        $backendUser->lockIP = 0;
-        $backendUser->createUserSession($userRow);
+        $backendUser = GeneralUtility::makeInstance(BackendUserAuthentication::class);
+        $session = $backendUser->createUserSession($userRow);
 
-        $GLOBALS['BE_USER'] = $backendUser;
-        $GLOBALS['BE_USER']->start();
-        if (!is_array($GLOBALS['BE_USER']->user) || !$GLOBALS['BE_USER']->user['uid']) {
+        $request = new ServerRequest();
+        $request = $request->withCookieParams([
+            $backendUser->name => $session->getIdentifier(),
+        ]);
+
+        $backendUser->start($request);
+        if (!is_array($backendUser->user) || !$backendUser->user['uid']) {
             throw new Exception(
                 'Can not initialize backend user',
-                1377095807
+                1633442752
             );
         }
-        $GLOBALS['BE_USER']->backendCheckLogin();
+        $backendUser->backendCheckLogin();
+
+        $GLOBALS['BE_USER'] = $backendUser;
+        GeneralUtility::makeInstance(Context::class)->setAspect(
+            'backend.user',
+            GeneralUtility::makeInstance(UserAspect::class, $backendUser)
+        );
 
         return $backendUser;
     }
@@ -320,7 +326,7 @@ abstract class AbstractFunctionalTestCase extends AbstractTestCase
                 $columnValue = null;
 
                 if (isset($column['ref'])) {
-                    list($tableName, $elementId) = explode('#', $column['ref']);
+                    [$tableName, $elementId] = explode('#', $column['ref']);
                     $columnValue = $foreignKeys[$tableName][$elementId];
                 } elseif (isset($column['is-NULL']) && ($column['is-NULL'] === 'yes')) {
                     $columnValue = null;
