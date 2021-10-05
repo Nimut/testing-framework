@@ -33,10 +33,10 @@ abstract class AbstractTestSystem
         'core',
         'backend',
         'frontend',
-        'lang',
         'extbase',
         'fluid',
         'install',
+        'recordlist',
     ];
 
     /**
@@ -240,7 +240,6 @@ abstract class AbstractTestSystem
      */
     protected function loadExtensionConfiguration()
     {
-        Bootstrap::initializeBackendRouter();
         Bootstrap::loadExtTables(true);
     }
 
@@ -475,6 +474,16 @@ abstract class AbstractTestSystem
      */
     protected function setUpTestDatabase()
     {
+        // The TYPO3 core misses to reset its internal connection state
+        // This means we need to reset all connections to ensure database connection can be initialized
+        $closure = \Closure::bind(function () {
+            foreach (ConnectionPool::$connections as $connection) {
+                $connection->close();
+            }
+            ConnectionPool::$connections = [];
+        }, null, ConnectionPool::class);
+        $closure();
+
         $connectionParameters = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default'];
         $databaseName = $connectionParameters['dbname'];
         unset($connectionParameters['dbname']);

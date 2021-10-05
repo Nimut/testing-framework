@@ -1,6 +1,6 @@
 <?php
 
-namespace Nimut\TestingFramework\TestSystem;
+namespace Nimut\TestingFramework\v10\TestSystem;
 
 /*
  * This file is part of the NIMUT testing-framework project.
@@ -13,6 +13,19 @@ namespace Nimut\TestingFramework\TestSystem;
  * LICENSE file that was distributed with this source code.
  */
 
+use Nimut\TestingFramework\TestSystem\AbstractTestSystem;
+use TYPO3\CMS\Core\Core\Bootstrap;
+
 class TestSystem extends AbstractTestSystem
 {
+    /**
+     * Loads TCA and ext_tables.php files from extensions
+     *
+     * @return void
+     */
+    protected function loadExtensionConfiguration()
+    {
+        Bootstrap::initializeBackendRouter();
+        Bootstrap::loadExtTables(true);
+    }
 }
