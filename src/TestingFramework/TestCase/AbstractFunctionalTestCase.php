@@ -23,6 +23,7 @@ use Nimut\TestingFramework\Http\Response;
 use Nimut\TestingFramework\TestSystem\AbstractTestSystem;
 use Nimut\TestingFramework\TestSystem\TestSystem;
 use PHPUnit\Util\PHP\DefaultPhpProcess;
+use SebastianBergmann\Template\Template;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
@@ -476,7 +477,8 @@ abstract class AbstractFunctionalTestCase extends AbstractTestCase
             'requestUrl' => 'http://localhost/?id=' . $pageId . '&L=' . $languageId . $additionalParameter,
         ];
 
-        $template = new \Text_Template('ntf://Frontend/Request.tpl');
+        $textTemplateClass = class_exists(Template::class) ? Template::class : \Text_Template::class;
+        $template = new $textTemplateClass('ntf://Frontend/Request.tpl');
         $template->setVar(
             [
                 'arguments' => var_export($arguments, true),

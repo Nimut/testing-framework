@@ -92,18 +92,21 @@ abstract class AbstractViewHelperBaseTestcase extends UnitTestCase
         $this->uriBuilder = $this->getUriBuilder();
         $this->request = $this->getRequest();
 
+        $this->arguments = [];
+        $this->mvcPropertyMapperConfigurationService = $this->getAccessibleMock(MvcPropertyMappingConfigurationService::class, ['dummy']);
+        $this->templateVariableContainer = $this->getMockBuilder(StandardVariableProvider::class)->getMock();
+        $this->tagBuilder = new TagBuilder();
+
         $this->controllerContext = $this->getMockBuilder(ControllerContext::class)->getMock();
         $this->controllerContext->expects($this->any())->method('getUriBuilder')->will($this->returnValue($this->uriBuilder));
         $this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request->reveal()));
-        $this->arguments = [];
-        $this->templateVariableContainer = $this->getMockBuilder(StandardVariableProvider::class)->getMock();
-        $this->tagBuilder = new TagBuilder();
+
         $this->renderingContext = $this->getAccessibleMock(RenderingContextFixture::class, ['getControllerContext']);
         $this->renderingContext->expects($this->any())->method('getControllerContext')->willReturn($this->controllerContext);
         $this->renderingContext->setVariableProvider($this->templateVariableContainer);
         $this->renderingContext->_set('viewHelperVariableContainer', $this->viewHelperVariableContainer->reveal());
+        $this->renderingContext->_set('request', $this->controllerContext->getRequest());
         $this->renderingContext->setControllerContext($this->controllerContext);
-        $this->mvcPropertyMapperConfigurationService = $this->getAccessibleMock(MvcPropertyMappingConfigurationService::class, ['dummy']);
     }
 
     protected function getUriBuilder()
