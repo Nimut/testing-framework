@@ -1,3 +1,6 @@
+2021-10-07         [RELEASE] Release of nimut/phpunit-merger 5.2.2 (Nicole Cordes)
+2021-10-07 778479c Revert "[TASK] Raise TYPO3 dependencies to include 11.0.0" (Nicole Cordes)
+
 2021-05-22         [RELEASE] Release of nimut/testing-framework 5.2.1 (Nicole Cordes)
 2021-05-22 810b032 [BUGFIX] Update Travis CI configuration for SonarQube Scanner (Nicole Cordes)
 2021-05-22 1df92c4 [BUGFIX] Add conflict to current doctrine/dbal 2.13.x versions (Nicole Cordes)
