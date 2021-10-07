@@ -42,7 +42,7 @@
     "require-dev": {
         "composer/composer": "^1.10",
         "nimut/testing-framework-testbase": "@dev",
-        "nimut/phpunit-merger": "^0.3"
+        "nimut/phpunit-merger": "^1.0"
     },
     "conflict": {
         "doctrine/dbal": "2.13.0 || 2.13.1",
