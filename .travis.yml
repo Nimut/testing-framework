@@ -207,7 +207,6 @@ jobs:
         - &lowest-tests
             <<: *dev-tests
             stage: 🏃 prefer-lowest tests
-            if: type = cron
             install:
                 - composer require --no-progress --no-suggest --prefer-lowest nimut/typo3-complete:"$TYPO3"
                 - git checkout composer.json
@@ -215,43 +214,22 @@ jobs:
             env: TYPO3=dev-master
         -   <<: *lowest-tests
             php: 7.4
-            env: TYPO3=^11.5
-        -   <<: *lowest-tests
-            php: 7.4
             env: TYPO3=11.5.x-dev
         -   <<: *lowest-tests
             php: 7.4
-            env: TYPO3=^10.4
-        -   <<: *lowest-tests
-            php: 7.4
             env: TYPO3=10.4.x-dev
-        -   <<: *lowest-tests
-            php: 7.4
-            env: TYPO3=^9.5
         -   <<: *lowest-tests
             php: 7.4
             env: TYPO3=9.5.x-dev
         -   <<: *lowest-tests
             php: 7.3
-            env: TYPO3=^10.4
-        -   <<: *lowest-tests
-            php: 7.3
             env: TYPO3=10.4.x-dev
-        -   <<: *lowest-tests
-            php: 7.3
-            env: TYPO3=^9.5
         -   <<: *lowest-tests
             php: 7.3
             env: TYPO3=9.5.x-dev
         -   <<: *lowest-tests
             php: 7.2
-            env: TYPO3=^10.4
-        -   <<: *lowest-tests
-            php: 7.2
             env: TYPO3=10.4.x-dev
-        -   <<: *lowest-tests
-            php: 7.2
-            env: TYPO3=^9.5
         -   <<: *lowest-tests
             php: 7.2
             env: TYPO3=9.5.x-dev
