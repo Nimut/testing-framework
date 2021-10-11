@@ -28,7 +28,7 @@
         }
     ],
     "require": {
-        "php": ">= 7.2, < 7.5",
+        "php": ">= 7.2, < 7.5 || ~8.0.0",
         "typo3/cms-backend": "^9.5.13 || ^10.4 || ^11.5 || dev-master",
         "typo3/cms-core": "^9.5.13 || ^10.4 || ^11.5 || dev-master",
         "typo3/cms-extbase": "^9.5.13 || ^10.4 || ^11.5 || dev-master",
@@ -37,7 +37,7 @@
         "typo3/cms-install": "^9.5.13 || ^10.4 || ^11.5 || dev-master",
         "typo3/cms-recordlist": "^9.5.13 || ^10.4 || ^11.5 || dev-master",
         "phpunit/phpunit": "^8.5 || ^9.5",
-        "mikey179/vfsstream": "^1.6"
+        "mikey179/vfsstream": "^1.6.7"
     },
     "require-dev": {
         "composer/composer": "^1.10",
