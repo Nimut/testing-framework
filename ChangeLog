@@ -1,3 +1,8 @@
+2021-10-21         [RELEASE] Release of nimut/testing-framework 5.3.0 (Nicole Cordes)
+2021-10-21 adf8a1f [TASK] Add small code adjustments (Nicole Cordes)
+2021-08-19 6d9c135 [TASK] Only truncate tables that have been touched (Oliver Klee)
+2021-08-15 162cd54 [TASK] Switch to Composer 2 as a dev dependency (Oliver Klee)
+
 2021-10-07         [RELEASE] Release of nimut/phpunit-merger 5.2.2 (Nicole Cordes)
 2021-10-07 778479c Revert "[TASK] Raise TYPO3 dependencies to include 11.0.0" (Nicole Cordes)
 
