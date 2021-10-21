@@ -227,7 +227,6 @@ abstract class AbstractTestSystem
      */
     protected function initializeTestDatabase()
     {
-        /** @var Connection $connection */
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
         $platform = $connection->getDatabasePlatform();
@@ -249,16 +248,14 @@ abstract class AbstractTestSystem
      * - Otherwise, this method will skip the truncate. (For tables without an auto-increment value, this means that
      *   the table either has not been touched at all beforehand, or that all records have already been deleted).
      */
-    private function truncateAllTablesForMysql()
+    protected function truncateAllTablesForMysql()
     {
-        /** @var Connection $connection */
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
         $databaseName = $connection->getDatabase();
         $tableNames = $connection->getSchemaManager()->listTableNames();
 
         if (empty($tableNames)) {
-            // No tables to process
             return;
         }
 
@@ -266,16 +263,16 @@ abstract class AbstractTestSystem
         // This is needed because information_schema.table_rows is not reliable enough for innodb engine.
         // see https://dev.mysql.com/doc/mysql-infoschema-excerpt/5.7/en/information-schema-tables-table.html TABLE_ROWS
         $fromTableUnionSubSelectQuery = [];
-        foreach($tableNames as $tableName) {
+        foreach ($tableNames as $tableName) {
             $fromTableUnionSubSelectQuery[] = sprintf(
-                ' SELECT %s AS table_name, exists(SELECT * FROm %s LIMIT 1) AS has_rows',
+                ' SELECT %s AS table_name, exists(SELECT * FROM %s LIMIT 1) AS has_rows',
                 $connection->quote($tableName),
                 $connection->quoteIdentifier($tableName)
             );
         }
         $fromTableUnionSubSelectQuery = implode(' UNION ', $fromTableUnionSubSelectQuery);
-        $query = sprintf('
-            SELECT
+        $query = sprintf(
+            'SELECT
                 table_real_rowcounts.*,
                 information_schema.tables.AUTO_INCREMENT AS auto_increment
             FROM (%s) AS table_real_rowcounts
@@ -286,25 +283,22 @@ abstract class AbstractTestSystem
             $fromTableUnionSubSelectQuery,
             $connection->quote($databaseName)
         );
-        // @todo: Switch to fetchAllAssociative() when core v10 compat is dropped.
         $result = $connection->executeQuery($query)->fetchAll();
         foreach ($result as $tableData) {
             $hasChangedAutoIncrement = ((int)$tableData['auto_increment']) > 1;
-            $hasAtLeastOneRow = (bool)$tableData['has_rows'];
-            $isChanged = $hasChangedAutoIncrement || $hasAtLeastOneRow;
+            $hasRows = (bool)$tableData['has_rows'];
+            $isChanged = $hasChangedAutoIncrement || $hasRows;
             if ($isChanged) {
-                $tableName = $tableData['table_name'];
-                $connection->truncate($tableName);
+                $connection->truncate($tableData['table_name']);
             }
         }
     }
 
     /**
-     * Truncates all tables without any database-specific optimizations.
+     * Truncates all tables without any optimizations.
      */
-    private function truncateAllTablesForOtherDatabases()
+    protected function truncateAllTablesForOtherDatabases()
     {
-        /** @var Connection $connection */
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
 
