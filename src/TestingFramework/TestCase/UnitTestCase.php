@@ -44,7 +44,7 @@ abstract class UnitTestCase extends AbstractTestCase
      * @throws \RuntimeException
      * @return void
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // Delete registered test files and directories
         foreach ((array)$this->testFilesToDelete as $absoluteFileName) {

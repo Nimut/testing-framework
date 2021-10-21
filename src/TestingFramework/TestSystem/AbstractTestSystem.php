@@ -35,10 +35,10 @@ abstract class AbstractTestSystem
         'core',
         'backend',
         'frontend',
-        'lang',
         'extbase',
         'fluid',
         'install',
+        'recordlist',
     ];
 
     /**
@@ -74,6 +74,7 @@ abstract class AbstractTestSystem
         '',
         '/fileadmin',
         '/typo3conf/ext',
+        '/typo3temp/var/build',
         '/typo3temp/var/tests',
         '/typo3temp/var/transient',
         '/uploads',
@@ -314,7 +315,6 @@ abstract class AbstractTestSystem
      */
     protected function loadExtensionConfiguration()
     {
-        Bootstrap::initializeBackendRouter();
         Bootstrap::loadExtTables(true);
     }
 
@@ -538,13 +538,7 @@ abstract class AbstractTestSystem
             ];
         }
 
-        $content = '<?php' . chr(10) . 'return '
-            . var_export($packageStates, true)
-            . ';' . chr(10) . '?>';
-
-        if (!$this->writeFile($this->systemPath . 'typo3conf/PackageStates.php', $content)) {
-            throw new Exception('Can not write PackageStates', 1381612729);
-        }
+        (new PackageArtifactBuilder($this->systemPath))->writePackageArtifact($packageStates);
     }
 
     /**
@@ -555,6 +549,16 @@ abstract class AbstractTestSystem
      */
     protected function setUpTestDatabase()
     {
+        // The TYPO3 core misses to reset its internal connection state
+        // This means we need to reset all connections to ensure database connection can be initialized
+        $closure = \Closure::bind(function () {
+            foreach (ConnectionPool::$connections as $connection) {
+                $connection->close();
+            }
+            ConnectionPool::$connections = [];
+        }, null, ConnectionPool::class);
+        $closure();
+
         $connectionParameters = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default'];
         $databaseName = $connectionParameters['dbname'];
         unset($connectionParameters['dbname']);

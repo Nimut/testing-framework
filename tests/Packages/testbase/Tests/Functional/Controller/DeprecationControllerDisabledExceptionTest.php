@@ -32,7 +32,7 @@ class DeprecationControllerDisabledExceptionTest extends FunctionalTestCase
      */
     protected $deprecationController;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

@@ -244,8 +244,9 @@ abstract class AbstractBootstrap
      */
     protected function initializePackageManager()
     {
-        $cache = new PhpFrontend($this->coreCacheName, new NullBackend('production', []));
-        $packageManager = CoreBootstrap::createPackageManager(UnitTestPackageManager::class, $cache);
+        $coreCache = new PhpFrontend($this->coreCacheName, new NullBackend('production', []));
+        $packageCache = CoreBootstrap::createPackageCache($coreCache);
+        $packageManager = CoreBootstrap::createPackageManager(UnitTestPackageManager::class, $packageCache);
 
         GeneralUtility::setSingletonInstance(PackageManager::class, $packageManager);
         ExtensionManagementUtility::setPackageManager($packageManager);

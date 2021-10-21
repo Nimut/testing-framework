@@ -28,21 +28,21 @@
         }
     ],
     "require": {
-        "php": ">= 5.5, < 7.5",
-        "typo3/cms-backend": "^8.7.30 || ^9.5.13 || ^10.4",
-        "typo3/cms-core": "^8.7.30 || ^9.5.13 || ^10.4",
-        "typo3/cms-extbase": "^8.7.30 || ^9.5.13 || ^10.4",
-        "typo3/cms-fluid": "^8.7.30 || ^9.5.13 || ^10.4",
-        "typo3/cms-frontend": "^8.7.30 || ^9.5.13 || ^10.4",
-        "typo3/cms-install": "^8.7.30 || ^9.5.13 || ^10.4",
-        "typo3/cms-recordlist": "^8.7.30 || ^9.5.13 || ^10.4",
-        "phpunit/phpunit": "^6.0 || ^7.0",
-        "mikey179/vfsstream": "^1.6"
+        "php": ">= 7.2, < 7.5 || ~8.0.0",
+        "typo3/cms-backend": "^9.5.13 || ^10.4 || ^11.5 || dev-master",
+        "typo3/cms-core": "^9.5.13 || ^10.4 || ^11.5 || dev-master",
+        "typo3/cms-extbase": "^9.5.13 || ^10.4 || ^11.5 || dev-master",
+        "typo3/cms-fluid": "^9.5.13 || ^10.4 || ^11.5 || dev-master",
+        "typo3/cms-frontend": "^9.5.13 || ^10.4 || ^11.5 || dev-master",
+        "typo3/cms-install": "^9.5.13 || ^10.4 || ^11.5 || dev-master",
+        "typo3/cms-recordlist": "^9.5.13 || ^10.4 || ^11.5 || dev-master",
+        "phpunit/phpunit": "^8.5 || ^9.5",
+        "mikey179/vfsstream": "^1.6.7"
     },
     "require-dev": {
         "composer/composer": "^2.1",
         "nimut/testing-framework-testbase": "@dev",
-        "nimut/phpunit-merger": "^0.3"
+        "nimut/phpunit-merger": "^1.0"
     },
     "conflict": {
         "doctrine/dbal": "2.13.0 || 2.13.1",
@@ -53,7 +53,7 @@
     "autoload": {
         "psr-4": {
             "Nimut\\TestingFramework\\": "src/TestingFramework/",
-            "Nimut\\TestingFramework\\v87\\": "compat/v87/"
+            "Nimut\\TestingFramework\\v10\\": "compat/v10/"
         }
     },
     "config": {
@@ -62,7 +62,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.x-dev"
+            "dev-master": "6.x-dev"
         },
         "typo3/cms": {
             "cms-package-dir": "{$vendor-dir}/typo3/cms",
