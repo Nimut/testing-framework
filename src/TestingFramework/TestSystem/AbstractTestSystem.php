@@ -16,11 +16,11 @@ namespace Nimut\TestingFramework\TestSystem;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Nimut\TestingFramework\Bootstrap\SystemEnvironmentBuilder;
 use Nimut\TestingFramework\Exception\Exception;
 use Nimut\TestingFramework\File\NtfStreamWrapper;
 use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
-use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -112,6 +112,12 @@ abstract class AbstractTestSystem
 
         SystemEnvironmentBuilder::run(0, SystemEnvironmentBuilder::REQUESTTYPE_BE | SystemEnvironmentBuilder::REQUESTTYPE_CLI);
         Bootstrap::init($classLoader);
+
+        if (!ClassLoadingInformation::isClassLoadingInformationAvailable()) {
+            ClassLoadingInformation::dumpClassLoadingInformation();
+            ClassLoadingInformation::registerClassLoadingInformation();
+        }
+
         ob_end_clean();
     }
 
@@ -538,7 +544,13 @@ abstract class AbstractTestSystem
             ];
         }
 
-        (new PackageArtifactBuilder($this->systemPath))->writePackageArtifact($packageStates);
+        $content = '<?php' . chr(10) . 'return '
+            . var_export($packageStates, true)
+            . ';' . chr(10) . '?>';
+
+        if (!$this->writeFile($this->systemPath . 'typo3conf/PackageStates.php', $content)) {
+            throw new Exception('Can not write PackageStates', 1381612729);
+        }
     }
 
     /**
