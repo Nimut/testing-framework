@@ -65,6 +65,7 @@ abstract class AbstractBootstrap
         $this->enableDisplayErrors();
         $this->createNecessaryDirectoriesInDocumentRoot();
         $this->defineOriginalRootPath();
+        $this->defineOriginalWebPath();
     }
 
     /**
@@ -137,6 +138,27 @@ abstract class AbstractBootstrap
     }
 
     /**
+     * Defines the constant ORIGINAL_WEB for the path to the web(public) TYPO3 root dir
+     * In case of using helhum/typo3-secure-web your private and public sources can have different root paths
+     *
+     * @return void
+     */
+    protected function defineOriginalWebPath()
+    {
+        if (!defined('ORIGINAL_WEB')) {
+            /** @var string */
+            define('ORIGINAL_WEB', $this->getPublicRootPath());
+        }
+
+        if (!file_exists(ORIGINAL_WEB . 'index.php')) {
+            $this->exitWithMessage(
+                'Unable to determine path to entry script.'
+                . ' Please check your path or set an environment variable \'TYPO3_PATH_WEB\' to your public root path.'
+            );
+        }
+    }
+
+    /**
      * Returns the absolute path to the TYPO3 document root
      *
      * @return string the TYPO3 document root using Unix path separators
@@ -152,6 +174,24 @@ abstract class AbstractBootstrap
         }
 
         return rtrim(str_replace('\\', '/', $webRoot), '/') . '/';
+    }
+
+    /**
+     * Returns the absolute path to the TYPO3 public root dir
+     *
+     * @return string the TYPO3 public root using Unix path separators
+     */
+    protected function getPublicRootPath()
+    {
+        if (getenv('TYPO3_PATH_WEB')) {
+            $publicRoot = getenv('TYPO3_PATH_WEB');
+        } elseif (getenv('TYPO3_PATH_ROOT')) {
+            $publicRoot = getenv('TYPO3_PATH_ROOT');
+        } else {
+            $publicRoot = getcwd();
+        }
+
+        return rtrim(str_replace('\\', '/', $publicRoot), '/') . '/';
     }
 
     /**

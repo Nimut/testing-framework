@@ -148,6 +148,8 @@ $structure = $defaultSection->getStructure();
 $this->assertTrue(is_array($structure['pages:1']['__contents']['tt_content:1']));
 ```
 
+In case of using helhum/typo3-secure-web do not forget to set TYPO3_PATH_WEB to your web-dir folder
+
 #### Structure
 
 The returned structure of a frontend request is an array with some information about your page and its children.
@@ -218,3 +220,7 @@ Following links provide documentation and additional information about TYPO3 CMS
 - [Functional tests for dummies](https://de.slideshare.net/cpsitgmbh/functional-tests-for-dummies-65673214)
 
 Last but not least you may ask for further support in the Slack channel "[#cig-testing](https://typo3.slack.com/messages/cig-testing)".
+
+## helhum/typo3-secure-web compatibility
+
+In case of using helhum/typo3-secure-web you should set TYPO3_PATH_ROOT to your private dir, and TYPO3_PATH_WEB to the public one.

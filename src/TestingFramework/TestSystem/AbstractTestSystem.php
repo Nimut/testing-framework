@@ -376,7 +376,7 @@ abstract class AbstractTestSystem
     {
         $linksToSet = [
             ORIGINAL_ROOT . 'typo3' => $this->systemPath . 'typo3',
-            ORIGINAL_ROOT . 'index.php' => $this->systemPath . 'index.php',
+            ORIGINAL_WEB . 'index.php' => $this->systemPath . 'index.php',
         ];
         foreach ($linksToSet as $from => $to) {
             if (!symlink($from, $to)) {
@@ -406,11 +406,14 @@ abstract class AbstractTestSystem
                 );
             }
             $destinationPath = $this->systemPath . 'typo3conf/ext/' . basename($absoluteExtensionPath);
-            if (!symlink($absoluteExtensionPath, $destinationPath)) {
-                throw new Exception(
-                    'Can not link extension folder: ' . $absoluteExtensionPath . ' to ' . $destinationPath,
-                    1376657142
-                );
+
+            if (!file_exists($destinationPath)) {
+                if (!symlink($absoluteExtensionPath, $destinationPath)) {
+                    throw new Exception(
+                        'Can not link extension folder: ' . $absoluteExtensionPath . ' to ' . $destinationPath,
+                        1376657142
+                    );
+                }
             }
         }
     }
