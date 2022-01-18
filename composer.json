@@ -25,14 +25,10 @@
         {
             "type": "path",
             "url": "tests/Packages/*"
-        },
-        {
-            "type": "git",
-            "url": "https://github.com/tomasnorre/phpunit-merger.git"
         }
     ],
     "require": {
-        "php": ">= 7.2, < 7.5 || ~8.0.0 || ~8.1.0",
+        "php": "^7.2 || ^8.0",
         "typo3/cms-backend": "^9.5.13 || ^10.4 || ^11.5 || dev-master",
         "typo3/cms-core": "^9.5.13 || ^10.4 || ^11.5 || dev-master",
         "typo3/cms-extbase": "^9.5.13 || ^10.4 || ^11.5 || dev-master",
@@ -46,7 +42,7 @@
     "require-dev": {
         "composer/composer": "^2.1",
         "nimut/testing-framework-testbase": "@dev",
-        "nimut/phpunit-merger": "^1.0 || dev-php81-compat"
+        "nimut/phpunit-merger": "^1.0"
     },
     "conflict": {
         "doctrine/dbal": "2.13.0 || 2.13.1",
