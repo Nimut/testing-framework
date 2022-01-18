@@ -1,0 +1,30 @@
+{
+    "name": "nimut/testing-framework-testbase2",
+    "type": "typo3-cms-extension",
+    "description": "Testbase extension for nimut/testing-framework",
+    "homepage": "https://github.com/Nimut/TYPO3-testing-framework",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Nicole Cordes",
+            "email": "typo3@cordes.co",
+            "role": "Developer"
+        },
+        {
+            "name": "Helmut Hummel",
+            "email": "info@helhum.io",
+            "role": "Developer",
+            "homepage": "http://helhum.io"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Nimut\\Testbase2\\": "Classes/"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "testbase2"
+        }
+    }
+}
