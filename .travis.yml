@@ -24,7 +24,7 @@ jobs:
     fast_finish: true
     allow_failures:
         -   if: type != cron
-            env: TYPO3=dev-master
+            env: TYPO3=dev-main
         -   if: type != cron
             env: TYPO3=10.4.x-dev
         -   if: type != cron
@@ -191,7 +191,7 @@ jobs:
                 - composer config minimum-stability dev
                 - composer config prefer-stable true
             php: 8.1.0
-            env: TYPO3=dev-master
+            env: TYPO3=dev-main
         -   <<: *dev-tests
             php: 8.1.0
             env: TYPO3=11.5.x-dev
@@ -200,7 +200,7 @@ jobs:
             env: TYPO3=11.5.x-dev
         -   <<: *dev-tests
             php: 7.4
-            env: TYPO3=dev-master
+            env: TYPO3=dev-main
         -   <<: *dev-tests
             php: 7.4
             env: TYPO3=11.5.x-dev
@@ -230,19 +230,19 @@ jobs:
                 - composer require --no-progress --no-suggest --prefer-lowest nimut/typo3-complete:"$TYPO3"
                 - git checkout composer.json
             php: 8.1.0
-            env: TYPO3=dev-master
+            env: TYPO3=dev-main
         -   <<: *lowest-tests
             php: 8.1.0
             env: TYPO3=11.5.x-dev
         -   <<: *lowest-tests
             php: 8.0
-            env: TYPO3=dev-master
+            env: TYPO3=dev-main
         -   <<: *lowest-tests
             php: 8.0
             env: TYPO3=11.5.x-dev
         -   <<: *lowest-tests
             php: 7.4
-            env: TYPO3=dev-master
+            env: TYPO3=dev-main
         -   <<: *lowest-tests
             php: 7.4
             env: TYPO3=11.5.x-dev
