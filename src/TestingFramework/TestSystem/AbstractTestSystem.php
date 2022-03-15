@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 abstract class AbstractTestSystem
 {
@@ -73,6 +74,7 @@ abstract class AbstractTestSystem
     protected $defaultFoldersToCreate = [
         '',
         '/fileadmin',
+        '/typo3',
         '/typo3conf/ext',
         '/typo3temp/var/build',
         '/typo3temp/var/tests',
@@ -380,17 +382,46 @@ abstract class AbstractTestSystem
      */
     protected function setUpSystemCoreLinks()
     {
-        $linksToSet = [
-            ORIGINAL_ROOT . 'typo3' => $this->systemPath . 'typo3',
-            ORIGINAL_ROOT . 'index.php' => $this->systemPath . 'index.php',
+        // Link sysext folder first
+        // As entry points can't be symlinked anymore, typo3 can't be linked directly here
+        $from = ORIGINAL_ROOT . 'typo3/sysext';
+        $to = $this->systemPath . 'typo3/sysext';
+        if (!symlink($from, $to)) {
+            throw new Exception(
+                'Creating link failed: from ' . $from . ' to: ' . $to,
+                1376657199
+            );
+        }
+
+        $entryPointsToSet = [
+            'typo3/sysext/backend/Resources/Private/Php/backend.php' => 'typo3/index.php',
+            'typo3/sysext/frontend/Resources/Private/Php/frontend.php' => 'index.php',
+            'typo3/sysext/install/Resources/Private/Php/install.php' => 'typo3/install.php',
         ];
-        foreach ($linksToSet as $from => $to) {
-            if (!symlink($from, $to)) {
-                throw new Exception(
-                    'Creating link failed: from ' . $from . ' to: ' . $to,
-                    1376657199
+
+        $autoloadFilepath = PathUtility::getCanonicalPath($this->getClassLoaderFilepath());
+
+        foreach ($entryPointsToSet as $source => $target) {
+            if (($entryPointContent = file_get_contents($this->systemPath . $source)) === false) {
+                throw new \UnexpectedValueException(sprintf('Source file (%s) was not found.', $source), 1647288158);
+            }
+            $entryPointContent = (string)preg_replace(
+                '/__DIR__ \. \'[^\']+\'/',
+                $this->findShortestPathCode($this->systemPath . $target, $autoloadFilepath),
+                $entryPointContent
+            );
+            $entryPointContent = (string)preg_replace(
+                '/\\\\TYPO3\\\\CMS\\\\Core\\\\Core\\\\SystemEnvironmentBuilder::run\(/',
+                '\Nimut\TestingFramework\Bootstrap\SystemEnvironmentBuilder::run(',
+                $entryPointContent
+            );
+            if ($entryPointContent === '') {
+                throw new \UnexpectedValueException(
+                    sprintf('Error while customizing the source file (%s).', $source),
+                    1636244910
                 );
             }
+            file_put_contents($this->systemPath . $target, $entryPointContent);
         }
     }
 
@@ -754,6 +785,38 @@ abstract class AbstractTestSystem
         $databaseConfiguration['Connections']['Default']['dbname'] = strtolower($databaseName);
 
         return $databaseConfiguration;
+    }
+
+    /**
+     * Returns PHP code that, when executed in $from, will return the path to $to
+     * Copied from Composer sources and adapted for limited use case here
+     *
+     * @see https://github.com/composer/composer
+     */
+    protected function findShortestPathCode(string $from, string $to): string
+    {
+        if ($from === $to) {
+            return '__FILE__';
+        }
+
+        $commonPath = $to;
+        while (strpos($from . '/', $commonPath . '/') !== 0 && '/' !== $commonPath && preg_match('{^[a-z]:/?$}i', $commonPath) !== false && '.' !== $commonPath) {
+            $commonPath = dirname($commonPath);
+        }
+
+        if ('/' === $commonPath || '.' === $commonPath || 0 !== strpos($from, $commonPath)) {
+            return var_export($to, true);
+        }
+
+        $commonPath = rtrim($commonPath, '/') . '/';
+        if (strpos($to, $from . '/') === 0) {
+            return '__DIR__ . ' . var_export(substr($to, strlen($from)), true);
+        }
+        $sourcePathDepth = substr_count(substr($from, strlen($commonPath)), '/');
+        $commonPathCode = "__DIR__ . '" . str_repeat('/..', $sourcePathDepth) . "'";
+        $relTarget = substr($to, strlen($commonPath));
+
+        return $commonPathCode . ($relTarget !== '' ? ' . ' . var_export('/' . $relTarget, true) : '');
     }
 
     /**
