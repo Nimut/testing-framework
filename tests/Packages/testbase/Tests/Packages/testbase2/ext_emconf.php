@@ -1,7 +1,7 @@
 <?php
 
 /***************************************************************
- * Extension Manager/Repository config file for ext "testbase".
+ * Extension Manager/Repository config file for ext "testbase2".
  *
  * Auto generated 09-09-2019 14:14
  *
@@ -18,7 +18,7 @@ $EM_CONF[$_EXTKEY] = array (
   'author_email' => 'typo3@cordes.co, info@helhum.io',
   'author_company' => '',
   'state' => 'stable',
-  'version' => '0.6.0',
+  'version' => '0.1.0',
   'uploadfolder' => 0,
   'createDirs' => '',
   'clearCacheOnLoad' => 0,

@@ -75,6 +75,17 @@ class FunctionalTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function checkAbsoluteExtensionPathIsAllowed()
+    {
+        $absolutePath = GeneralUtility::getFileAbsFileName('EXT:testbase/Classes/Mock.php');
+        $this->assertNotEmpty($absolutePath);
+        $absolutePath = GeneralUtility::getFileAbsFileName($absolutePath);
+        $this->assertSame($absolutePath, $absolutePath);
+    }
+
+    /**
+     * @test
+     */
     public function frontendIsRendered()
     {
         $this->importDataSet('ntf://Database/pages.xml');
