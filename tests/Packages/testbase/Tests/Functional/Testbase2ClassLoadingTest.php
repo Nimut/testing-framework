@@ -6,7 +6,7 @@ use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 class Testbase2ClassLoadingTest extends FunctionalTestCase
 {
     protected $testExtensionsToLoad = [
-        'typo3conf/ext/testbase/Tests/Packages/testbase2'
+        'typo3conf/ext/testbase/Tests/Packages/testbase2',
     ];
 
     /**
