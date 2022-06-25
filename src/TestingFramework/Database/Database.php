@@ -97,7 +97,7 @@ class Database implements DatabaseInterface
      */
     public function lastInsertId()
     {
-        return $this->connection->lastInsertId();
+        return (int)$this->connection->lastInsertId();
     }
 
     /**
