@@ -47,8 +47,10 @@ abstract class AbstractBootstrap
     {
         $classLoaderFilepath = $this->getClassLoaderFilepath();
         $classLoader = require $classLoaderFilepath;
+        $classAliasLoader = new \TYPO3\ClassAliasLoader\ClassAliasLoader($classLoader);
 
         SystemEnvironmentBuilder::run(0, SystemEnvironmentBuilder::REQUESTTYPE_BE | SystemEnvironmentBuilder::REQUESTTYPE_CLI);
+        ClassAliasMap::setClassAliasLoader($classAliasLoader);
         CoreBootstrap::initializeClassLoader($classLoader);
         CoreBootstrap::baseSetup();
     }
