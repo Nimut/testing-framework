@@ -72,7 +72,16 @@ jobs:
                     echo;
                     echo;
                     find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;;
-            php: 8.1.0
+            php: 8.2
+            env: TYPO3=^12.4
+        -   <<: *tests
+            php: 8.2
+            env: TYPO3=^11.5
+        -   <<: *tests
+            php: 8.1
+            env: TYPO3=^12.4
+        -   <<: *tests
+            php: 8.1
             env: TYPO3=^11.5
         -   <<: *tests
             php: 8.0
@@ -109,7 +118,9 @@ jobs:
                 - cd tests/Packages/testbase/
                 - composer install
                 - grep "Testbase extension for nimut/testing-framework" .Build/public/typo3conf/ext/testbase/composer.json
-            php: 8.1.0
+            php: 8.2
+        -   <<: *prepare
+            php: 8.1
         -   <<: *prepare
             php: 8.0
         -   <<: *prepare
@@ -124,7 +135,7 @@ jobs:
             git:
                 depth: false
             php: 7.4
-            env: TYPO3="^9.5 ^10.4 ^11.5"
+            env: TYPO3="^9.5 ^10.4 ^11.5 ^12.4"
             before_install:
                 - nvm install 12
                 - nvm use 12
@@ -190,17 +201,23 @@ jobs:
                 - if php -i | grep -v TRAVIS_CMD | grep -q xdebug; then phpenv config-rm xdebug.ini; fi
                 - composer config minimum-stability dev
                 - composer config prefer-stable true
-            php: 8.1.0
+            php: 8.2
             env: TYPO3=dev-main
         -   <<: *dev-tests
-            php: 8.1.0
+            php: 8.2
+            env: TYPO3=12.4.x-dev
+        -   <<: *dev-tests
+            php: 8.2
+            env: TYPO3=11.5.x-dev
+        -   <<: *dev-tests
+            php: 8.1
+            env: TYPO3=12.4.x-dev
+        -   <<: *dev-tests
+            php: 8.1
             env: TYPO3=11.5.x-dev
         -   <<: *dev-tests
             php: 8.0
             env: TYPO3=11.5.x-dev
-        -   <<: *dev-tests
-            php: 7.4
-            env: TYPO3=dev-main
         -   <<: *dev-tests
             php: 7.4
             env: TYPO3=11.5.x-dev
@@ -229,20 +246,23 @@ jobs:
             install:
                 - composer require --no-progress --no-suggest --prefer-lowest nimut/typo3-complete:"$TYPO3"
                 - git checkout composer.json
-            php: 8.1.0
+            php: 8.2
             env: TYPO3=dev-main
         -   <<: *lowest-tests
-            php: 8.1.0
+            php: 8.2
+            env: TYPO3=12.4.x-dev
+        -   <<: *lowest-tests
+            php: 8.2
+            env: TYPO3=11.5.x-dev
+        -   <<: *lowest-tests
+            php: 8.1
+            env: TYPO3=12.4.x-dev
+        -   <<: *lowest-tests
+            php: 8.1
             env: TYPO3=11.5.x-dev
         -   <<: *lowest-tests
             php: 8.0
-            env: TYPO3=dev-main
-        -   <<: *lowest-tests
-            php: 8.0
             env: TYPO3=11.5.x-dev
-        -   <<: *lowest-tests
-            php: 7.4
-            env: TYPO3=dev-main
         -   <<: *lowest-tests
             php: 7.4
             env: TYPO3=11.5.x-dev

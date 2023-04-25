@@ -29,20 +29,21 @@
     ],
     "require": {
         "php": "^7.2 || ^8.0",
-        "typo3/cms-backend": "^9.5.13 || ^10.4 || ^11.5.3 || dev-main",
-        "typo3/cms-core": "^9.5.13 || ^10.4 || ^11.5.3 || dev-main",
-        "typo3/cms-extbase": "^9.5.13 || ^10.4 || ^11.5.3 || dev-main",
-        "typo3/cms-fluid": "^9.5.13 || ^10.4 || ^11.5.3 || dev-main",
-        "typo3/cms-frontend": "^9.5.13 || ^10.4 || ^11.5.3 || dev-main",
-        "typo3/cms-install": "^9.5.13 || ^10.4 || ^11.5.3 || dev-main",
-        "typo3/cms-recordlist": "^9.5.13 || ^10.4 || ^11.5.3 || dev-main",
+        "typo3/cms-backend": "^9.5.13 || ^10.4 || ^11.5.3 || ^12.4.0 || dev-main",
+        "typo3/cms-core": "^9.5.13 || ^10.4 || ^11.5.3 || ^12.4.0 || dev-main",
+        "typo3/cms-extbase": "^9.5.13 || ^10.4 || ^11.5.3 || ^12.4.0 || dev-main",
+        "typo3/cms-fluid": "^9.5.13 || ^10.4 || ^11.5.3 || ^12.4.0 || dev-main",
+        "typo3/cms-frontend": "^9.5.13 || ^10.4 || ^11.5.3 || ^12.4.0 || dev-main",
+        "typo3/cms-install": "^9.5.13 || ^10.4 || ^11.5.3 || ^12.4.0 || dev-main",
+        "typo3/cms-recordlist": "^9.5.13 || ^10.4 || ^11.5.3 || ^12.4.0 || dev-main",
         "phpunit/phpunit": "^8.5.22 || ^9.5",
         "mikey179/vfsstream": "^1.6.7"
     },
     "require-dev": {
         "composer/composer": "^2.1",
         "nimut/testing-framework-testbase": "@dev",
-        "nimut/phpunit-merger": "^1.0"
+        "nimut/phpunit-merger": "^1.0",
+        "phpspec/prophecy": "^1.17"
     },
     "conflict": {
         "doctrine/dbal": "2.13.0 || 2.13.1",
@@ -58,7 +59,11 @@
     },
     "config": {
         "vendor-dir": ".Build/vendor",
-        "bin-dir": ".Build/bin"
+        "bin-dir": ".Build/bin",
+        "allow-plugins": {
+            "typo3/cms-composer-installers": true,
+            "typo3/class-alias-loader": true
+        }
     },
     "extra": {
         "branch-alias": {
