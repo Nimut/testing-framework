@@ -7,6 +7,12 @@
 The aim of the testing framework is to provide a good way to write and run unit and functional tests for multiple versions
 of the TYPO3 CMS. Currently **TYPO3 CMS 9.5 up to 11.5** are tested and supported.
 
+There are no plans to support nimut/testing-framework for versions above TYPO3 v11. You are advised to switch to the
+typo3/testing-framework for TYPO3 v12 and above. The  typo3/testing-framework has improved support for testing more
+than one version of the core. Further information and an introduction can be found in the official TYPO3 documentation:
+
+* [Testing Extensions](https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/Testing/ExtensionTesting.html)
+
 ## Installation
 
 Use [Composer](https://getcomposer.org/) to install the testing framework.
