@@ -1,17 +1,20 @@
 # Testing Framework for TYPO3 CMS Extensions
 
+There are no plans to support nimut/testing-framework for versions above TYPO3 v11. You are advised to switch to the
+typo3/testing-framework for TYPO3 v12 and above. The  typo3/testing-framework has improved support for testing more
+than one version of the core. Further information and an introduction can be found in the official TYPO3 documentation:
+
+* [Testing Extensions](https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/Testing/ExtensionTesting.html)
+
+<details>
+<summary>ℹ️ Show docs for TYPO3 9.5 up to 11.5</summary>
+
 [![Latest Stable Version](https://img.shields.io/packagist/v/nimut/testing-framework.svg)](https://packagist.org/packages/nimut/testing-framework)
 [![Build Status](https://img.shields.io/travis/Nimut/testing-framework/master.svg)](https://travis-ci.org/Nimut/testing-framework)
 [![StyleCI](https://styleci.io/repos/81999184/shield?branch=master)](https://styleci.io/repos/81999184)
 
 The aim of the testing framework is to provide a good way to write and run unit and functional tests for multiple versions
 of the TYPO3 CMS. Currently **TYPO3 CMS 9.5 up to 11.5** are tested and supported.
-
-There are no plans to support nimut/testing-framework for versions above TYPO3 v11. You are advised to switch to the
-typo3/testing-framework for TYPO3 v12 and above. The  typo3/testing-framework has improved support for testing more
-than one version of the core. Further information and an introduction can be found in the official TYPO3 documentation:
-
-* [Testing Extensions](https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/Testing/ExtensionTesting.html)
 
 ## Installation
 
@@ -224,3 +227,5 @@ Following links provide documentation and additional information about TYPO3 CMS
 - [Functional tests for dummies](https://de.slideshare.net/cpsitgmbh/functional-tests-for-dummies-65673214)
 
 Last but not least you may ask for further support in the Slack channel "[#cig-testing](https://typo3.slack.com/messages/cig-testing)".
+
+</details>
